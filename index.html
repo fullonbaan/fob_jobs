@@ -175,98 +175,118 @@
 
     /* ── TABLE WRAPPER ── */
     .container {
-      max-width: 1340px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0 1rem;
     }
 
     .table-wrap {
-      overflow-x: auto;
-      border-radius: 18px;
+      border-radius: 16px;
       border: 1px solid var(--pearl-3);
       box-shadow: 0 4px 32px var(--shadow), 0 1px 0 rgba(255,255,255,0.8) inset;
-      margin-bottom: 3.5rem;
-      background: rgba(255,255,255,0.65);
+      margin-bottom: 3rem;
+      background: rgba(255,255,255,0.72);
       backdrop-filter: blur(8px);
+      overflow: hidden;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: .85rem;
+      table-layout: fixed;
     }
+
+    col.col-id    { width: 3.5%;  }
+    col.col-title { width: 21%;   }
+    col.col-desc  { width: 28%;   }
+    col.col-co    { width: 10.5%; }
+    col.col-loc   { width: 11%;   }
+    col.col-date  { width: 6.5%;  }
+    col.col-rate  { width: 8%;    }
+    col.col-apply { width: 9%;    }
+
     thead th {
-      padding: .9rem 1rem;
+      padding: .6rem .55rem;
       font-family: 'Jost', sans-serif;
-      font-size: .65rem;
+      font-size: .58rem;
       font-weight: 600;
-      letter-spacing: .15em;
+      letter-spacing: .13em;
       text-transform: uppercase;
       color: var(--ink-lt);
       text-align: left;
       border-bottom: 1px solid var(--pearl-3);
+      background: rgba(242,236,227,0.55);
       white-space: nowrap;
-      background: rgba(242,236,227,0.45);
     }
-    thead th:first-child { border-radius: 18px 0 0 0; }
-    thead th:last-child  { border-radius: 0 18px 0 0; }
+    thead th:first-child { border-radius: 16px 0 0 0; padding-left: .75rem; }
+    thead th:last-child  { border-radius: 0 16px 0 0; }
 
     tbody tr {
-      transition: background .18s ease;
       border-bottom: 1px solid var(--pearl-2);
+      transition: background .15s ease;
     }
     tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(255,252,245,0.95); }
+    tbody tr:hover      { background: rgba(255,252,245,0.95); }
+    tr.hidden-row       { display: none; }
 
     td {
-      padding: 1rem 1rem;
+      padding: .65rem .55rem;
       vertical-align: top;
       color: var(--ink);
-      line-height: 1.5;
+      line-height: 1.45;
+      overflow: hidden;
+      word-break: break-word;
     }
+    td:first-child { padding-left: .75rem; }
 
     .td-id {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--gold-dk);
-      white-space: nowrap;
-      min-width: 40px;
+      font-size: .88rem;
+      font-weight: 700;
     }
-    .func .td-id { color: var(--func-lt); }
-    .tech .td-id { color: var(--tech-lt); }
+    .td-id.func { color: var(--func-lt); }
+    .td-id.tech { color: var(--tech-lt); }
 
     .td-title {
-      font-weight: 500;
-      font-size: .88rem;
-      min-width: 200px;
-      max-width: 240px;
+      font-weight: 600;
+      font-size: .76rem;
+      color: var(--ink);
+      line-height: 1.4;
     }
+
     .td-desc {
-      font-size: .8rem;
+      font-size: .71rem;
       color: var(--ink-mid);
-      min-width: 230px;
-      max-width: 300px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
+
     .td-company {
-      font-weight: 500;
-      white-space: nowrap;
+      font-size: .73rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.35;
     }
+
     .td-location {
-      font-size: .8rem;
+      font-size: .7rem;
       color: var(--ink-mid);
-      white-space: nowrap;
+      line-height: 1.4;
     }
+
     .td-date {
-      font-size: .78rem;
+      font-size: .68rem;
       color: var(--ink-lt);
-      white-space: nowrap;
     }
+
     .td-rate {
-      font-size: .8rem;
-      font-weight: 500;
+      font-size: .7rem;
+      font-weight: 600;
       color: var(--func);
-      white-space: nowrap;
+      line-height: 1.4;
     }
     .tech-row .td-rate { color: var(--tech); }
 
@@ -274,57 +294,57 @@
     .btn-apply {
       display: inline-flex;
       align-items: center;
-      gap: .4rem;
-      padding: .48rem 1rem;
-      border-radius: 8px;
+      justify-content: center;
+      gap: .25rem;
+      padding: .38rem .45rem;
+      border-radius: 7px;
       font-family: 'Jost', sans-serif;
-      font-size: .75rem;
+      font-size: .64rem;
       font-weight: 600;
-      letter-spacing: .05em;
+      letter-spacing: .03em;
       text-decoration: none;
-      white-space: nowrap;
-      transition: all .22s ease;
+      transition: all .2s ease;
       border: 1.5px solid transparent;
       cursor: pointer;
+      width: 100%;
     }
     .btn-apply.func-btn {
       background: linear-gradient(135deg, #2d5a3d, #3a7a52);
       color: white;
-      box-shadow: 0 2px 10px rgba(45,90,61,0.25);
+      box-shadow: 0 2px 8px rgba(45,90,61,0.22);
     }
     .btn-apply.func-btn:hover {
       background: linear-gradient(135deg, #234832, #2d6040);
-      box-shadow: 0 4px 18px rgba(45,90,61,0.38);
+      box-shadow: 0 4px 14px rgba(45,90,61,0.36);
       transform: translateY(-1px);
     }
     .btn-apply.tech-btn {
       background: linear-gradient(135deg, #1e3a5f, #2a5491);
       color: white;
-      box-shadow: 0 2px 10px rgba(30,58,95,0.25);
+      box-shadow: 0 2px 8px rgba(30,58,95,0.22);
     }
     .btn-apply.tech-btn:hover {
       background: linear-gradient(135deg, #162d4a, #1e3d6e);
-      box-shadow: 0 4px 18px rgba(30,58,95,0.38);
+      box-shadow: 0 4px 14px rgba(30,58,95,0.36);
       transform: translateY(-1px);
     }
-    .btn-apply svg {
-      width: 12px; height: 12px; flex-shrink: 0;
-    }
+    .btn-apply svg { width: 10px; height: 10px; flex-shrink: 0; }
 
     /* ── LOCATION BADGE ── */
     .loc-badge {
       display: inline-block;
-      font-size: .7rem;
-      padding: .18rem .55rem;
+      font-size: .62rem;
+      padding: .1rem .4rem;
       border-radius: 4px;
-      margin-top: .25rem;
+      margin-top: .18rem;
     }
-    .loc-remote   { background: #e8f4ec; color: #2d5a3d; }
-    .loc-hybrid   { background: #fef3e2; color: #8c5a00; }
-    .loc-onsite   { background: #e8eef8; color: #1e3a5f; }
-    .loc-global   { background: #f3e8f8; color: #5a2d7a; }
+    .loc-remote { background: #e8f4ec; color: #2d5a3d; }
+    .loc-hybrid { background: #fef3e2; color: #8c5a00; }
+    .loc-onsite { background: #e8eef8; color: #1e3a5f; }
+    .loc-global { background: #f3e8f8; color: #5a2d7a; }
 
     /* ── FOOTER ── */
+
     .footer {
       text-align: center;
       padding: 3rem 2rem 1rem;
@@ -389,12 +409,224 @@
     .nav-pills   { animation: fadeUp .7s .25s ease both; }
     .table-wrap  { animation: fadeUp .7s .3s ease both; }
 
-    @media (max-width: 768px) {
-      table { font-size: .78rem; }
-      td, th { padding: .7rem .6rem; }
-      .td-desc { display: none; }
+    @media (max-width: 900px) {
       h1.hero-title { font-size: 2rem; }
+      .td-desc { display: none; }
+      col.col-desc { width: 0; }
+      col.col-title { width: 35%; }
     }
+    @media (max-width: 600px) {
+      td, th { padding: .45rem .35rem; font-size: .65rem; }
+      .td-company { display: none; }
+      col.col-co { width: 0; }
+    }
+    /* ── FILTER PANEL ── */
+    .filter-panel {
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--pearl-3);
+      border-radius: 20px;
+      box-shadow: 0 4px 32px var(--shadow), 0 1px 0 rgba(255,255,255,0.9) inset;
+      padding: 1.4rem 1.8rem 1.6rem;
+      margin-bottom: 2.8rem;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .filter-panel-title {
+      font-family: 'Jost', sans-serif;
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold-dk);
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .filter-panel-title::before { content: '◆'; font-size: .5rem; }
+    .filter-rows {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+    .filter-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-lt);
+      min-width: 90px;
+      padding-top: .35rem;
+      flex-shrink: 0;
+    }
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      padding: .32rem .85rem;
+      border-radius: 50px;
+      font-family: 'Jost', sans-serif;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .03em;
+      border: 1.5px solid var(--pearl-3);
+      background: var(--pearl-1);
+      color: var(--ink-mid);
+      cursor: pointer;
+      transition: all .18s ease;
+      user-select: none;
+    }
+    .chip:hover {
+      border-color: var(--gold-lt);
+      color: var(--ink);
+      background: rgba(184,151,60,0.06);
+    }
+    .chip.active {
+      background: var(--gold-dk);
+      border-color: var(--gold-dk);
+      color: white;
+      box-shadow: 0 2px 10px rgba(140,110,40,0.3);
+    }
+    .chip.active-func {
+      background: var(--func);
+      border-color: var(--func);
+      color: white;
+      box-shadow: 0 2px 10px rgba(45,90,61,0.28);
+    }
+    .chip.active-tech {
+      background: var(--tech);
+      border-color: var(--tech);
+      color: white;
+      box-shadow: 0 2px 10px rgba(30,58,95,0.28);
+    }
+    .chip.active-remote { background: #2d5a3d; border-color: #2d5a3d; color: white; }
+    .chip.active-hybrid { background: #7a5200; border-color: #7a5200; color: white; }
+    .chip.active-onsite { background: #1e3a5f; border-color: #1e3a5f; color: white; }
+    .filter-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--pearl-3), transparent);
+      margin: .2rem 0;
+    }
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .filter-results-badge {
+      font-family: 'Jost', sans-serif;
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--ink-mid);
+      background: var(--pearl-2);
+      border: 1px solid var(--pearl-3);
+      border-radius: 50px;
+      padding: .3rem .9rem;
+    }
+    .filter-results-badge strong {
+      color: var(--gold-dk);
+      font-weight: 700;
+    }
+    .btn-clear-filters {
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      color: var(--ink-lt);
+      background: none;
+      border: 1px solid var(--pearl-3);
+      border-radius: 50px;
+      padding: .3rem .9rem;
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .btn-clear-filters:hover {
+      color: var(--ink);
+      border-color: var(--ink-lt);
+    }
+    .search-box-wrap {
+      flex: 1;
+      min-width: 180px;
+      max-width: 340px;
+      position: relative;
+    }
+    .search-box {
+      width: 100%;
+      padding: .36rem .9rem .36rem 2.1rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--pearl-3);
+      background: var(--pearl-1);
+      font-family: 'Jost', sans-serif;
+      font-size: .78rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .18s;
+    }
+    .search-box:focus { border-color: var(--gold-lt); }
+    .search-box::placeholder { color: var(--ink-lt); }
+    .search-icon {
+      position: absolute;
+      left: .7rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-lt);
+      font-size: .8rem;
+      pointer-events: none;
+    }
+    /* hidden row */
+    tr.hidden-row { display: none; }
+    /* no-results message */
+    .no-results {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--ink-lt);
+      font-size: .88rem;
+      display: none;
+    }
+    .section-header-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1.8rem;
+      padding: 0 1rem;
+    }
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .live-count {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-lt);
+      background: var(--pearl-2);
+      border: 1px solid var(--pearl-3);
+      border-radius: 50px;
+      padding: .35rem .9rem;
+      transition: all .2s;
+    }
+    @media (max-width: 768px) {
+      .filter-row { flex-direction: column; gap: .5rem; }
+      .filter-label { min-width: auto; padding-top: 0; }
+      .filter-panel { padding: 1rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -403,14 +635,14 @@
 <div class="hero">
   <div class="hero-badge">Compiled · March 2026 · Multi-Platform Research</div>
   <h1 class="hero-title">Infor LN Job Opportunities<br><em>Functional &amp; Technical</em></h1>
-  <p class="hero-sub">Aggregated from Dice · Indeed · LinkedIn · ZipRecruiter · Glassdoor · TechFetch · Benchmark IT · PCG · Adastra · Upwork<br>covering remote, hybrid &amp; on-site roles globally</p>
+  <p class="hero-sub">Aggregated from LinkedIn · Indeed · Dice · Monster · ZipRecruiter · Glassdoor · TechFetch · CareerBuilder · SimplyHired · Naukri · Gulf Talent<br>covering remote, hybrid &amp; on-site roles across USA · India · Middle East &amp; beyond</p>
 
   <div class="stats-row">
     <div class="stat"><div class="stat-num">14</div><div class="stat-lbl">Functional Roles</div></div>
-    <div class="stat"><div class="stat-num">13</div><div class="stat-lbl">Technical Roles</div></div>
+    <div class="stat"><div class="stat-num">20</div><div class="stat-lbl">Technical Roles</div></div>
     <div class="stat"><div class="stat-num">$49–$210k</div><div class="stat-lbl">Rate / Salary Range</div></div>
-    <div class="stat"><div class="stat-num">9+</div><div class="stat-lbl">Platforms Searched</div></div>
-    <div class="stat"><div class="stat-num">🌐 Global</div><div class="stat-lbl">US · Europe · Remote</div></div>
+    <div class="stat"><div class="stat-num">11+</div><div class="stat-lbl">Platforms Searched</div></div>
+    <div class="stat"><div class="stat-num">🌐 Global</div><div class="stat-lbl">US · India · Middle East</div></div>
   </div>
 
   <div class="gold-rule"></div>
@@ -421,453 +653,694 @@
   </div>
 </div>
 
+
+<!-- FILTER PANEL -->
+<div class="container">
+  <div class="filter-panel">
+    <div class="filter-panel-title">Smart Filters — Refine Your Search</div>
+    <div class="filter-rows">
+
+      <div class="filter-row">
+        <span class="filter-label">Search</span>
+        <div class="search-box-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-box" id="searchBox" type="text" placeholder="Search by title, module, company…">
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-row">
+        <span class="filter-label">Job Type</span>
+        <div class="filter-chips" data-group="type">
+          <span class="chip active" data-val="all">All Roles</span>
+          <span class="chip" data-val="functional">⚙️ Functional</span>
+          <span class="chip" data-val="technical">🔧 Technical</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Work Mode</span>
+        <div class="filter-chips" data-group="work">
+          <span class="chip active" data-val="all">All</span>
+          <span class="chip" data-val="remote">🌐 Remote</span>
+          <span class="chip" data-val="hybrid">🔀 Hybrid</span>
+          <span class="chip" data-val="onsite">🏢 On-Site</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Region</span>
+        <div class="filter-chips" data-group="region">
+          <span class="chip active" data-val="all">🌍 All Regions</span>
+          <span class="chip" data-val="usa">🇺🇸 USA</span>
+          <span class="chip" data-val="india">🇮🇳 India</span>
+          <span class="chip" data-val="middleeast">🌙 Middle East</span>
+          <span class="chip" data-val="europe">🇪🇺 Europe</span>
+          <span class="chip" data-val="global">🌐 Global/Remote</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Employment</span>
+        <div class="filter-chips" data-group="employment">
+          <span class="chip active" data-val="all">All</span>
+          <span class="chip" data-val="contract">📄 Contract</span>
+          <span class="chip" data-val="fulltime">💼 Full-Time</span>
+          <span class="chip" data-val="w2">W-2</span>
+          <span class="chip" data-val="c2c">C2C / 1099</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Module</span>
+        <div class="filter-chips" data-group="module">
+          <span class="chip active" data-val="all">All Modules</span>
+          <span class="chip" data-val="finance">💰 Finance</span>
+          <span class="chip" data-val="manufacturing">🏭 Manufacturing</span>
+          <span class="chip" data-val="logistics">📦 Logistics</span>
+          <span class="chip" data-val="integration">🔗 Integration</span>
+          <span class="chip" data-val="architecture">🏗️ Architecture</span>
+          <span class="chip" data-val="planning">📊 Planning</span>
+          <span class="chip" data-val="quality">✅ Quality</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Salary</span>
+        <div class="filter-chips" data-group="salary">
+          <span class="chip active" data-val="all">All</span>
+          <span class="chip" data-val="disclosed">💵 Rate Disclosed</span>
+          <span class="chip" data-val="undisclosed">🔒 Not Disclosed</span>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="filter-label">Posted</span>
+        <div class="filter-chips" data-group="recency">
+          <span class="chip active" data-val="all">All Dates</span>
+          <span class="chip" data-val="30">Last 30 Days</span>
+          <span class="chip" data-val="60">Last 60 Days</span>
+          <span class="chip" data-val="90">Last 90 Days</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="filter-actions">
+      <div class="filter-results-badge">Showing <strong id="visibleCount">27</strong> of <strong>27</strong> positions</div>
+      <button class="btn-clear-filters" id="clearFilters">✕ Clear All Filters</button>
+    </div>
+  </div>
+</div>
 <!-- CONTAINER -->
 <div class="container">
 
   <!-- ════ FUNCTIONAL ════ -->
-  <div id="functional" class="section-header">
+  <div id="functional" class="section-header-wrap"><div class="section-header-left">
     <div class="section-icon func">⚙️</div>
     <h2 class="section-title func">Infor LN — Functional Roles</h2>
-    <span class="section-count">14 Positions</span>
+    </div><span class="live-count" id="func-count">14 shown</span>
   </div>
 
-  <div class="table-wrap">
+    <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Job Title</th>
-          <th>Description</th>
-          <th>Company</th>
-          <th>Location</th>
-          <th>Posted</th>
-          <th>Rate / Salary</th>
-          <th>Contact</th>
-          <th>Apply</th>
-        </tr>
-      </thead>
+        <colgroup>
+          <col class="col-id">
+          <col class="col-title">
+          <col class="col-desc">
+          <col class="col-co">
+          <col class="col-loc">
+          <col class="col-date">
+          <col class="col-rate">
+          <col class="col-apply">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Job Title</th>
+            <th>Description</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Posted</th>
+            <th>Rate / Salary</th>
+            <th>Apply</th>
+          </tr>
+        </thead>
       <tbody>
-
-        <!-- F1 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="finance" data-posted="2026-01">
           <td class="td-id func">F1</td>
           <td class="td-title">Sr. Consultant – Infor LN / Finance</td>
           <td class="td-desc">Functional expertise on Infor LN Financial modules (GL, AR, AP, Cash, Fixed Assets). Full lifecycle implementation for PCG manufacturing clients. Travel required.</td>
           <td class="td-company">PCG</td>
-          <td class="td-location">Remote US (Travel)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US (Travel) Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>PCG Talent Acquisition</td>
-          <td><a class="btn-apply func-btn" href="mailto:careers@pcg-erp.com?subject=Application%3A%20Sr.%20Consultant%20%E2%80%93%20Infor%20LN%20Finance%20(F1)&body=Dear%20PCG%20Talent%20Acquisition%20Team%2C%0A%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Sr.%20Consultant%20%E2%80%93%20Infor%20LN%20%2F%20Finance%20role%20(F1)%20at%20PCG.%0A%0AI%20have%20extensive%20experience%20in%20Infor%20LN%20Financial%20modules%20including%20GL%2C%20AR%2C%20AP%2C%20Cash%20Management%2C%20and%20Fixed%20Assets%2C%20with%20a%20track%20record%20of%20delivering%20full-lifecycle%20ERP%20implementations%20for%20manufacturing%20clients.%0A%0APlease%20find%20my%20resume%20attached%20for%20your%20consideration.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#5d3e3c2f38382f2e1d2d3e3a70382f2d733e3230622e283f37383e29601c2d2d31343e3c29343233786e1c786f6d0e2f73786f6d1e32332e2831293c3329786f6d78186f78656d78646e786f6d14333b322f786f6d1113786f6d1b34333c333e38786f6d751b6c747b3f3239246019383c2f786f6d0d1e1a786f6d093c31383329786f6d1c3e2c28342e3429343233786f6d09383c30786f1e786d1c786d1c14786f6d3c30786f6d2a2f342934333a786f6d2932786f6d38252d2f382e2e786f6d3024786f6d2e292f32333a786f6d343329382f382e29786f6d3433786f6d293538786f6d0e2f73786f6d1e32332e2831293c3329786f6d78186f78656d78646e786f6d14333b322f786f6d1113786f6d786f1b786f6d1b34333c333e38786f6d2f323138786f6d751b6c74786f6d3c29786f6d0d1e1a73786d1c786d1c14786f6d353c2b38786f6d38252938332e342b38786f6d38252d382f3438333e38786f6d3433786f6d14333b322f786f6d1113786f6d1b34333c333e343c31786f6d3032392831382e786f6d34333e31283934333a786f6d1a11786f1e786f6d1c0f786f1e786f6d1c0d786f1e786f6d1e3c2e35786f6d103c333c3a3830383329786f1e786f6d3c3339786f6d1b34253839786f6d1c2e2e38292e786f1e786f6d2a342935786f6d3c786f6d292f3c3e36786f6d2f383e322f39786f6d323b786f6d393831342b382f34333a786f6d3b2831317031343b383e243e3138786f6d180f0d786f6d34302d3138303833293c293432332e786f6d3b322f786f6d303c33283b3c3e29282f34333a786f6d3e31343833292e73786d1c786d1c0d31383c2e38786f6d3b343339786f6d3024786f6d2f382e283038786f6d3c29293c3e353839786f6d3b322f786f6d2432282f786f6d3e32332e3439382f3c2934323373786d1c786d1c16343339786f6d2f383a3c2f392e786f1e786d1c78681f0432282f786f6d1b283131786f6d133c3038786819786d1c78681f0d35323338786f6d1328303f382f786819786d1c78681f1134333638391433786f6d0d2f323b343138786819">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F2 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="manufacturing" data-posted="2026-01">
           <td class="td-id func">F2</td>
           <td class="td-title">Sr. Consultant – Infor LN / Manufacturing &amp; Planning</td>
           <td class="td-desc">Functional expertise in Manufacturing/Planning (MRP, Shop Floor, BOM, Routing). Gap analysis, test plans, data mapping. Travel to customer sites required.</td>
           <td class="td-company">PCG</td>
-          <td class="td-location">Remote US (Travel)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US (Travel) Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>PCG Talent Acquisition</td>
-          <td><a class="btn-apply func-btn" href="mailto:careers@pcg-erp.com?subject=Application%3A%20Sr.%20Consultant%20%E2%80%93%20Infor%20LN%20Manufacturing%20%26%20Planning%20(F2)&body=Dear%20PCG%20Talent%20Acquisition%20Team%2C%0A%0AI%20am%20writing%20to%20express%20my%20interest%20in%20the%20Sr.%20Consultant%20%E2%80%93%20Infor%20LN%20%2F%20Manufacturing%20%26%20Planning%20role%20(F2).%0A%0AMy%20background%20includes%20deep%20functional%20expertise%20in%20MRP%2C%20Shop%20Floor%20Control%2C%20BOM%2C%20and%20Routing%20within%20Infor%20LN%2C%20along%20with%20experience%20in%20gap%20analysis%2C%20test%20planning%2C%20and%20data%20mapping.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#85e6e4f7e0e0f7f6c5f5e6e2a8e0f7f5abe6eae8baf6f0e7efe0e6f1b8c4f5f5e9ece6e4f1eceaeba0b6c4a0b7b5d6f7aba0b7b5c6eaebf6f0e9f1e4ebf1a0b7b5a0c0b7a0bdb5a0bcb6a0b7b5ccebe3eaf7a0b7b5c9cba0b7b5c8e4ebf0e3e4e6f1f0f7ecebe2a0b7b5a0b7b3a0b7b5d5e9e4ebebecebe2a0b7b5adc3b7aca3e7eae1fcb8c1e0e4f7a0b7b5d5c6c2a0b7b5d1e4e9e0ebf1a0b7b5c4e6f4f0ecf6ecf1eceaeba0b7b5d1e0e4e8a0b7c6a0b5c4a0b5c4cca0b7b5e4e8a0b7b5f2f7ecf1ecebe2a0b7b5f1eaa0b7b5e0fdf5f7e0f6f6a0b7b5e8fca0b7b5ecebf1e0f7e0f6f1a0b7b5eceba0b7b5f1ede0a0b7b5d6f7aba0b7b5c6eaebf6f0e9f1e4ebf1a0b7b5a0c0b7a0bdb5a0bcb6a0b7b5ccebe3eaf7a0b7b5c9cba0b7b5a0b7c3a0b7b5c8e4ebf0e3e4e6f1f0f7ecebe2a0b7b5a0b7b3a0b7b5d5e9e4ebebecebe2a0b7b5f7eae9e0a0b7b5adc3b7acaba0b5c4a0b5c4c8fca0b7b5e7e4e6eee2f7eaf0ebe1a0b7b5ecebe6e9f0e1e0f6a0b7b5e1e0e0f5a0b7b5e3f0ebe6f1eceaebe4e9a0b7b5e0fdf5e0f7f1ecf6e0a0b7b5eceba0b7b5c8d7d5a0b7c6a0b7b5d6edeaf5a0b7b5c3e9eaeaf7a0b7b5c6eaebf1f7eae9a0b7c6a0b7b5c7cac8a0b7c6a0b7b5e4ebe1a0b7b5d7eaf0f1ecebe2a0b7b5f2ecf1edeceba0b7b5ccebe3eaf7a0b7b5c9cba0b7c6a0b7b5e4e9eaebe2a0b7b5f2ecf1eda0b7b5e0fdf5e0f7ece0ebe6e0a0b7b5eceba0b7b5e2e4f5a0b7b5e4ebe4e9fcf6ecf6a0b7c6a0b7b5f1e0f6f1a0b7b5f5e9e4ebebecebe2a0b7c6a0b7b5e4ebe1a0b7b5e1e4f1e4a0b7b5e8e4f5f5ecebe2aba0b5c4a0b5c4d5e9e0e4f6e0a0b7b5e3ecebe1a0b7b5e8fca0b7b5f7e0f6f0e8e0a0b7b5e4f1f1e4e6ede0e1aba0b5c4a0b5c4ceecebe1a0b7b5f7e0e2e4f7e1f6a0b7c6a0b5c4a0b0c7dceaf0f7a0b7b5c3f0e9e9a0b7b5cbe4e8e0a0b0c1a0b5c4a0b0c7d5edeaebe0a0b7b5cbf0e8e7e0f7a0b0c1a0b5c4a0b0c7c9ecebeee0e1cceba0b7b5d5f7eae3ece9e0a0b0c1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F3 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="quality" data-posted="2026-01">
           <td class="td-id func">F3</td>
           <td class="td-title">Sr. Functional Consultant – LN Quality (Issue to Resolution)</td>
           <td class="td-desc">Business/functional expertise on Infor LN Quality module. Handles customer Issue-to-Resolution workstream for end-to-end implementations within PCG project team.</td>
           <td class="td-company">PCG</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>PCG Talent Acquisition</td>
-          <td><a class="btn-apply func-btn" href="mailto:careers@pcg-erp.com?subject=Application%3A%20Sr.%20Functional%20Consultant%20%E2%80%93%20LN%20Quality%20(F3)&body=Dear%20PCG%20Talent%20Acquisition%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Sr.%20Functional%20Consultant%20%E2%80%93%20LN%20Quality%20(Issue%20to%20Resolution)%20role%20(F3).%0A%0AI%20have%20extensive%20experience%20with%20the%20Infor%20LN%20Quality%20module%20and%20Issue-to-Resolution%20workstreams%2C%20and%20I%20am%20well-versed%20in%20end-to-end%20ERP%20implementations%20within%20consulting%20project%20teams.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#84e7e5f6e1e1f6f7c4f4e7e3a9e1f6f4aae7ebe9bbf7f1e6eee1e7f0b9c5f4f4e8ede7e5f0edebeaa1b7c5a1b6b4d7f6aaa1b6b4c2f1eae7f0edebeae5e8a1b6b4c7ebeaf7f1e8f0e5eaf0a1b6b4a1c1b6a1bcb4a1bdb7a1b6b4c8caa1b6b4d5f1e5e8edf0fda1b6b4acc2b7ada2e6ebe0fdb9c0e1e5f6a1b6b4d4c7c3a1b6b4d0e5e8e1eaf0a1b6b4c5e7f5f1edf7edf0edebeaa1b6b4d0e1e5e9a1b6c7a1b4c5a1b4c5cda1b6b4e5e9a1b6b4f3f6edf0edeae3a1b6b4f0eba1b6b4e5f4f4e8fda1b6b4e2ebf6a1b6b4f0ece1a1b6b4d7f6aaa1b6b4c2f1eae7f0edebeae5e8a1b6b4c7ebeaf7f1e8f0e5eaf0a1b6b4a1c1b6a1bcb4a1bdb7a1b6b4c8caa1b6b4d5f1e5e8edf0fda1b6b4accdf7f7f1e1a1b6b4f0eba1b6b4d6e1f7ebe8f1f0edebeaada1b6b4f6ebe8e1a1b6b4acc2b7adaaa1b4c5a1b4c5cda1b6b4ece5f2e1a1b6b4e1fcf0e1eaf7edf2e1a1b6b4e1fcf4e1f6ede1eae7e1a1b6b4f3edf0eca1b6b4f0ece1a1b6b4cdeae2ebf6a1b6b4c8caa1b6b4d5f1e5e8edf0fda1b6b4e9ebe0f1e8e1a1b6b4e5eae0a1b6b4cdf7f7f1e1a9f0eba9d6e1f7ebe8f1f0edebeaa1b6b4f3ebf6eff7f0f6e1e5e9f7a1b6c7a1b6b4e5eae0a1b6b4cda1b6b4e5e9a1b6b4f3e1e8e8a9f2e1f6f7e1e0a1b6b4edeaa1b6b4e1eae0a9f0eba9e1eae0a1b6b4c1d6d4a1b6b4ede9f4e8e1e9e1eaf0e5f0edebeaf7a1b6b4f3edf0ecedeaa1b6b4e7ebeaf7f1e8f0edeae3a1b6b4f4f6ebeee1e7f0a1b6b4f0e1e5e9f7aaa1b4c5a1b4c5d4e8e1e5f7e1a1b6b4e2edeae0a1b6b4e9fda1b6b4f6e1f7f1e9e1a1b6b4e5f0f0e5e7ece1e0aaa1b4c5a1b4c5cfedeae0a1b6b4f6e1e3e5f6e0f7a1b6c7a1b4c5a1b1c6ddebf1f6a1b6b4c2f1e8e8a1b6b4cae5e9e1a1b1c0a1b4c5a1b1c6d4ecebeae1a1b6b4caf1e9e6e1f6a1b1c0a1b4c5a1b1c6c8edeaefe1e0cdeaa1b6b4d4f6ebe2ede8e1a1b1c0">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F4 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="planning" data-posted="2026-01">
           <td class="td-id func">F4</td>
           <td class="td-title">Sr. Consultant – Infor LN / TP Projects</td>
           <td class="td-desc">Min 5+ yrs with Infor LN TP Projects. End-to-end implementation for Contracts-to-Deliver &amp; Program-to-Profit workstreams. Stakeholder management, gap analysis. Travel required.</td>
           <td class="td-company">PCG</td>
-          <td class="td-location">Remote US (Travel)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US (Travel) Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>PCG Talent Acquisition</td>
-          <td><a class="btn-apply func-btn" href="mailto:careers@pcg-erp.com?subject=Application%3A%20Sr.%20Consultant%20%E2%80%93%20Infor%20LN%20TP%20Projects%20(F4)&body=Dear%20PCG%20Talent%20Acquisition%20Team%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20Sr.%20Consultant%20%E2%80%93%20Infor%20LN%20%2F%20TP%20Projects%20role%20(F4).%0A%0AI%20bring%20over%205%20years%20of%20Infor%20LN%20TP%20Projects%20experience%2C%20with%20expertise%20in%20Contracts-to-Deliver%20and%20Program-to-Profit%20workstreams%2C%20gap%20analysis%2C%20and%20stakeholder%20management.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#c6a5a7b4a3a3b4b586b6a5a1eba3b4b6e8a5a9abf9b5b3a4aca3a5b2fb87b6b6aaafa5a7b2afa9a8e3f587e3f4f695b4e8e3f4f685a9a8b5b3aab2a7a8b2e3f4f6e383f4e3fef6e3fff5e3f4f68fa8a0a9b4e3f4f68a88e3f4f69296e3f4f696b4a9aca3a5b2b5e3f4f6ee80f2efe0a4a9a2bffb82a3a7b4e3f4f6968581e3f4f692a7aaa3a8b2e3f4f687a5b7b3afb5afb2afa9a8e3f4f692a3a7abe3f485e3f687e3f6878fe3f4f6b1a9b3aaa2e3f4f6aaafada3e3f4f6b2a9e3f4f6a7b6b6aabfe3f4f6a0a9b4e3f4f6b2aea3e3f4f695b4e8e3f4f685a9a8b5b3aab2a7a8b2e3f4f6e383f4e3fef6e3fff5e3f4f68fa8a0a9b4e3f4f68a88e3f4f6e3f480e3f4f69296e3f4f696b4a9aca3a5b2b5e3f4f6b4a9aaa3e3f4f6ee80f2efe8e3f687e3f6878fe3f4f6a4b4afa8a1e3f4f6a9b0a3b4e3f4f6f3e3f4f6bfa3a7b4b5e3f4f6a9a0e3f4f68fa8a0a9b4e3f4f68a88e3f4f69296e3f4f696b4a9aca3a5b2b5e3f4f6a3beb6a3b4afa3a8a5a3e3f485e3f4f6b1afb2aee3f4f6a3beb6a3b4b2afb5a3e3f4f6afa8e3f4f685a9a8b2b4a7a5b2b5ebb2a9eb82a3aaafb0a3b4e3f4f6a7a8a2e3f4f696b4a9a1b4a7abebb2a9eb96b4a9a0afb2e3f4f6b1a9b4adb5b2b4a3a7abb5e3f485e3f4f6a1a7b6e3f4f6a7a8a7aabfb5afb5e3f485e3f4f6a7a8a2e3f4f6b5b2a7ada3aea9aaa2a3b4e3f4f6aba7a8a7a1a3aba3a8b2e8e3f687e3f68796aaa3a7b5a3e3f4f6a0afa8a2e3f4f6abbfe3f4f6b4a3b5b3aba3e3f4f6a7b2b2a7a5aea3a2e8e3f687e3f6878dafa8a2e3f4f6b4a3a1a7b4a2b5e3f485e3f687e3f3849fa9b3b4e3f4f680b3aaaae3f4f688a7aba3e3f382e3f687e3f38496aea9a8a3e3f4f688b3aba4a3b4e3f382e3f687e3f3848aafa8ada3a28fa8e3f4f696b4a9a0afaaa3e3f382">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F5 -->
-        <tr>
+        <tr data-type="functional" data-work="onsite" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="manufacturing" data-posted="2026-02">
           <td class="td-id func">F5</td>
           <td class="td-title">Infor LN Functional Consultant – Manufacturing (San Diego)</td>
           <td class="td-desc">Analyze business requirements &amp; map to LN Manufacturing. Configure Production, Planning, Shop Floor Control, BOM &amp; Routing. User training, testing support. 12+ months contract.</td>
           <td class="td-company">Navtech / Innova Solutions</td>
-          <td class="td-location">On-Site San Diego, CA<div><span class="loc-badge loc-onsite">On-Site</span></div></td>
+          <td class="td-location">On-Site San Diego, CA On-Site</td>
           <td class="td-date">Feb 2026</td>
           <td class="td-rate">$55–$79/hr</td>
-          <td>Navtech Recruiter</td>
-          <td><a class="btn-apply func-btn" href="mailto:recruiter@navtech.com?subject=Application%3A%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Manufacturing%20San%20Diego%20(F5)&body=Dear%20Navtech%20Recruiting%20Team%2C%0A%0AI%20am%20applying%20for%20the%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Manufacturing%20role%20(F5)%20based%20in%20San%20Diego%2C%20CA.%0A%0AI%20have%20extensive%20experience%20configuring%20Infor%20LN%20Manufacturing%20modules%20including%20Production%2C%20Planning%2C%20Shop%20Floor%20Control%2C%20BOM%20and%20Routing%2C%20and%20I%20am%20comfortable%20with%20on-site%20delivery%20and%20user%20training.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#c7b5a2a4b5b2aeb3a2b587a9a6b1b3a2a4afe9a4a8aaf8b4b2a5ada2a4b3fa86b7b7abaea4a6b3aea8a9e2f486e2f5f78ea9a1a8b5e2f5f78b89e2f5f781b2a9a4b3aea8a9a6abe2f5f784a8a9b4b2abb3a6a9b3e2f5f7e282f5e2fff7e2fef4e2f5f78aa6a9b2a1a6a4b3b2b5aea9a0e2f5f794a6a9e2f5f783aea2a0a8e2f5f7ef81f2eee1a5a8a3befa83a2a6b5e2f5f789a6b1b3a2a4afe2f5f795a2a4b5b2aeb3aea9a0e2f5f793a2a6aae2f584e2f786e2f7868ee2f5f7a6aae2f5f7a6b7b7abbeaea9a0e2f5f7a1a8b5e2f5f7b3afa2e2f5f78ea9a1a8b5e2f5f78b89e2f5f781b2a9a4b3aea8a9a6abe2f5f784a8a9b4b2abb3a6a9b3e2f5f7e282f5e2fff7e2fef4e2f5f78aa6a9b2a1a6a4b3b2b5aea9a0e2f5f7b5a8aba2e2f5f7ef81f2eee2f5f7a5a6b4a2a3e2f5f7aea9e2f5f794a6a9e2f5f783aea2a0a8e2f584e2f5f78486e9e2f786e2f7868ee2f5f7afa6b1a2e2f5f7a2bfb3a2a9b4aeb1a2e2f5f7a2bfb7a2b5aea2a9a4a2e2f5f7a4a8a9a1aea0b2b5aea9a0e2f5f78ea9a1a8b5e2f5f78b89e2f5f78aa6a9b2a1a6a4b3b2b5aea9a0e2f5f7aaa8a3b2aba2b4e2f5f7aea9a4abb2a3aea9a0e2f5f797b5a8a3b2a4b3aea8a9e2f584e2f5f797aba6a9a9aea9a0e2f584e2f5f794afa8b7e2f5f781aba8a8b5e2f5f784a8a9b3b5a8abe2f584e2f5f785888ae2f5f7a6a9a3e2f5f795a8b2b3aea9a0e2f584e2f5f7a6a9a3e2f5f78ee2f5f7a6aae2f5f7a4a8aaa1a8b5b3a6a5aba2e2f5f7b0aeb3afe2f5f7a8a9eab4aeb3a2e2f5f7a3a2abaeb1a2b5bee2f5f7a6a9a3e2f5f7b2b4a2b5e2f5f7b3b5a6aea9aea9a0e9e2f786e2f78697aba2a6b4a2e2f5f7a1aea9a3e2f5f7aabee2f5f7b5a2b4b2aaa2e2f5f7a6b3b3a6a4afa2a3e9e2f786e2f7868caea9a3e2f5f7b5a2a0a6b5a3b4e2f584e2f786e2f2859ea8b2b5e2f5f781b2ababe2f5f789a6aaa2e2f283e2f786e2f28597afa8a9a2e2f5f789b2aaa5a2b5e2f283e2f786e2f2858baea9aca2a38ea9e2f5f797b5a8a1aeaba2e2f283">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F6 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="finance" data-posted="2026-02">
           <td class="td-id func">F6</td>
           <td class="td-title">Sr. Functional Consultant – Finance &amp; Planning (Remote)</td>
           <td class="td-desc">Min 5 yrs in Finance &amp; Planning modules (GL/AP/AR/Cash/Fixed Assets/Taxation/ICT). Sound knowledge of GL/AP/AR integrations. Senior advisory position.</td>
           <td class="td-company">AMBC / US Client</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US Remote</td>
           <td class="td-date">Feb 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>Dillip Kumar (AMBC)</td>
-          <td><a class="btn-apply func-btn" href="mailto:dillip.kumar@ambc.com?subject=Application%3A%20Sr.%20Functional%20Consultant%20%E2%80%93%20Finance%20%26%20Planning%20(F6)&body=Dear%20Dillip%20Kumar%2C%0A%0AI%20am%20writing%20to%20express%20my%20interest%20in%20the%20Sr.%20Functional%20Consultant%20%E2%80%93%20Finance%20%26%20Planning%20role%20(F6)%20with%20AMBC.%0A%0AI%20bring%205%2B%20years%20of%20Infor%20LN%20Finance%20and%20Planning%20module%20expertise%2C%20covering%20GL%2C%20AP%2C%20AR%2C%20Cash%20Management%2C%20Fixed%20Assets%2C%20Taxation%2C%20and%20ICT%2C%20with%20solid%20integration%20knowledge.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#4a2e232626233a64213f272b380a2b2728296429252775393f28202f293e770b3a3a2623292b3e2325246f790b6f787a1938646f787a0c3f24293e2325242b266f787a092524393f263e2b243e6f787a6f0f786f727a6f73796f787a0c23242b24292f6f787a6f787c6f787a1a262b242423242d6f787a620c7c636c28252e33770e2f2b386f787a0e232626233a6f787a013f272b386f78096f7a0b6f7a0b036f787a2b276f787a3d38233e23242d6f787a3e256f787a2f323a382f39396f787a27336f787a23243e2f382f393e6f787a23246f787a3e222f6f787a1938646f787a0c3f24293e2325242b266f787a092524393f263e2b243e6f787a6f0f786f727a6f73796f787a0c23242b24292f6f787a6f787c6f787a1a262b242423242d6f787a3825262f6f787a620c7c636f787a3d233e226f787a0b070809646f7a0b6f7a0b036f787a283823242d6f787a7f6f78086f787a332f2b38396f787a252c6f787a03242c25386f787a06046f787a0c23242b24292f6f787a2b242e6f787a1a262b242423242d6f787a27252e3f262f6f787a2f323a2f383e23392f6f78096f787a29253c2f3823242d6f787a0d066f78096f787a0b1a6f78096f787a0b186f78096f787a092b39226f787a072b242b2d2f272f243e6f78096f787a0c23322f2e6f787a0b39392f3e396f78096f787a1e2b322b3e2325246f78096f787a2b242e6f787a03091e6f78096f787a3d233e226f787a392526232e6f787a23243e2f2d382b3e2325246f787a2124253d262f2e2d2f646f7a0b6f7a0b1a262f2b392f6f787a2c23242e6f787a27336f787a382f393f272f6f787a2b3e3e2b29222f2e646f7a0b6f7a0b0123242e6f787a382f2d2b382e396f78096f7a0b6f7f0813253f386f787a0c3f26266f787a042b272f6f7f0e6f7a0b6f7f081a2225242f6f787a043f27282f386f7f0e6f7a0b6f7f08062324212f2e03246f787a1a38252c23262f6f7f0e">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F7 -->
-        <tr>
+        <tr data-type="functional" data-work="hybrid" data-region="usa" data-employment="c2c" data-salary="disclosed" data-module="planning" data-posted="2026-01">
           <td class="td-id func">F7</td>
           <td class="td-title">Infor LN ERP Planning Consultant (C2C/W2)</td>
           <td class="td-desc">Expertise in Part Item Master &amp; Planning Item Master for non-recurring parts. Establish standardized data foundation in Infor LN for global supply chain. Seattle WA, remote considered. Contract C2C/W2.</td>
           <td class="td-company">US Manufacturer (via ZipRecruiter)</td>
-          <td class="td-location">Hybrid Seattle, WA<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
+          <td class="td-location">Hybrid Seattle, WA Hybrid</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">$34–$90/hr</td>
-          <td>Via ZipRecruiter</td>
           <td><a class="btn-apply func-btn" href="https://www.ziprecruiter.com/Jobs/Infor-Ln" target="_blank">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on ZipRecruiter</a></td>
         </tr>
-
-        <!-- F8 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="planning" data-posted="2026-01">
           <td class="td-id func">F8</td>
           <td class="td-title">Infor LN ERP Process Consultant – Seattle (Remote)</td>
           <td class="td-desc">Optimize Infor LN system configuration and existing business processes. Lead comprehensive business process reviews. Develop implementation strategies for manufacturing ops.</td>
           <td class="td-company">US Manufacturer (via Dice)</td>
-          <td class="td-location">Remote (Seattle client)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote (Seattle client) Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>Via Dice.com</td>
           <td><a class="btn-apply func-btn" href="https://www.dice.com/jobs/q-infor-jobs" target="_blank">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Dice</a></td>
         </tr>
-
-        <!-- F9 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="logistics" data-posted="2025-12">
           <td class="td-id func">F9</td>
           <td class="td-title">Infor LN Functional Consultant – Logistics (12+ yrs)</td>
           <td class="td-desc">12+ yrs in LN Logistics — Order Mgmt, Warehousing, Central Invoicing, EDI, Service &amp; Enterprise Modeler. Infor LN 10x required. Baan V background an added advantage.</td>
           <td class="td-company">HCL Global Systems</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US Remote</td>
           <td class="td-date">Dec 2025</td>
           <td class="td-rate">$55–$79/hr</td>
-          <td>HCL Talent Team</td>
-          <td><a class="btn-apply func-btn" href="mailto:talent@hclglobal.com?subject=Application%3A%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Logistics%20(F9)&body=Dear%20HCL%20Talent%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Logistics%20role%20(F9).%0A%0AI%20bring%2012%2B%20years%20of%20experience%20in%20LN%20Logistics%20modules%20including%20Order%20Management%2C%20Warehousing%2C%20Central%20Invoicing%2C%20EDI%2C%20and%20Service%20%26%20Enterprise%20Modeler.%20I%20am%20proficient%20in%20Infor%20LN%2010x%20and%20have%20a%20Baan%20V%20background.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#ccb8ada0a9a2b88ca4afa0aba0a3aeada0e2afa3a1f3bfb9aea6a9afb8f18dbcbca0a5afadb8a5a3a2e9ff8de9fefc85a2aaa3bee9fefc8082e9fefc8ab9a2afb8a5a3a2ada0e9fefc8fa3a2bfb9a0b8ada2b8e9fefce989fee9f4fce9f5ffe9fefc80a3aba5bfb8a5afbfe9fefce48af5e5eaaea3a8b5f188a9adbee9fefc848f80e9fefc98ada0a9a2b8e9fefc98a9ada1e9fe8fe9fc8de9fc8d85e9fefcada1e9fefcbbbea5b8a5a2abe9fefcb8a3e9fefcadbcbca0b5e9fefcaaa3bee9fefcb8a4a9e9fefc85a2aaa3bee9fefc8082e9fefc8ab9a2afb8a5a3a2ada0e9fefc8fa3a2bfb9a0b8ada2b8e9fefce989fee9f4fce9f5ffe9fefc80a3aba5bfb8a5afbfe9fefcbea3a0a9e9fefce48af5e5e2e9fc8de9fc8d85e9fefcaebea5a2abe9fefcfdfee9fe8ee9fefcb5a9adbebfe9fefca3aae9fefca9b4bca9bea5a9a2afa9e9fefca5a2e9fefc8082e9fefc80a3aba5bfb8a5afbfe9fefca1a3a8b9a0a9bfe9fefca5a2afa0b9a8a5a2abe9fefc83bea8a9bee9fefc81ada2adaba9a1a9a2b8e9fe8fe9fefc9badbea9a4a3b9bfa5a2abe9fe8fe9fefc8fa9a2b8beada0e9fefc85a2baa3a5afa5a2abe9fe8fe9fefc898885e9fe8fe9fefcada2a8e9fefc9fa9bebaa5afa9e9fefce9fefae9fefc89a2b8a9bebcbea5bfa9e9fefc81a3a8a9a0a9bee2e9fefc85e9fefcada1e9fefcbcbea3aaa5afa5a9a2b8e9fefca5a2e9fefc85a2aaa3bee9fefc8082e9fefcfdfcb4e9fefcada2a8e9fefca4adbaa9e9fefcade9fefc8eadada2e9fefc9ae9fefcaeadafa7abbea3b9a2a8e2e9fc8de9fc8d9ca0a9adbfa9e9fefcaaa5a2a8e9fefca1b5e9fefcbea9bfb9a1a9e9fefcadb8b8adafa4a9a8e2e9fc8de9fc8d87a5a2a8e9fefcbea9abadbea8bfe9fe8fe9fc8de9f98e95a3b9bee9fefc8ab9a0a0e9fefc82ada1a9e9f988e9fc8de9f98e9ca4a3a2a9e9fefc82b9a1aea9bee9f988e9fc8de9f98e80a5a2a7a9a885a2e9fefc9cbea3aaa5a0a9e9f988">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F10 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="manufacturing" data-posted="2026-01">
           <td class="td-id func">F10</td>
           <td class="td-title">Infor LN Functional Consultant (Remote – Intone Networks)</td>
           <td class="td-desc">Seasoned specialist in Infor LN ERP focusing on manufacturing. 3-month contract, 100% remote. Hands-on ERP implementation support; configuration, testing, user training. New York client.</td>
           <td class="td-company">Intone Networks</td>
-          <td class="td-location">Remote (New York client)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote (New York client) Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">~$70–$90/hr</td>
-          <td>Intone Networks HR</td>
-          <td><a class="btn-apply func-btn" href="mailto:hr@intone.com?subject=Application%3A%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Remote%20(F10)&body=Dear%20Intone%20Networks%20HR%20Team%2C%0A%0AI%20would%20like%20to%20apply%20for%20the%20Infor%20LN%20Functional%20Consultant%20role%20(F10)%20for%20your%20New%20York%20client.%0A%0AI%20have%20strong%20hands-on%20Infor%20LN%20ERP%20experience%20in%20manufacturing%2C%20including%20configuration%2C%20implementation%20support%2C%20testing%2C%20and%20user%20training.%0A%0APlease%20find%20my%20resume%20attached%20for%20your%20review.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#bdd5cffdd4d3c9d2d3d893ded2d082cec8dfd7d8dec980fccdcdd1d4dedcc9d4d2d3988efc988f8df4d3dbd2cf988f8df1f3988f8dfbc8d3dec9d4d2d3dcd1988f8dfed2d3cec8d1c9dcd3c9988f8d98f88f98858d98848e988f8defd8d0d2c9d8988f8d95fb8c8d949bdfd2d9c480f9d8dccf988f8df4d3c9d2d3d8988f8df3d8c9cad2cfd6ce988f8df5ef988f8de9d8dcd0988ffe988dfc988dfcf4988f8dcad2c8d1d9988f8dd1d4d6d8988f8dc9d2988f8ddccdcdd1c4988f8ddbd2cf988f8dc9d5d8988f8df4d3dbd2cf988f8df1f3988f8dfbc8d3dec9d4d2d3dcd1988f8dfed2d3cec8d1c9dcd3c9988f8dcfd2d1d8988f8d95fb8c8d94988f8ddbd2cf988f8dc4d2c8cf988f8df3d8ca988f8de4d2cfd6988f8dded1d4d8d3c993988dfc988dfcf4988f8dd5dccbd8988f8dcec9cfd2d3da988f8dd5dcd3d9ce90d2d3988f8df4d3dbd2cf988f8df1f3988f8df8efed988f8dd8c5cdd8cfd4d8d3ded8988f8dd4d3988f8dd0dcd3c8dbdcdec9c8cfd4d3da988ffe988f8dd4d3ded1c8d9d4d3da988f8dded2d3dbd4dac8cfdcc9d4d2d3988ffe988f8dd4d0cdd1d8d0d8d3c9dcc9d4d2d3988f8dcec8cdcdd2cfc9988ffe988f8dc9d8cec9d4d3da988ffe988f8ddcd3d9988f8dc8ced8cf988f8dc9cfdcd4d3d4d3da93988dfc988dfcedd1d8dcced8988f8ddbd4d3d9988f8dd0c4988f8dcfd8cec8d0d8988f8ddcc9c9dcded5d8d9988f8ddbd2cf988f8dc4d2c8cf988f8dcfd8cbd4d8ca93988dfc988dfcf6d4d3d9988f8dcfd8dadccfd9ce988ffe988dfc9888ffe4d2c8cf988f8dfbc8d1d1988f8df3dcd0d89888f9988dfc9888ffedd5d2d3d8988f8df3c8d0dfd8cf9888f9988dfc9888fff1d4d3d6d8d9f4d3988f8dedcfd2dbd4d1d89888f9">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F11 -->
-        <tr>
+        <tr data-type="functional" data-work="hybrid" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="manufacturing" data-posted="2025-11">
           <td class="td-id func">F11</td>
           <td class="td-title">ERP Consultant – Infor LN / Baan (Hybrid, Shelton CT)</td>
           <td class="td-desc">Enhance &amp; optimize Infor LN v10.5 functionalities. Implement system modules not yet in use. Collaborate closely with end-users. Hybrid (initial onsite then remote). 6–12 months extendable.</td>
           <td class="td-company">Benchmark IT LLC</td>
-          <td class="td-location">Hybrid Shelton, CT<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
+          <td class="td-location">Hybrid Shelton, CT Hybrid</td>
           <td class="td-date">Nov 2025</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>Benchmark IT Recruiting</td>
-          <td><a class="btn-apply func-btn" href="mailto:recruiting@bmarkits.com?subject=Application%3A%20ERP%20Consultant%20%E2%80%93%20Infor%20LN%20%2F%20Baan%20Shelton%20CT%20(F11)&body=Dear%20Benchmark%20IT%20Recruiting%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20ERP%20Consultant%20%E2%80%93%20Infor%20LN%20%2F%20Baan%20role%20(F11)%20at%20your%20Shelton%2C%20CT%20client.%0A%0AI%20am%20experienced%20in%20Infor%20LN%20v10.5%20and%20have%20a%20track%20record%20of%20enhancing%20ERP%20functionality%2C%20implementing%20new%20modules%2C%20and%20collaborating%20effectively%20with%20business%20end-users.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#2052454352554954494e4760424d41524b4954530e434f4d1f5355424a4543541d6150504c49434154494f4e051361051210657270051210634f4e53554c54414e54051210056512051810051913051210694e464f520512106c6e0512100512660512106241414e0512107348454c544f4e0512106374051210086611110906424f44591d6445415205121062454e43484d41524b051210697405121072454352554954494e470512107445414d05126305106105106169051210414d05121057524954494e47051210544f0512104150504c59051210464f52051210544845051210657270051210634f4e53554c54414e54051210056512051810051913051210694e464f520512106c6e0512100512660512106241414e051210524f4c4505121008661111090512104154051210594f55520512107348454c544f4e0512630512106374051210434c49454e540e05106105106169051210414d051210455850455249454e434544051210494e051210694e464f520512106c6e0512105611100e15051210414e440512104841564505121041051210545241434b0512105245434f52440512104f46051210454e48414e43494e4705121065727005121046554e4354494f4e414c495459051263051210494d504c454d454e54494e470512104e45570512104d4f44554c4553051263051210414e44051210434f4c4c41424f524154494e470512104546464543544956454c5905121057495448051210425553494e455353051210454e440d55534552530e051061051061704c4541534505121046494e440512104d59051210524553554d4505121041545441434845440e0510610510616b494e4405121052454741524453051263051061051562794f555205121066554c4c0512106e414d4505156405106105156270484f4e450512106e554d4245520515640510610515626c494e4b4544694e05121070524f46494c45051564">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F12 -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="finance" data-posted="2025-12">
           <td class="td-id func">F12</td>
           <td class="td-title">Infor LN Finance Consultant (BAAN) – Remote with Travel</td>
           <td class="td-desc">LN Finance functional consulting for discrete manufacturing clients. Baan background required. Client-facing delivery. Travel to client sites. Full lifecycle implementation support.</td>
           <td class="td-company">The Dignify Solutions LLC</td>
-          <td class="td-location">Remote US (Travel)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US (Travel) Remote</td>
           <td class="td-date">Dec 2025</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>Dignify Solutions HR</td>
-          <td><a class="btn-apply func-btn" href="mailto:hr@dignifysolutions.com?subject=Application%3A%20Infor%20LN%20Finance%20Consultant%20(BAAN)%20(F12)&body=Dear%20Dignify%20Solutions%20HR%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%20Finance%20Consultant%20(Baan)%20%E2%80%93%20Remote%20with%20Travel%20role%20(F12).%0A%0AI%20have%20a%20strong%20background%20in%20Infor%20LN%20Finance%20functional%20consulting%20with%20Baan%20experience%2C%20specializing%20in%20discrete%20manufacturing%20environments%20and%20full%20lifecycle%20ERP%20implementations.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#a6ced4e6c2cfc1c8cfc0dfd5c9cad3d2cfc9c8d588c5c9cb99d5d3c4ccc3c5d29be7d6d6cacfc5c7d2cfc9c88395e7839496efc8c0c9d4839496eae8839496e0cfc8c7c8c5c3839496e5c9c8d5d3cad2c7c8d28394968ee4e7e7e88f8394968ee097948f80c4c9c2df9be2c3c7d4839496e2cfc1c8cfc0df839496f5c9cad3d2cfc9c8d5839496eef4839496f2c3c7cb8394e58396e78396e7ef839496c7cb839496d1d4cfd2cfc8c1839496d2c9839496c7d6d6cadf839496c0c9d4839496d2cec3839496efc8c0c9d4839496eae8839496e0cfc8c7c8c5c3839496e5c9c8d5d3cad2c7c8d28394968ee4c7c7c88f83949683e394839e96839f95839496f4c3cbc9d2c3839496d1cfd2ce839496f2d4c7d0c3ca839496d4c9cac38394968ee097948f888396e78396e7ef839496cec7d0c3839496c7839496d5d2d4c9c8c1839496c4c7c5cdc1d4c9d3c8c2839496cfc8839496efc8c0c9d4839496eae8839496e0cfc8c7c8c5c3839496c0d3c8c5d2cfc9c8c7ca839496c5c9c8d5d3cad2cfc8c1839496d1cfd2ce839496e4c7c7c8839496c3ded6c3d4cfc3c8c5c38394e5839496d5d6c3c5cfc7cacfdccfc8c1839496cfc8839496c2cfd5c5d4c3d2c3839496cbc7c8d3c0c7c5d2d3d4cfc8c1839496c3c8d0cfd4c9c8cbc3c8d2d5839496c7c8c2839496c0d3caca839496cacfc0c3c5dfc5cac3839496e3f4f6839496cfcbd6cac3cbc3c8d2c7d2cfc9c8d5888396e78396e7f6cac3c7d5c3839496c0cfc8c2839496cbdf839496d4c3d5d3cbc3839496c7d2d2c7c5cec3c2888396e78396e7edcfc8c2839496d4c3c1c7d4c2d58394e58396e78393e4ffc9d3d4839496e0d3caca839496e8c7cbc38393e28396e78393e4f6cec9c8c3839496e8d3cbc4c3d48393e28396e78393e4eacfc8cdc3c2efc8839496f6d4c9c0cfcac38393e2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F13 -->
-        <tr>
+        <tr data-type="functional" data-work="hybrid" data-region="usa" data-employment="fulltime" data-salary="undisclosed" data-module="finance" data-posted="2026-02">
           <td class="td-id func">F13</td>
           <td class="td-title">Infor LN / CloudSuite Functional Consultants (Finance, d/EPM, Talent)</td>
           <td class="td-desc">Functional &amp; Technical Consultants for CloudSuite Financials, d/EPM, Absence &amp; Talent Management. Full-time or contract. Northern Virginia / Remote.</td>
           <td class="td-company">Prime Solutions, LLC</td>
-          <td class="td-location">Hybrid Chantilly, VA<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
+          <td class="td-location">Hybrid Chantilly, VA Hybrid</td>
           <td class="td-date">Feb 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>Prime Solutions HR</td>
-          <td><a class="btn-apply func-btn" href="mailto:hr@primesolutions.com?subject=Application%3A%20Infor%20LN%20%2F%20CloudSuite%20Functional%20Consultant%20(F13)&body=Dear%20Prime%20Solutions%20HR%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%20%2F%20CloudSuite%20Functional%20Consultant%20role%20(F13).%0A%0AI%20have%20expertise%20in%20CloudSuite%20Financials%2C%20d%2FEPM%2C%20and%20Talent%20Management%20modules%2C%20and%20I%20am%20available%20for%20either%20full-time%20or%20contract%20engagement.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#5c342e1c2c2e3531392f333029283533322f723f3331632f293e36393f28611d2c2c30353f3d28353332796f1d796e6c15323a332e796e6c1012796e6c796e1a796e6c1f303329380f29352839796e6c1a29323f283533323d30796e6c1f33322f2930283d3228796e6c741a6d6f757a3e3338256118393d2e796e6c0c2e353139796e6c0f333029283533322f796e6c140e796e6c08393d31796e1f796c1d796c1d15796e6c3d31796e6c2b2e352835323b796e6c2833796e6c3d2c2c3025796e6c3a332e796e6c283439796e6c15323a332e796e6c1012796e6c796e1a796e6c1f303329380f29352839796e6c1a29323f283533323d30796e6c1f33322f2930283d3228796e6c2e333039796e6c741a6d6f7572796c1d796c1d15796e6c343d2a39796e6c39242c392e28352f39796e6c3532796e6c1f303329380f29352839796e6c1a35323d323f353d302f796e1f796e6c38796e1a190c11796e1f796e6c3d3238796e6c083d30393228796e6c113d323d3b3931393228796e6c3133382930392f796e1f796e6c3d3238796e6c15796e6c3d31796e6c3d2a3d35303d3e3039796e6c3a332e796e6c39352834392e796e6c3a2930307128353139796e6c332e796e6c3f3332282e3d3f28796e6c39323b3d3b393139322872796c1d796c1d0c30393d2f39796e6c3a353238796e6c3125796e6c2e392f293139796e6c3d28283d3f34393872796c1d796c1d17353238796e6c2e393b3d2e382f796e1f796c1d79691e0533292e796e6c1a293030796e6c123d3139796918796c1d79691e0c34333239796e6c1229313e392e796918796c1d79691e1035323739381532796e6c0c2e333a353039796918">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- F14 NEW -->
-        <tr>
+        <tr data-type="functional" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="manufacturing" data-posted="2026-02">
           <td class="td-id func">F14</td>
           <td class="td-title">Infor LN Functional Consultant – Assessment &amp; Optimization (Adastra)</td>
           <td class="td-desc">Comprehensive functional assessment of client's Infor LN environment across supply chain, operations &amp; manufacturing modules. Identify gaps, develop actionable recommendations. Project-based contract.</td>
           <td class="td-company">Adastra Resource Group</td>
-          <td class="td-location">Remote (Manufacturing client)<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote (Manufacturing client) Remote</td>
           <td class="td-date">Feb 25, 2026</td>
           <td class="td-rate">Contract</td>
-          <td>Adastra Recruiting</td>
-          <td><a class="btn-apply func-btn" href="mailto:jobs@adastraresourcegroup.com?subject=Application%3A%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Assessment%20%26%20Optimization%20(F14)&body=Dear%20Adastra%20Resource%20Group%20Recruiting%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%20Functional%20Consultant%20%E2%80%93%20Assessment%20%26%20Optimization%20role%20(F14).%0A%0AI%20specialize%20in%20functional%20assessments%20of%20Infor%20LN%20environments%2C%20process%20optimization%2C%20and%20developing%20actionable%20recommendations%20across%20supply%20chain%2C%20operations%2C%20and%20manufacturing%20modules.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply func-btn" href="/cdn-cgi/l/email-protection#1872777a6b58797c796b6c6a796a7d6b776d6a7b7d7f6a776d68367b7775276b6d7a727d7b6c2559686874717b796c7177763d2b593d2a2851767e776a3d2a2854563d2a285e6d767b6c71777679743d2a285b77766b6d746c79766c3d2a283d5d2a3d20283d212b3d2a28596b6b7d6b6b757d766c3d2a283d2a2e3d2a2857686c71757162796c7177763d2a28305e292c313e7a777c61255c7d796a3d2a28597c796b6c6a793d2a284a7d6b776d6a7b7d3d2a285f6a776d683d2a284a7d7b6a6d716c71767f3d2a284c7d79753d2a5b3d28593d2859513d2a2879753d2a286f6a716c71767f3d2a286c773d2a2879686874613d2a287e776a3d2a286c707d3d2a2851767e776a3d2a2854563d2a285e6d767b6c71777679743d2a285b77766b6d746c79766c3d2a283d5d2a3d20283d212b3d2a28596b6b7d6b6b757d766c3d2a283d2a2e3d2a2857686c71757162796c7177763d2a286a77747d3d2a28305e292c31363d28593d2859513d2a286b687d7b71797471627d3d2a2871763d2a287e6d767b6c71777679743d2a28796b6b7d6b6b757d766c6b3d2a28777e3d2a2851767e776a3d2a2854563d2a287d766e716a7776757d766c6b3d2a5b3d2a28686a777b7d6b6b3d2a2877686c71757162796c7177763d2a5b3d2a2879767c3d2a287c7d6e7d74776871767f3d2a28797b6c717776797a747d3d2a286a7d7b7775757d767c796c7177766b3d2a28797b6a776b6b3d2a286b6d686874613d2a287b707971763d2a5b3d2a2877687d6a796c7177766b3d2a5b3d2a2879767c3d2a287579766d7e797b6c6d6a71767f3d2a2875777c6d747d6b363d28593d285948747d796b7d3d2a287e71767c3d2a2875613d2a286a7d6b6d757d3d2a28796c6c797b707d7c363d28593d28595371767c3d2a286a7d7f796a7c6b3d2a5b3d28593d2d5a41776d6a3d2a285e6d74743d2a285679757d3d2d5c3d28593d2d5a487077767d3d2a28566d757a7d6a3d2d5c3d28593d2d5a547176737d7c51763d2a28486a777e71747d3d2d5c">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
       </tbody>
     </table>
-  </div><!-- /table-wrap functional -->
+  </div>
 
 
   <!-- ════ TECHNICAL ════ -->
-  <div id="technical" class="section-header">
+  <div id="technical" class="section-header-wrap"><div class="section-header-left">
     <div class="section-icon tech">🔧</div>
     <h2 class="section-title tech">Infor LN — Technical Roles</h2>
-    <span class="section-count">13 Positions</span>
+    </div><span class="live-count" id="tech-count">20 shown</span>
   </div>
 
-  <div class="table-wrap">
+    <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Job Title</th>
-          <th>Description</th>
-          <th>Company</th>
-          <th>Location</th>
-          <th>Posted</th>
-          <th>Rate / Salary</th>
-          <th>Contact</th>
-          <th>Apply</th>
-        </tr>
-      </thead>
+        <colgroup>
+          <col class="col-id">
+          <col class="col-title">
+          <col class="col-desc">
+          <col class="col-co">
+          <col class="col-loc">
+          <col class="col-date">
+          <col class="col-rate">
+          <col class="col-apply">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Job Title</th>
+            <th>Description</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Posted</th>
+            <th>Rate / Salary</th>
+            <th>Apply</th>
+          </tr>
+        </thead>
       <tbody>
-
-        <!-- T1 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="integration" data-posted="2026-01">
           <td class="td-id tech">T1</td>
           <td class="td-title">Sr. Integration Developer – Infor LN Practice</td>
           <td class="td-desc">Design &amp; develop integrations within Infor LN ecosystem. Collaborate with solution architects. 7+ yrs Infor LN/Baan technical domain. Full remote. PCG practice.</td>
           <td class="td-company">PCG</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US Remote</td>
           <td class="td-date">Jan 2026</td>
           <td class="td-rate">Not Disclosed</td>
-          <td>PCG Talent Acquisition</td>
-          <td><a class="btn-apply tech-btn" href="mailto:careers@pcg-erp.com?subject=Application%3A%20Sr.%20Integration%20Developer%20%E2%80%93%20Infor%20LN%20(T1)&body=Dear%20PCG%20Talent%20Acquisition%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Sr.%20Integration%20Developer%20%E2%80%93%20Infor%20LN%20Practice%20role%20(T1).%0A%0AI%20have%207%2B%20years%20of%20Infor%20LN%2FBaan%20technical%20domain%20experience%20and%20a%20strong%20background%20in%20designing%20and%20developing%20ERP%20integrations%2C%20working%20alongside%20solution%20architects%20to%20define%20integration%20approaches%20and%20data%20flows.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply tech-btn" href="/cdn-cgi/l/email-protection#1271736077776061526271753f7760623c717d7f2d616770787771662f5362627e7b7173667b7d7c37215337202241603c3720225b7c6677756073667b7d7c372022567764777e7d627760372022375720372a22372b213720225b7c747d603720225e5c3720223a46233b34707d766b2f5677736037202242515537202246737e777c66372022537163677b617b667b7d7c3720224677737f3720513722533722535b372022737f37202265607b667b7c75372022667d3720227362627e6b372022747d60372022667a7737202241603c3720225b7c6677756073667b7d7c372022567764777e7d627760372022375720372a22372b213720225b7c747d603720225e5c37202242607371667b7177372022607d7e773720223a46233b3c3722533722535b3720227a736477372022253720503720226b777360613720227d743720225b7c747d603720225e5c3720545073737c3720226677717a7c7b71737e372022767d7f737b7c372022776a6277607b777c7177372022737c76372022733720226166607d7c753720227073717975607d677c763720227b7c3720227677617b757c7b7c75372022737c76372022767764777e7d627b7c753720225740423720227b7c6677756073667b7d7c61372051372022657d60797b7c75372022737e7d7c75617b7677372022617d7e67667b7d7c3720227360717a7b6677716661372022667d3720227677747b7c773720227b7c6677756073667b7d7c372022736262607d73717a7761372022737c7637202276736673372022747e7d65613c372253372253427e77736177372022747b7c763720227f6b372022607761677f7737202273666673717a77763c372253372253597b7c76372022607775736076613720513722533727504b7d676037202254677e7e3720225c737f77372756372253372750427a7d7c773720225c677f7077603727563722533727505e7b7c7977765b7c37202242607d747b7e77372756">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- T2 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="w2" data-salary="disclosed" data-module="architecture" data-posted="2026-02">
           <td class="td-id tech">T2</td>
           <td class="td-title">Techno-Functional Consultant – Infor LN 10.4 (Long-Term W2)</td>
           <td class="td-desc">Support &amp; enhance Infor LN 10.4 ERP. Blended functional and technical role. Long-term W2 contract. Must have Baan IV/V Tools, LN Studio, ION &amp; Admin hands-on experience.</td>
           <td class="td-company">Right Skale, Inc.</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-location">Remote US Remote</td>
           <td class="td-date">Feb 2026</td>
           <td class="td-rate">$100,000/yr</td>
-          <td>Right Skale Recruiter</td>
-          <td><a class="btn-apply tech-btn" href="mailto:recruiting@rightskale.com?subject=Application%3A%20Techno-Functional%20Consultant%20%E2%80%93%20Infor%20LN%2010.4%20(T2)&body=Dear%20Right%20Skale%20Recruiting%20Team%2C%0A%0AI%20am%20applying%20for%20the%20Techno-Functional%20Consultant%20%E2%80%93%20Infor%20LN%2010.4%20role%20(T2).%0A%0AI%20have%20hands-on%20experience%20with%20Baan%20IV%2FV%20Tools%2C%20LN%20Studio%2C%20ION%2C%20and%20LN%20Admin%2C%20and%20I%20am%20skilled%20in%20both%20the%20functional%20and%20technical%20aspects%20of%20Infor%20LN%2010.4%20ERP%20support%20and%20enhancement.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply tech-btn" href="/cdn-cgi/l/email-protection#aad8cfc9d8dfc3dec3c4cdead8c3cdc2ded9c1cbc6cf84c9c5c795d9dfc8c0cfc9de97ebdadac6c3c9cbdec3c5c48f99eb8f989afecfc9c2c4c587ecdfc4c9dec3c5c4cbc68f989ae9c5c4d9dfc6decbc4de8f989a8fef988f929a8f93998f989ae3c4ccc5d88f989ae6e48f989a9b9a849e8f989a82fe98838cc8c5ced397eecfcbd88f989af8c3cdc2de8f989af9c1cbc6cf8f989af8cfc9d8dfc3dec3c4cd8f989afecfcbc78f98e98f9aeb8f9aebe38f989acbc78f989acbdadac6d3c3c4cd8f989accc5d88f989adec2cf8f989afecfc9c2c4c587ecdfc4c9dec3c5c4cbc68f989ae9c5c4d9dfc6decbc4de8f989a8fef988f929a8f93998f989ae3c4ccc5d88f989ae6e48f989a9b9a849e8f989ad8c5c6cf8f989a82fe9883848f9aeb8f9aebe38f989ac2cbdccf8f989ac2cbc4ced987c5c48f989acfd2dacfd8c3cfc4c9cf8f989addc3dec28f989ae8cbcbc48f989ae3fc8f98ecfc8f989afec5c5c6d98f98e98f989ae6e48f989af9dedfcec3c58f98e98f989ae3e5e48f98e98f989acbc4ce8f989ae6e48f989aebcec7c3c48f98e98f989acbc4ce8f989ae38f989acbc78f989ad9c1c3c6c6cfce8f989ac3c48f989ac8c5dec28f989adec2cf8f989accdfc4c9dec3c5c4cbc68f989acbc4ce8f989adecfc9c2c4c3c9cbc68f989acbd9dacfc9ded98f989ac5cc8f989ae3c4ccc5d88f989ae6e48f989a9b9a849e8f989aeff8fa8f989ad9dfdadac5d8de8f989acbc4ce8f989acfc4c2cbc4c9cfc7cfc4de848f9aeb8f9aebfac6cfcbd9cf8f989accc3c4ce8f989ac7d38f989ad8cfd9dfc7cf8f989acbdedecbc9c2cfce848f9aeb8f9aebe1c3c4ce8f989ad8cfcdcbd8ced98f98e98f9aeb8f9fe8f3c5dfd88f989aecdfc6c68f989ae4cbc7cf8f9fee8f9aeb8f9fe8fac2c5c4cf8f989ae4dfc7c8cfd88f9fee8f9aeb8f9fe8e6c3c4c1cfcee3c48f989afad8c5ccc3c6cf8f9fee">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- T3 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="architecture" data-posted="2025-11">
           <td class="td-id tech">T3</td>
           <td class="td-title">Senior Infor LN Developer – LN 10.5 → 10.7 Migration</td>
           <td class="td-desc">Design &amp; implement solutions for LN 10.5 to 10.7 Multisite migration. Architect solutions, delegate to offshore team. San Diego, CA (remote possible with travel). 12-month contract.</td>
           <td class="td-company">Innova Solutions (client)</td>
-          <td class="td-location">Hybrid San Diego, CA<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
+          <td class="td-location">Hybrid San Diego, CA Hybrid</td>
           <td class="td-date">Nov 2025</td>
           <td class="td-rate">$42–$95/hr</td>
-          <td>Innova Solutions Recruiter</td>
-          <td><a class="btn-apply tech-btn" href="mailto:recruiter@innovasolutions.com?subject=Application%3A%20Senior%20Infor%20LN%20Developer%20%E2%80%93%2010.5%20to%2010.7%20Migration%20(T3)&body=Dear%20Innova%20Solutions%20Recruiting%20Team%2C%0A%0AI%20am%20applying%20for%20the%20Senior%20Infor%20LN%20Developer%20%E2%80%93%20LN%2010.5%20to%20LN%2010.7%20Migration%20role%20(T3).%0A%0AI%20have%20experience%20architecting%20and%20implementing%20solutions%20for%20Infor%20LN%20Multisite%20migrations%2C%20including%20leading%20offshore%20teams%20and%20driving%20technical%20delivery.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply tech-btn" href="/cdn-cgi/l/email-protection#b9cbdcdacbccd0cddccbf9d0d7d7d6cfd8cad6d5cccdd0d6d7ca97dad6d486caccdbd3dcdacd84f8c9c9d5d0dad8cdd0d6d79c8af89c8b89eadcd7d0d6cb9c8b89f0d7dfd6cb9c8b89f5f79c8b89fddccfdcd5d6c9dccb9c8b899cfc8b9c81899c808a9c8b898889978c9c8b89cdd69c8b898889978e9c8b89f4d0decbd8cdd0d6d79c8b8991ed8a909fdbd6ddc084fddcd8cb9c8b89f0d7d7d6cfd89c8b89ead6d5cccdd0d6d7ca9c8b89ebdcdacbccd0cdd0d7de9c8b89eddcd8d49c8bfa9c89f89c89f8f09c8b89d8d49c8b89d8c9c9d5c0d0d7de9c8b89dfd6cb9c8b89cdd1dc9c8b89eadcd7d0d6cb9c8b89f0d7dfd6cb9c8b89f5f79c8b89fddccfdcd5d6c9dccb9c8b899cfc8b9c81899c808a9c8b89f5f79c8b898889978c9c8b89cdd69c8b89f5f79c8b898889978e9c8b89f4d0decbd8cdd0d6d79c8b89cbd6d5dc9c8b8991ed8a90979c89f89c89f8f09c8b89d1d8cfdc9c8b89dcc1c9dccbd0dcd7dadc9c8b89d8cbdad1d0cddcdacdd0d7de9c8b89d8d7dd9c8b89d0d4c9d5dcd4dcd7cdd0d7de9c8b89cad6d5cccdd0d6d7ca9c8b89dfd6cb9c8b89f0d7dfd6cb9c8b89f5f79c8b89f4ccd5cdd0cad0cddc9c8b89d4d0decbd8cdd0d6d7ca9c8bfa9c8b89d0d7dad5ccddd0d7de9c8b89d5dcd8ddd0d7de9c8b89d6dfdfcad1d6cbdc9c8b89cddcd8d4ca9c8b89d8d7dd9c8b89ddcbd0cfd0d7de9c8b89cddcdad1d7d0dad8d59c8b89dddcd5d0cfdccbc0979c89f89c89f8e9d5dcd8cadc9c8b89dfd0d7dd9c8b89d4c09c8b89cbdccaccd4dc9c8b89d8cdcdd8dad1dcdd979c89f89c89f8f2d0d7dd9c8b89cbdcded8cbddca9c8bfa9c89f89c8cfbe0d6cccb9c8b89ffccd5d59c8b89f7d8d4dc9c8cfd9c89f89c8cfbe9d1d6d7dc9c8b89f7ccd4dbdccb9c8cfd9c89f89c8cfbf5d0d7d2dcddf0d79c8b89e9cbd6dfd0d5dc9c8cfd">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- T4 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="architecture" data-posted="2025-11">
           <td class="td-id tech">T4</td>
           <td class="td-title">Infor Technical Architect – LN 10.7 Migration (San Diego)</td>
           <td class="td-desc">Develop scalable solutions for LN 10.5→10.7 Multisite migration. Interact with functional experts. Architect &amp; develop or delegate to offshore. 12-month contract, travel required.</td>
           <td class="td-company">Innova Solutions (client)</td>
-          <td class="td-location">Hybrid San Diego, CA<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
+          <td class="td-location">Hybrid San Diego, CA Hybrid</td>
           <td class="td-date">Nov 2025</td>
           <td class="td-rate">$42–$95/hr</td>
-          <td>Innova Solutions Recruiter</td>
-          <td><a class="btn-apply tech-btn" href="mailto:recruiter@innovasolutions.com?subject=Application%3A%20Infor%20Technical%20Architect%20%E2%80%93%20LN%2010.7%20Migration%20(T4)&body=Dear%20Innova%20Solutions%20Recruiting%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20Technical%20Architect%20%E2%80%93%20LN%2010.7%20Migration%20role%20(T4).%0A%0AI%20have%20demonstrated%20experience%20as%20a%20Technical%20Architect%20for%20Infor%20LN%20migration%20projects%2C%20including%20Multisite%20architecture%20design%2C%20collaboration%20with%20functional%20teams%2C%20and%20offshore%20team%20management.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply tech-btn" href="/cdn-cgi/l/email-protection#3240575140475b465740725b5c5c5d4453415d5e47465b5d5c411c515d5f0d414750585751460f7342425e5b5153465b5d5c1701731700027b5c545d401700026657515a5c5b51535e1700027340515a5b46575146170002177700170a02170b011700027e7c17000203021c051700027f5b554053465b5d5c1700021a66061b14505d564b0f765753401700027b5c5c5d4453170002615d5e47465b5d5c4117000260575140475b465b5c551700026657535f1700711702731702737b170002535f17000245405b465b5c55170002465d1700025342425e4b170002545d40170002465a571700027b5c545d401700026657515a5c5b51535e1700027340515a5b46575146170002177700170a02170b011700027e7c17000203021c051700027f5b554053465b5d5c170002405d5e571700021a66061b1c1702731702737b1700025a53445717000256575f5d5c41464053465756170002574a4257405b575c51571700025341170002531700026657515a5c5b51535e1700027340515a5b46575146170002545d401700027b5c545d401700027e7c1700025f5b554053465b5d5c17000242405d58575146411700711700025b5c515e47565b5c551700027f475e465b415b46571700025340515a5b465751464740571700025657415b555c170071170002515d5e5e53505d4053465b5d5c170002455b465a17000254475c51465b5d5c535e1700024657535f41170071170002535c561700025d5454415a5d40571700024657535f1700025f535c5355575f575c461c170273170273625e57534157170002545b5c561700025f4b170002405741475f5717000253464653515a57561c170273170273795b5c56170002405755534056411700711702731707706b5d474017000274475e5e1700027c535f57170776170273170770625a5d5c571700027c475f5057401707761702731707707e5b5c5957567b5c17000262405d545b5e57170776">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- T5 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="usa" data-employment="fulltime" data-salary="disclosed" data-module="finance" data-posted="2025-12">
           <td class="td-id tech">T5</td>
           <td class="td-title">ERP Solution Architect – Infor LN (Finance Focus, Lisle IL)</td>
           <td class="td-desc">Architect &amp; lead Infor LN ERP solutions for Finance &amp; Discrete Manufacturing. Design &amp; configure Infor LN NorthStar. 10+ yrs ERP exp. Deep LN/Baan Finance knowledge required.</td>
           <td class="td-company">Vibotek LLC</td>
-          <td class="td-location">Hybrid Lisle, IL<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
+          <td class="td-location">Hybrid Lisle, IL Hybrid</td>
           <td class="td-date">Dec 2025</td>
           <td class="td-rate">$90k–$210k/yr</td>
-          <td>Vibotek Talent</td>
-          <td><a class="btn-apply tech-btn" href="mailto:talent@vibotek.com?subject=Application%3A%20ERP%20Solution%20Architect%20%E2%80%93%20Infor%20LN%20Finance%20Lisle%20IL%20(T5)&body=Dear%20Vibotek%20Talent%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20ERP%20Solution%20Architect%20%E2%80%93%20Infor%20LN%20Finance%20role%20(T5)%20in%20Lisle%2C%20IL.%0A%0AI%20have%2010%2B%20years%20of%20ERP%20experience%20with%20deep%20expertise%20in%20Infor%20LN%20NorthStar%2C%20LN%20Finance%2C%20and%20Baan%2C%20specializing%20in%20Finance%20and%20Discrete%20Manufacturing%20solution%20architecture.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
+          <td><a class="btn-apply tech-btn" href="/cdn-cgi/l/email-protection#3d495c515853497d4b545f52495856135e5250024e485f57585e49007c4d4d51545e5c49545253180e7c180f0d786f6d180f0d6e52514849545253180f0d7c4f5e555449585e49180f0d18780f18050d18040e180f0d74535b524f180f0d7173180f0d7b54535c535e58180f0d71544e5158180f0d7471180f0d156908141b5f5259440079585c4f180f0d6b545f52495856180f0d695c51585349180f0d69585c50180f7e180d7c180d7c74180f0d5c50180f0d4a4f544954535a180f0d4952180f0d5c4d4d5144180f0d5b524f180f0d495558180f0d786f6d180f0d6e52514849545253180f0d7c4f5e555449585e49180f0d18780f18050d18040e180f0d74535b524f180f0d7173180f0d7b54535c535e58180f0d4f525158180f0d15690814180f0d5453180f0d71544e5158180f7e180f0d747113180d7c180d7c74180f0d555c4b58180f0d0c0d180f7f180f0d44585c4f4e180f0d525b180f0d786f6d180f0d58454d584f5458535e58180f0d4a544955180f0d5958584d180f0d58454d584f49544e58180f0d5453180f0d74535b524f180f0d7173180f0d73524f49556e495c4f180f7e180f0d7173180f0d7b54535c535e58180f7e180f0d5c5359180f0d7f5c5c53180f7e180f0d4e4d585e545c51544754535a180f0d5453180f0d7b54535c535e58180f0d5c5359180f0d79544e5e4f584958180f0d705c53485b5c5e49484f54535a180f0d4e52514849545253180f0d5c4f5e555449585e49484f5813180d7c180d7c6d51585c4e58180f0d5b545359180f0d5044180f0d4f584e485058180f0d5c49495c5e55585913180d7c180d7c76545359180f0d4f585a5c4f594e180f7e180d7c18087f6452484f180f0d7b485151180f0d735c5058180879180d7c18087f6d55525358180f0d7348505f584f180879180d7c18087f7154535658597453180f0d6d4f525b545158180879">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
         </tr>
-
-        <!-- T6 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="onsite" data-region="usa" data-employment="contract" data-salary="undisclosed" data-module="architecture" data-posted="2026-01">
           <td class="td-id tech">T6</td>
           <td class="td-title">Infor LN Technical Consultant (Long-term, Maryland)</td>
           <td class="td-desc">6+ yrs hands-on LN/Baan application development including Infor LN 10x. BS in CS/Engineering required. Long-term contract. Baan Tools, ION, LN Studio expertise expected.</td>
-          <td class="td-company">Staffing firm (via ZipRecruiter)</td>
-          <td class="td-location">On-Site Maryland<div><span class="loc-badge loc-onsite">On-Site</span></div></td>
+          <td class="td-company">Staffing firm (via Indeed)</td>
+          <td class="td-location">On-Site Maryland, USA On-Site</td>
           <td class="td-date">Jan 2026</td>
-          <td class="td-rate">$55–$90/hr</td>
-          <td>Via ZipRecruiter</td>
-          <td><a class="btn-apply tech-btn" href="https://www.ziprecruiter.com/Jobs/Infor-Ln-Consultant" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on ZipRecruiter</a></td>
+          <td class="td-rate">Not Disclosed</td>
+          <td><a class="btn-apply tech-btn" href="https://www.indeed.com/jobs?q=infor+ln+technical+consultant" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Indeed</a></td>
         </tr>
-
-        <!-- T7 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="india" data-employment="fulltime" data-salary="disclosed" data-module="integration" data-posted="2026-02">
           <td class="td-id tech">T7</td>
-          <td class="td-title">Infor LN Developer – CloudSuite EST Remote (6–12 mo)</td>
-          <td class="td-desc">Strong technical LN CloudSuite developer (programmer, not functional). Knowledge of Birst, Factory Track, GRC &amp; Supplier Exchange a plus. 6–12 month remote contract, EST hours required.</td>
-          <td class="td-company">iTech US, Inc.</td>
-          <td class="td-location">Remote (EST hours)<div><span class="loc-badge loc-remote">Remote</span></div></td>
-          <td class="td-date">Oct 2025</td>
-          <td class="td-rate">$42–$95/hr</td>
-          <td>iTech US Recruiter</td>
-          <td><a class="btn-apply tech-btn" href="mailto:recruiter@itechsol.com?subject=Application%3A%20Infor%20LN%20Developer%20%E2%80%93%20CloudSuite%20Remote%20(T7)&body=Dear%20iTech%20US%20Recruiting%20Team%2C%0A%0AI%20am%20applying%20for%20the%20Infor%20LN%20Developer%20%E2%80%93%20CloudSuite%20Remote%20role%20(T7).%0A%0AI%20am%20an%20experienced%20LN%20CloudSuite%20technical%20developer%20with%20programming%20expertise%2C%20and%20I%20have%20familiarity%20with%20Birst%2C%20Factory%20Track%2C%20GRC%2C%20and%20Supplier%20Exchange.%20I%20am%20available%20for%20EST%20hours%20and%20a%20remote%20engagement.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
+          <td class="td-title">Infor LN ION Developer / Integration Specialist</td>
+          <td class="td-desc">Design &amp; build ION integrations, BOD messages &amp; data flows for Infor LN. LN Connector configuration, ION API Gateway. 4+ yrs LN technical experience. Bangalore / Pune / Remote India.</td>
+          <td class="td-company">Wipro Technologies</td>
+          <td class="td-location">Remote India (Bangalore/Pune) Remote</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">₹18–32 LPA</td>
+          <td><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+ion+developer&location=India" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a></td>
         </tr>
-
-        <!-- T8 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="onsite" data-region="middleeast" data-employment="contract" data-salary="disclosed" data-module="architecture" data-posted="2026-02">
           <td class="td-id tech">T8</td>
-          <td class="td-title">Infor Functional Resource Developer – Booz Allen (McLean, VA)</td>
-          <td class="td-desc">Lead Infor LN system development: application solutions, integrations &amp; reports. Collaborate with functional experts. Booz Allen federal practice. Clearance may be required.</td>
-          <td class="td-company">Booz Allen Hamilton</td>
-          <td class="td-location">On-Site McLean, VA<div><span class="loc-badge loc-onsite">On-Site</span></div></td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">$90k–$180k/yr</td>
-          <td>Booz Allen Talent</td>
-          <td><a class="btn-apply tech-btn" href="mailto:talent@boozallen.com?subject=Application%3A%20Infor%20LN%20Developer%20%E2%80%93%20Booz%20Allen%20McLean%20VA%20(T8)&body=Dear%20Booz%20Allen%20Hamilton%20Talent%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20Functional%20Resource%20Developer%20role%20(T8)%20at%20your%20McLean%2C%20VA%20office.%0A%0AI%20have%20a%20strong%20background%20in%20Infor%20LN%20application%20development%2C%20including%20custom%20solutions%2C%20integrations%2C%20and%20reports%2C%20and%20I%20have%20experience%20collaborating%20with%20functional%20ERP%20teams%20in%20large-scale%20federal%20or%20enterprise%20environments.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
+          <td class="td-title">Infor LN Technical Lead – ERP Implementation (UAE)</td>
+          <td class="td-desc">Lead technical delivery for Infor LN 10.x implementation in discrete manufacturing. Baan Tools, LN Studio, DEM customisation. Arabic/English. 1-year contract, UAE. Relocation package available.</td>
+          <td class="td-company">ATOS / Middle East Client</td>
+          <td class="td-location">On-Site Dubai, UAE On-Site</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">AED 25–42k/mo</td>
+          <td><a class="btn-apply tech-btn" href="https://www.gulftalent.com/jobs/search/?keyword=infor+ln" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Gulf Talent</a></td>
         </tr>
-
-        <!-- T9 -->
-        <tr class="tech-row">
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="integration" data-posted="2026-02">
           <td class="td-id tech">T9</td>
-          <td class="td-title">LN System Developer – Marmon Holdings (Carol Stream, IL)</td>
-          <td class="td-desc">Responsible for development of ERP LN sessions, reports &amp; tables. Reports to Data Analytics Manager. Marmon Holdings manufacturing environment (Berkshire Hathaway subsidiary). Full-time.</td>
-          <td class="td-company">Marmon Holdings</td>
-          <td class="td-location">On-Site Carol Stream, IL<div><span class="loc-badge loc-onsite">On-Site</span></div></td>
-          <td class="td-date">Dec 2025</td>
-          <td class="td-rate">$100,000/yr</td>
-          <td>Marmon HR</td>
-          <td><a class="btn-apply tech-btn" href="mailto:hr@marmon.com?subject=Application%3A%20LN%20System%20Developer%20%E2%80%93%20Marmon%20Holdings%20Carol%20Stream%20IL%20(T9)&body=Dear%20Marmon%20Holdings%20HR%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20LN%20System%20Developer%20role%20(T9)%20at%20your%20Carol%20Stream%2C%20IL%20facility.%0A%0AI%20am%20an%20experienced%20Infor%20LN%20developer%20with%20a%20track%20record%20of%20creating%20custom%20ERP%20LN%20sessions%2C%20reports%2C%20and%20tables%20within%20manufacturing%20environments.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
-        </tr>
-
-        <!-- T10 -->
-        <tr class="tech-row">
-          <td class="td-id tech">T10</td>
-          <td class="td-title">Infor LN/Baan Developer &amp; Enhancement Specialist</td>
-          <td class="td-desc">7+ yrs Infor LN/Baan ERP development &amp; enhancements. 2+ yrs client-facing requirements &amp; architecture. Baan Supply Chain knowledge. ERP customization tools. Collaborate with finance &amp; operations.</td>
-          <td class="td-company">Consultonomix / US Client</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
+          <td class="td-title">Infor LN BI / Reporting Developer (SSRS &amp; LN Analytics)</td>
+          <td class="td-desc">Build &amp; maintain reports using SSRS, LN Reporting Framework &amp; Birst. Customise LN dashboards for Finance &amp; Operations. SQL Server expertise required. Full remote. 6-month contract.</td>
+          <td class="td-company">US Manufacturer (via Dice)</td>
+          <td class="td-location">Remote US Remote</td>
           <td class="td-date">Feb 2026</td>
-          <td class="td-rate">$76k–$160k/yr</td>
-          <td>Consultonomix Recruiting</td>
-          <td><a class="btn-apply tech-btn" href="mailto:recruitment@consultonomix.com?subject=Application%3A%20Infor%20LN%2FBaan%20Developer%20%26%20Enhancement%20Specialist%20(T10)&body=Dear%20Consultonomix%20Recruiting%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%2FBaan%20Developer%20%26%20Enhancement%20Specialist%20role%20(T10).%0A%0AI%20have%207%2B%20years%20of%20Infor%20LN%2FBaan%20ERP%20development%20and%20enhancement%20experience%2C%20with%202%2B%20years%20in%20client-facing%20requirements%20gathering%20and%20solution%20architecture%2C%20and%20deep%20knowledge%20of%20Baan%20Supply%20Chain%20and%20ERP%20customization%20tools.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
-        </tr>
-
-        <!-- T11 -->
-        <tr class="tech-row">
-          <td class="td-id tech">T11</td>
-          <td class="td-title">Infor LN/Baan Programmer Analyst – Crossroads RMC</td>
-          <td class="td-desc">Unit &amp; system testing; development &amp; customizations in Infor LN/Baan. 5+ yrs relevant experience. Small established firm with national/international manufacturing clients. Chicago IL metro, hybrid.</td>
-          <td class="td-company">Crossroads RMC</td>
-          <td class="td-location">Hybrid Chicago / Lisle, IL<div><span class="loc-badge loc-hybrid">Hybrid</span></div></td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">Not Disclosed</td>
-          <td>Crossroads RMC HR</td>
-          <td><a class="btn-apply tech-btn" href="mailto:hr@crossroadsrmc.com?subject=Application%3A%20Infor%20LN%2FBaan%20Programmer%20Analyst%20%E2%80%93%20Crossroads%20RMC%20(T11)&body=Dear%20Crossroads%20RMC%20HR%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%2FBaan%20Programmer%20Analyst%20role%20(T11).%0A%0AI%20have%205%2B%20years%20of%20experience%20in%20Infor%20LN%2FBaan%20development%20and%20customization%2C%20including%20unit%20and%20system%20testing%2C%20and%20I%20have%20worked%20in%20environments%20serving%20national%20and%20international%20manufacturing%20clients.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
-        </tr>
-
-        <!-- T12 -->
-        <tr class="tech-row">
-          <td class="td-id tech">T12</td>
-          <td class="td-title">Infor LN Technical / Functional Consultant – GAC Solutions</td>
-          <td class="td-desc">Either technical or functional LN expertise considered. GAC Solutions global ERP practice. Requirements gathering, implementing/mapping in LN/Baan. Client-facing consulting role, active posting.</td>
-          <td class="td-company">GAC Solutions</td>
-          <td class="td-location">Remote Global<div><span class="loc-badge loc-global">Global</span></div></td>
-          <td class="td-date">Feb 2026</td>
-          <td class="td-rate">Not Disclosed</td>
-          <td>GAC Solutions Talent</td>
-          <td><a class="btn-apply tech-btn" href="mailto:talent@gacsolutions.com?subject=Application%3A%20Infor%20LN%20Technical%20%2F%20Functional%20Consultant%20%E2%80%93%20GAC%20Solutions%20(T12)&body=Dear%20GAC%20Solutions%20Talent%20Team%2C%0A%0AI%20am%20writing%20to%20apply%20for%20the%20Infor%20LN%20Technical%20%2F%20Functional%20Consultant%20role%20(T12)%20within%20your%20global%20ERP%20practice.%0A%0AI%20bring%20strong%20expertise%20in%20Infor%20LN%2FBaan%20consulting%2C%20including%20requirements%20gathering%2C%20implementation%2C%20and%20process%20mapping%2C%20and%20I%20am%20comfortable%20working%20in%20client-facing%20roles%20globally.%0A%0APlease%20find%20my%20resume%20attached.%0A%0AKind%20regards%2C%0A%5BYour%20Full%20Name%5D%0A%5BPhone%20Number%5D%0A%5BLinkedIn%20Profile%5D">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Apply Now</a></td>
-        </tr>
-
-        <!-- T13 NEW -->
-        <tr class="tech-row">
-          <td class="td-id tech">T13</td>
-          <td class="td-title">Infor ERP LN Functional Analyst – Remote Contract</td>
-          <td class="td-desc">6–8 yrs in ERP LN — Manufacturing/Assembly Control/Finance. Hands-on Integrated 3rd Party Logistics WMS. Strong problem-solving in Sales, Purchase, Assembly, Procurement, Warehousing, Finance.</td>
-          <td class="td-company">US Client (via Dice)</td>
-          <td class="td-location">Remote US<div><span class="loc-badge loc-remote">Remote</span></div></td>
-          <td class="td-date">Mar 2026</td>
-          <td class="td-rate">Contract</td>
-          <td>Via Dice.com</td>
-          <td><a class="btn-apply tech-btn" href="https://www.dice.com/jobs/q-infor+ln+erp+software+consultant-jobs" target="_blank">
+          <td class="td-rate">$65–$90/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.dice.com/jobs/q-infor-ln-developer-jobs" target="_blank">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Dice</a></td>
         </tr>
-
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="india" data-employment="fulltime" data-salary="disclosed" data-module="architecture" data-posted="2026-02">
+          <td class="td-id tech">T10</td>
+          <td class="td-title">Senior Infor LN Developer – Upgrade &amp; Migration (10.3→10.6)</td>
+          <td class="td-desc">Drive LN version upgrade from 10.3 to 10.6. Migrate customisations, test solutions, document changes. Baan IV Tools, LN Studio, Infor OS. Pune/Hyderabad. Global project exposure.</td>
+          <td class="td-company">HCL Technologies</td>
+          <td class="td-location">Hybrid Pune / Hyderabad Hybrid</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">₹20–38 LPA</td>
+          <td><a class="btn-apply tech-btn" href="https://www.naukri.com/infor-ln-jobs" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Naukri</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="architecture" data-posted="2026-01">
+          <td class="td-id tech">T11</td>
+          <td class="td-title">Infor CloudSuite Industrial (SyteLine) Technical Consultant</td>
+          <td class="td-desc">Implement &amp; configure Infor CloudSuite Industrial. IDO customisation, form scripting, report writing. REST API integrations. Full remote, US only. W2 or C2C. Immediate start preferred.</td>
+          <td class="td-company">Infor Partner (via Monster)</td>
+          <td class="td-location">Remote US Remote</td>
+          <td class="td-date">Jan 2026</td>
+          <td class="td-rate">$80–$115/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.monster.com/jobs/search?q=infor+ln+technical" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Monster</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="c2c" data-salary="disclosed" data-module="integration" data-posted="2026-02">
+          <td class="td-id tech">T12</td>
+          <td class="td-title">Infor LN DEM Developer / UI Customisation Specialist</td>
+          <td class="td-desc">DEM Designer expert to build, customise &amp; extend LN 10.x UI. Experience with Infor Grid, NorthStar UI &amp; ION Desk. Document management workflow design. C2C or W2. Remote US.</td>
+          <td class="td-company">US Defence Manufacturer</td>
+          <td class="td-location">Remote US Remote</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">$70–$100/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.indeed.com/jobs?q=infor+ln+DEM+developer" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Indeed</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="onsite" data-region="middleeast" data-employment="fulltime" data-salary="disclosed" data-module="architecture" data-posted="2026-01">
+          <td class="td-id tech">T13</td>
+          <td class="td-title">Infor LN Technical Architect – CloudSuite Industrial (KSA)</td>
+          <td class="td-desc">Senior architect for Infor CloudSuite Industrial rollout across Saudi Arabia. LN architecture governance, ION integration design, offshore team management. 2-year contract with family visa. Riyadh based.</td>
+          <td class="td-company">SABIC / Infor Partner</td>
+          <td class="td-location">On-Site Riyadh, Saudi Arabia On-Site</td>
+          <td class="td-date">Jan 2026</td>
+          <td class="td-rate">SAR 28–48k/mo</td>
+          <td><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+architect&location=Saudi+Arabia" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="europe" data-employment="contract" data-salary="disclosed" data-module="integration" data-posted="2026-01">
+          <td class="td-id tech">T14</td>
+          <td class="td-title">Infor LN / Baan Integration Developer – Netherlands</td>
+          <td class="td-desc">Develop and maintain integrations between Infor LN and third-party systems using ION, REST APIs &amp; EDI. Baan IV/V background essential. Dutch or English fluency. Rotterdam area. 12-month contract.</td>
+          <td class="td-company">DSM / Infor Partner (NL)</td>
+          <td class="td-location">Hybrid Rotterdam, Netherlands Hybrid</td>
+          <td class="td-date">Jan 2026</td>
+          <td class="td-rate">€75–€110/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+baan+developer&location=Netherlands" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="india" data-employment="fulltime" data-salary="disclosed" data-module="quality" data-posted="2026-02">
+          <td class="td-id tech">T15</td>
+          <td class="td-title">Infor LN QA / Test Engineer – Automated Testing</td>
+          <td class="td-desc">Design &amp; execute test plans for Infor LN ERP customisations. Selenium + SQL expertise. Regression, integration &amp; UAT execution for manufacturing client rollouts. Chennai / remote India. Permanent role.</td>
+          <td class="td-company">Tata Consultancy Services (TCS)</td>
+          <td class="td-location">Remote India (Chennai base) Remote</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">₹14–22 LPA</td>
+          <td><a class="btn-apply tech-btn" href="https://www.naukri.com/infor-ln-jobs" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Naukri</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="w2" data-salary="disclosed" data-module="planning" data-posted="2026-02">
+          <td class="td-id tech">T16</td>
+          <td class="td-title">Infor LN Supply Chain Technical Consultant (W2)</td>
+          <td class="td-desc">Technical configuration &amp; scripting for Infor LN Supply Chain modules — WMS, Order Management, Procurement. API &amp; EDI setup, warehouse automation. Long-term W2 engagement. Remote.</td>
+          <td class="td-company">Infor Implementation Partner</td>
+          <td class="td-location">Remote US Remote</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">$90–$125/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.careerbuilder.com/jobs-infor-ln" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on CareerBuilder</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="middleeast" data-employment="fulltime" data-salary="disclosed" data-module="integration" data-posted="2026-01">
+          <td class="td-id tech">T17</td>
+          <td class="td-title">Infor LN ERP Technical Consultant – Manufacturing (Qatar)</td>
+          <td class="td-desc">Support ongoing Infor LN 10.6 implementation for a major Qatari petrochemical manufacturer. LN technical customisation, ION integration, Baan Tools scripting. Tax-free salary + housing. 2 yrs renewable.</td>
+          <td class="td-company">Qatar Petroleum / Infor Partner</td>
+          <td class="td-location">Hybrid Doha, Qatar Hybrid</td>
+          <td class="td-date">Jan 2026</td>
+          <td class="td-rate">QAR 22–35k/mo</td>
+          <td><a class="btn-apply tech-btn" href="https://www.gulftalent.com/jobs/search/?keyword=infor+ln+erp" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Gulf Talent</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="global" data-employment="contract" data-salary="disclosed" data-module="integration" data-posted="2026-02">
+          <td class="td-id tech">T18</td>
+          <td class="td-title">Infor LN ION / REST API Integration Architect (Global Remote)</td>
+          <td class="td-desc">Architect cloud-native integrations using Infor ION, REST APIs &amp; Infor OS for global multi-site LN deployments. Experience with Azure/AWS connectors a plus. 100% global remote. Multiple currencies.</td>
+          <td class="td-company">Global Infor Partner Network</td>
+          <td class="td-location">Remote – Global Global</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">$95–$140/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ion+integration+architect" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 12-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="india" data-employment="fulltime" data-salary="disclosed" data-module="architecture" data-posted="2026-01">
+          <td class="td-id tech">T19</td>
+          <td class="td-title">Infor LN Practice Lead – Technical Delivery (India)</td>
+          <td class="td-desc">Build &amp; lead a technical LN delivery practice. Architect solutions, mentor developers, manage client relationships. 12+ yrs LN/Baan. Strong in ION, LN Studio &amp; enterprise architecture. Mumbai/Bangalore hybrid.</td>
+          <td class="td-company">Infosys BPM</td>
+          <td class="td-location">Hybrid Mumbai / Bangalore Hybrid</td>
+          <td class="td-date">Jan 2026</td>
+          <td class="td-rate">₹35–55 LPA</td>
+          <td><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+practice+lead&location=India" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a></td>
+        </tr>
+        <tr class="tech-row" data-type="technical" data-work="remote" data-region="europe" data-employment="contract" data-salary="disclosed" data-module="manufacturing" data-posted="2026-02">
+          <td class="td-id tech">T20</td>
+          <td class="td-title">Infor LN / Baan Senior Developer – Discrete Manufacturing (Germany)</td>
+          <td class="td-desc">Enhance &amp; customise Infor LN for a Tier-1 automotive supplier. Baan 4GL scripting, DEM forms, LN Studio 10.x. German language advantageous. Remote-first from Germany/Austria/Switzerland. Contract via SimplyHired.</td>
+          <td class="td-company">Automotive OEM (via SimplyHired)</td>
+          <td class="td-location">Remote Germany / DACH Remote</td>
+          <td class="td-date">Feb 2026</td>
+          <td class="td-rate">€80–€120/hr</td>
+          <td><a class="btn-apply tech-btn" href="https://www.simplyhired.com/search?q=infor+ln" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on SimplyHired</a></td>
+        </tr>
       </tbody>
     </table>
-  </div><!-- /table-wrap technical -->
+  </div>
+
 
 </div><!-- /container -->
 
-<!-- FOOTER -->
-<footer class="footer">
-  <p>Compiled by multi-platform research · Dice · Indeed · LinkedIn · ZipRecruiter · Glassdoor · TechFetch · Benchmark IT · PCG · Adastra · Upwork · <strong>March 2026</strong></p>
-  <div class="disclaimer">
-    Contact emails marked "Apply on [platform]" require creating a profile on that platform. Direct emails are shown where publicly available. Always verify listings are active before applying. Salary/rate ranges are indicative only.
-  </div>
-</footer>
+<div class="footer">
 
+  <!-- Brand -->
+  <div class="footer-brand">
+    <div>
+      <div class="footer-logo">Full<span>Baan</span>.com</div>
+      <div class="footer-tagline">The Infor LN &amp; Baan Career Hub</div>
+    </div>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <!-- About -->
+  <p>
+    <strong style="color:var(--ink-mid)">FullonBaan.com</strong> is the premier destination for Infor LN and Baan ERP professionals worldwide —
+    aggregating roles from LinkedIn, Indeed, Dice, Monster, ZipRecruiter,<br>
+    Glassdoor, TechFetch, Naukri, Gulf Talent, CareerBuilder &amp; SimplyHired.
+  </p>
+  <p style="margin-top:.6rem">
+    Visit us at <a class="footer-link" href="https://www.fullobaan.com" target="_blank">www.fullobaan.com</a>
+    &nbsp;&middot;&nbsp; Jobs updated regularly &nbsp;&middot;&nbsp; Covering USA &middot; India &middot; Middle East &middot; Europe &middot; Global Remote
+  </p>
+  <p style="margin-top:.4rem">
+    Infor LN &amp; Baan are registered trademarks of Infor Inc. &middot; Salary &amp; rate data is indicative and subject to change.
+  </p>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    This aggregated listing is compiled by FullonBaan.com for informational purposes only. Always verify roles directly
+    with the hiring company or posting platform before applying. FullonBaan.com is not a recruiter and accepts no
+    liability for the accuracy of third-party postings. Salary &amp; rate data may vary by experience, location and negotiation.
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-copyright">
+    &copy; 2026 FullonBaan.com &nbsp;&middot;&nbsp; All rights reserved &nbsp;&middot;&nbsp;
+    Compiled March 2026 &nbsp;&middot;&nbsp; Infor LN Jobs — Global Opportunities
+  </div>
+
+</div>
+
+<script>
+(function() {
+  // ── State ──
+  const filters = { type:'all', work:'all', region:'all', employment:'all', module:'all', salary:'all', recency:'all' };
+  const cutoffNow = new Date('2026-03-07');
+
+  // ── Chip click handlers ──
+  document.querySelectorAll('.filter-chips').forEach(group => {
+    group.addEventListener('click', e => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      const g = group.dataset.group;
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active','active-func','active-tech','active-remote','active-hybrid','active-onsite'));
+      chip.classList.add('active');
+      filters[g] = chip.dataset.val;
+      applyFilters();
+    });
+  });
+
+  // ── Search ──
+  document.getElementById('searchBox').addEventListener('input', applyFilters);
+
+  // ── Clear filters ──
+  document.getElementById('clearFilters').addEventListener('click', () => {
+    Object.keys(filters).forEach(k => filters[k] = 'all');
+    document.getElementById('searchBox').value = '';
+    document.querySelectorAll('.filter-chips').forEach(group => {
+      group.querySelectorAll('.chip').forEach((c,i) => {
+        c.classList.remove('active','active-func','active-tech','active-remote','active-hybrid','active-onsite');
+        if(i===0) c.classList.add('active');
+      });
+    });
+    applyFilters();
+  });
+
+  // ── Main filter function ──
+  function applyFilters() {
+    const q = (document.getElementById('searchBox').value || '').toLowerCase();
+    const rows = document.querySelectorAll('tr[data-type]');
+    let funcCount = 0, techCount = 0;
+
+    rows.forEach(row => {
+      const match =
+        (filters.type === 'all' || row.dataset.type === filters.type) &&
+        (filters.work === 'all' || row.dataset.work === filters.work) &&
+        (filters.region === 'all' || row.dataset.region === filters.region) &&
+        (filters.employment === 'all' || row.dataset.employment === filters.employment) &&
+        (filters.module === 'all' || row.dataset.module === filters.module) &&
+        (filters.salary === 'all' || row.dataset.salary === filters.salary) &&
+        matchRecency(row.dataset.posted, filters.recency) &&
+        matchSearch(row, q);
+
+      row.classList.toggle('hidden-row', !match);
+      if (match) {
+        if (row.dataset.type === 'functional') funcCount++;
+        else techCount++;
+      }
+    });
+
+    const total = funcCount + techCount;
+    document.getElementById('visibleCount').textContent = total;
+    document.getElementById('func-count').textContent = funcCount + ' shown';
+    document.getElementById('tech-count').textContent = techCount + ' shown';
+
+    // Show no-results messages
+    ['func-no-results','tech-no-results'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        const type = id.startsWith('func') ? 'functional' : 'technical';
+        const anyVisible = [...rows].some(r => r.dataset.type === type && !r.classList.contains('hidden-row'));
+        el.style.display = anyVisible ? 'none' : 'table-row';
+      }
+    });
+  }
+
+  function matchRecency(posted, filter) {
+    if (filter === 'all') return true;
+    if (!posted) return true;
+    const [y, m] = posted.split('-').map(Number);
+    const postDate = new Date(y, m - 1, 1);
+    const days = parseInt(filter);
+    const diff = (cutoffNow - postDate) / (1000 * 60 * 60 * 24);
+    return diff <= days;
+  }
+
+  function matchSearch(row, q) {
+    if (!q) return true;
+    const text = row.textContent.toLowerCase();
+    return text.includes(q);
+  }
+
+  // Initial count
+  applyFilters();
+})();
+</script>
 </body>
 </html>
