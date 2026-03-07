@@ -662,6 +662,97 @@
       .filter-panel { padding: 1rem; }
     }
 
+    /* ── Resource Hub ── */
+    .resource-hub {
+      margin: 0 auto 2.2rem;
+      max-width: 680px;
+      animation: fadeUp .7s .3s ease both;
+    }
+    .rh-label {
+      font-family: 'Jost', sans-serif;
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold-dk);
+      margin-bottom: .85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+    }
+    .rh-label::before,
+    .rh-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+    }
+    .rh-label::after {
+      background: linear-gradient(to left, transparent, var(--gold));
+    }
+    .rh-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .9rem;
+    }
+    .rh-card {
+      display: flex;
+      align-items: flex-start;
+      gap: .9rem;
+      padding: 1rem 1.1rem 1rem;
+      border-radius: 14px;
+      border: 1.5px solid transparent;
+      text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .rh-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    }
+    .rh-training {
+      background: linear-gradient(135deg, #1a2e50 0%, #0c1830 100%);
+      border-color: rgba(168,120,42,0.35);
+    }
+    .rh-training:hover { border-color: rgba(226,185,106,0.65); }
+    .rh-interview {
+      background: linear-gradient(135deg, #2d5a3d 0%, #1a3827 100%);
+      border-color: rgba(168,120,42,0.28);
+    }
+    .rh-interview:hover { border-color: rgba(226,185,106,0.55); }
+    .rh-card-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+    .rh-card-body { flex: 1; }
+    .rh-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: .22rem;
+      letter-spacing: .01em;
+    }
+    .rh-card-desc {
+      font-size: .72rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+      margin-bottom: .5rem;
+    }
+    .rh-card-cta {
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: #E2B96A;
+    }
+    @media (max-width: 540px) {
+      .rh-cards { grid-template-columns: 1fr; }
+    }
+
   </style>
 </head>
 <body>
@@ -686,6 +777,30 @@
     <a class="nav-pill func" href="#functional">⚙️ Functional Roles</a>
     <a class="nav-pill tech" href="#technical">🔧 Technical Roles</a>
   </div>
+
+  <!-- ── Resource Hub ── -->
+  <div class="resource-hub">
+    <div class="rh-label">📚 FullonBaan Resource Hub</div>
+    <div class="rh-cards">
+      <a class="rh-card rh-training" href="https://fobtraining.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">🎓</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Training Materials</div>
+          <div class="rh-card-desc">eBooks &amp; Video Courses · LN Development, Finance, Administration &amp; more</div>
+          <div class="rh-card-cta">Browse Courses →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-interview" href="https://fobinterview.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">📋</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Interview Guides</div>
+          <div class="rh-card-desc">55–65+ Expert Q&amp;As per Guide · LN Dev, BOD, ION, Finance, Extensions &amp; SCM</div>
+          <div class="rh-card-cta">Get Interview Ready →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
 </div>
 
 
@@ -1104,261 +1219,141 @@
           <td class="td-location">Hybrid Pune / Hyderabad Hybrid</td>
           <td class="td-date">Feb 2026</td>
           <td class="td-rate">₹20–38 LPA</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.naukri.com/infor-ln-jobs" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Naukri</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Senior%20Infor%20LN%20Developer%20%E2%80%93%20Upgrade%20%26%20Migration%20%7C%20Infor%20LN%20Technical%20Role%20%5BT10%5D&body=Dear%20HCL%20Technologies%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Senior%20Infor%20LN%20Developer%20%E2%80%93%20Upgrade%20%26%20Migration%20position%20%28T10%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Full-Time%20role%20based%20in%20Hybrid%20Pune%20/%20Hyderabad.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20LN%20Version%20Upgrade%20%2810.3%20to%2010.6%29%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="contract" data-salary="disclosed" data-module="architecture" data-posted="2026-01">
-          <td class="td-id tech">T11</td>
-          <td class="td-title">Infor CloudSuite Industrial (SyteLine) Technical Consultant</td>
-          <td class="td-desc">Implement &amp; configure Infor CloudSuite Industrial. IDO customisation, form scripting, report writing. REST API integrations. Full remote, US only. W2 or C2C. Immediate start preferred.</td>
-          <td class="td-company">Infor Partner (via Monster)</td>
-          <td class="td-location">Remote US Remote</td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">$80–$115/hr</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.monster.com/jobs/search?q=infor+ln+technical" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Monster</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20CloudSuite%20Industrial%20Technical%20Consultant%20%7C%20Infor%20LN%20Technical%20Role%20%5BT11%5D&body=Dear%20Infor%20Partner%20%28via%20Monster%29%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20CloudSuite%20Industrial%20Technical%20Consultant%20position%20%28T11%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Contract%20%28W2/C2C%29%20role%20based%20in%20Remote%20US.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20CloudSuite%20Industrial%20/%20IDO%20/%20REST%20APIs%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="c2c" data-salary="disclosed" data-module="integration" data-posted="2026-02">
-          <td class="td-id tech">T12</td>
-          <td class="td-title">Infor LN DEM Developer / UI Customisation Specialist</td>
-          <td class="td-desc">DEM Designer expert to build, customise &amp; extend LN 10.x UI. Experience with Infor Grid, NorthStar UI &amp; ION Desk. Document management workflow design. C2C or W2. Remote US.</td>
-          <td class="td-company">US Defence Manufacturer</td>
-          <td class="td-location">Remote US Remote</td>
-          <td class="td-date">Feb 2026</td>
-          <td class="td-rate">$70–$100/hr</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.indeed.com/jobs?q=infor+ln+DEM+developer" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Indeed</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20DEM%20Developer%20/%20UI%20Customisation%20Specialist%20%7C%20Infor%20LN%20Technical%20Role%20%5BT12%5D&body=Dear%20US%20Defence%20Manufacturer%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20DEM%20Developer%20/%20UI%20Customisation%20Specialist%20position%20%28T12%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Contract%20%28C2C%29%20role%20based%20in%20Remote%20US.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20DEM%20Designer%20/%20NorthStar%20UI%20/%20ION%20Desk%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="onsite" data-region="middleeast" data-employment="fulltime" data-salary="disclosed" data-module="architecture" data-posted="2026-01">
-          <td class="td-id tech">T13</td>
-          <td class="td-title">Infor LN Technical Architect – CloudSuite Industrial (KSA)</td>
-          <td class="td-desc">Senior architect for Infor CloudSuite Industrial rollout across Saudi Arabia. LN architecture governance, ION integration design, offshore team management. 2-year contract with family visa. Riyadh based.</td>
-          <td class="td-company">SABIC / Infor Partner</td>
-          <td class="td-location">On-Site Riyadh, Saudi Arabia On-Site</td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">SAR 28–48k/mo</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+architect&location=Saudi+Arabia" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20Technical%20Architect%20%E2%80%93%20CloudSuite%20Industrial%20%7C%20Infor%20LN%20Technical%20Role%20%5BT13%5D&body=Dear%20SABIC%20/%20Infor%20Partner%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20Technical%20Architect%20%E2%80%93%20CloudSuite%20Industrial%20position%20%28T13%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Contract%20role%20based%20in%20On-Site%20Riyadh%2C%20Saudi%20Arabia.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20CloudSuite%20Architecture%20/%20ION%20Integration%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="europe" data-employment="contract" data-salary="disclosed" data-module="integration" data-posted="2026-01">
-          <td class="td-id tech">T14</td>
-          <td class="td-title">Infor LN / Baan Integration Developer – Netherlands</td>
-          <td class="td-desc">Develop and maintain integrations between Infor LN and third-party systems using ION, REST APIs &amp; EDI. Baan IV/V background essential. Dutch or English fluency. Rotterdam area. 12-month contract.</td>
-          <td class="td-company">DSM / Infor Partner (NL)</td>
-          <td class="td-location">Hybrid Rotterdam, Netherlands Hybrid</td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">€75–€110/hr</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+baan+developer&location=Netherlands" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20/%20Baan%20Integration%20Developer%20%7C%20Infor%20LN%20Technical%20Role%20%5BT14%5D&body=Dear%20DSM%20/%20Infor%20Partner%20%28NL%29%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20/%20Baan%20Integration%20Developer%20position%20%28T14%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Contract%20role%20based%20in%20Hybrid%20Rotterdam%2C%20Netherlands.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20ION%20/%20REST%20APIs%20/%20EDI%20Integrations%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="remote" data-region="india" data-employment="fulltime" data-salary="disclosed" data-module="quality" data-posted="2026-02">
-          <td class="td-id tech">T15</td>
-          <td class="td-title">Infor LN QA / Test Engineer – Automated Testing</td>
-          <td class="td-desc">Design &amp; execute test plans for Infor LN ERP customisations. Selenium + SQL expertise. Regression, integration &amp; UAT execution for manufacturing client rollouts. Chennai / remote India. Permanent role.</td>
-          <td class="td-company">Tata Consultancy Services (TCS)</td>
-          <td class="td-location">Remote India (Chennai base) Remote</td>
-          <td class="td-date">Feb 2026</td>
-          <td class="td-rate">₹14–22 LPA</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.naukri.com/infor-ln-jobs" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Naukri</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20QA%20/%20Test%20Engineer%20%7C%20Infor%20LN%20Technical%20Role%20%5BT15%5D&body=Dear%20Tata%20Consultancy%20Services%20%28TCS%29%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20QA%20/%20Test%20Engineer%20position%20%28T15%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Full-Time%20role%20based%20in%20Remote%20India.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20Automated%20Testing%20/%20Selenium%20/%20SQL%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="remote" data-region="usa" data-employment="w2" data-salary="disclosed" data-module="planning" data-posted="2026-02">
-          <td class="td-id tech">T16</td>
-          <td class="td-title">Infor LN Supply Chain Technical Consultant (W2)</td>
-          <td class="td-desc">Technical configuration &amp; scripting for Infor LN Supply Chain modules — WMS, Order Management, Procurement. API &amp; EDI setup, warehouse automation. Long-term W2 engagement. Remote.</td>
-          <td class="td-company">Infor Implementation Partner</td>
-          <td class="td-location">Remote US Remote</td>
-          <td class="td-date">Feb 2026</td>
-          <td class="td-rate">$90–$125/hr</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.careerbuilder.com/jobs-infor-ln" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on CareerBuilder</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20Supply%20Chain%20Technical%20Consultant%20%7C%20Infor%20LN%20Technical%20Role%20%5BT16%5D&body=Dear%20Infor%20Implementation%20Partner%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20Supply%20Chain%20Technical%20Consultant%20position%20%28T16%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Long-Term%20W2%20role%20based%20in%20Remote%20US.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20Supply%20Chain%20/%20WMS%20/%20EDI%20/%20API%20Integration%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="middleeast" data-employment="fulltime" data-salary="disclosed" data-module="integration" data-posted="2026-01">
-          <td class="td-id tech">T17</td>
-          <td class="td-title">Infor LN ERP Technical Consultant – Manufacturing (Qatar)</td>
-          <td class="td-desc">Support ongoing Infor LN 10.6 implementation for a major Qatari petrochemical manufacturer. LN technical customisation, ION integration, Baan Tools scripting. Tax-free salary + housing. 2 yrs renewable.</td>
-          <td class="td-company">Qatar Petroleum / Infor Partner</td>
-          <td class="td-location">Hybrid Doha, Qatar Hybrid</td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">QAR 22–35k/mo</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.gulftalent.com/jobs/search/?keyword=infor+ln+erp" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Gulf Talent</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20ERP%20Technical%20Consultant%20%E2%80%93%20Manufacturing%20%7C%20Infor%20LN%20Technical%20Role%20%5BT17%5D&body=Dear%20Qatar%20Petroleum%20/%20Infor%20Partner%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20ERP%20Technical%20Consultant%20%E2%80%93%20Manufacturing%20position%20%28T17%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Full-Time%20Contract%20role%20based%20in%20Hybrid%20Doha%2C%20Qatar.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20LN%2010.6%20Customisation%20/%20ION%20/%20Baan%20Tools%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="remote" data-region="global" data-employment="contract" data-salary="disclosed" data-module="integration" data-posted="2026-02">
-          <td class="td-id tech">T18</td>
-          <td class="td-title">Infor LN ION / REST API Integration Architect (Global Remote)</td>
-          <td class="td-desc">Architect cloud-native integrations using Infor ION, REST APIs &amp; Infor OS for global multi-site LN deployments. Experience with Azure/AWS connectors a plus. 100% global remote. Multiple currencies.</td>
-          <td class="td-company">Global Infor Partner Network</td>
-          <td class="td-location">Remote – Global Global</td>
-          <td class="td-date">Feb 2026</td>
-          <td class="td-rate">$95–$140/hr</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ion+integration+architect" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 12-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20ION%20/%20REST%20API%20Integration%20Architect%20%7C%20Infor%20LN%20Technical%20Role%20%5BT18%5D&body=Dear%20Global%20Infor%20Partner%20Network%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20ION%20/%20REST%20API%20Integration%20Architect%20position%20%28T18%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Contract%20role%20based%20in%20Remote%20%E2%80%93%20Global.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20Cloud-Native%20ION%20/%20REST%20/%20Infor%20OS%20Integration%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="hybrid" data-region="india" data-employment="fulltime" data-salary="disclosed" data-module="architecture" data-posted="2026-01">
-          <td class="td-id tech">T19</td>
-          <td class="td-title">Infor LN Practice Lead – Technical Delivery (India)</td>
-          <td class="td-desc">Build &amp; lead a technical LN delivery practice. Architect solutions, mentor developers, manage client relationships. 12+ yrs LN/Baan. Strong in ION, LN Studio &amp; enterprise architecture. Mumbai/Bangalore hybrid.</td>
-          <td class="td-company">Infosys BPM</td>
-          <td class="td-location">Hybrid Mumbai / Bangalore Hybrid</td>
-          <td class="td-date">Jan 2026</td>
-          <td class="td-rate">₹35–55 LPA</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+practice+lead&location=India" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on LinkedIn</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20Practice%20Lead%20%E2%80%93%20Technical%20Delivery%20%7C%20Infor%20LN%20Technical%20Role%20%5BT19%5D&body=Dear%20Infosys%20BPM%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20Practice%20Lead%20%E2%80%93%20Technical%20Delivery%20position%20%28T19%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Full-Time%20role%20based%20in%20Hybrid%20Mumbai%20/%20Bangalore.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20LN%20Technical%20Practice%20Leadership%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
-        </tr>
-        <tr class="tech-row" data-type="technical" data-work="remote" data-region="europe" data-employment="contract" data-salary="disclosed" data-module="manufacturing" data-posted="2026-02">
-          <td class="td-id tech">T20</td>
-          <td class="td-title">Infor LN / Baan Senior Developer – Discrete Manufacturing (Germany)</td>
-          <td class="td-desc">Enhance &amp; customise Infor LN for a Tier-1 automotive supplier. Baan 4GL scripting, DEM forms, LN Studio 10.x. German language advantageous. Remote-first from Germany/Austria/Switzerland. Contract via SimplyHired.</td>
-          <td class="td-company">Automotive OEM (via SimplyHired)</td>
-          <td class="td-location">Remote Germany / DACH Remote</td>
-          <td class="td-date">Feb 2026</td>
-          <td class="td-rate">€80–€120/hr</td>
-          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.simplyhired.com/search?q=infor+ln" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on SimplyHired</a><a class="btn-apply-email" href="mailto:?subject=Application%20%E2%80%93%20Infor%20LN%20/%20Baan%20Senior%20Developer%20%E2%80%93%20Discrete%20Manufacturing%20%7C%20Infor%20LN%20Technical%20Role%20%5BT20%5D&body=Dear%20Automotive%20OEM%20%28via%20SimplyHired%29%20Hiring%20Team%2C%0D%0A%0D%0AI%20am%20writing%20to%20express%20my%20strong%20interest%20in%20the%20Infor%20LN%20/%20Baan%20Senior%20Developer%20%E2%80%93%20Discrete%20Manufacturing%20position%20%28T20%29%20as%20listed%20on%20FullonBaan.com.%0D%0A%0D%0AWith%20hands-on%20experience%20in%20Infor%20LN%20/%20Baan%20ERP%2C%20I%20am%20confident%20my%20background%20aligns%20well%20with%20this%20Contract%20role%20based%20in%20Remote%20Germany%20/%20DACH.%0D%0A%0D%0AKey%20highlights%20of%20my%20profile%3A%0D%0A%20%20%E2%80%A2%20%20Infor%20LN%20/%20Baan%20expertise%20in%20Baan%204GL%20/%20DEM%20Forms%20/%20LN%20Studio%2010.x%0D%0A%20%20%E2%80%A2%20%20Proven%20track%20record%20of%20end-to-end%20ERP%20implementations%20and%20post-go-live%20support%0D%0A%20%20%E2%80%A2%20%20Strong%20client-facing%20communication%20and%20stakeholder%20management%20skills%0D%0A%20%20%E2%80%A2%20%20Ability%20to%20work%20independently%20and%20as%20part%20of%20global%20delivery%20teams%0D%0A%0D%0AI%20would%20welcome%20the%20opportunity%20to%20discuss%20how%20my%20experience%20meets%20your%20requirements.%20My%20resume%20is%20attached%20for%20your%20review.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Full%20Name%5D%0D%0A%5BPhone%20Number%5D%0D%0A%5BLinkedIn%20Profile%20URL%5D%0D%0A%5BYour%20Email%20Address%5D%0D%0A%0D%0A%E2%80%94%0D%0ADiscovered%20via%20FullonBaan.com%20%E2%80%93%20The%20Infor%20LN%20%26%20Baan%20Career%20Hub%0D%0Awww.fullobaan.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>Email Application</a></div></td>
+          <td><div class="btn-cell"><a class="btn-apply tech-btn" href="https://www.naukri.com/infor-ln-jobs" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>Apply on Naukri</a></div></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-
-</div><!-- /container -->
-
-<div class="footer">
-
-  <!-- Brand -->
-  <div class="footer-brand">
-    <div>
-      <div class="footer-logo">Full<span>Baan</span>.com</div>
-      <div class="footer-tagline">The Infor LN &amp; Baan Career Hub</div>
-    </div>
+  <!-- ════ FOOTER ════ -->
+  <div class="footer container">
+    <div class="gold-rule"></div>
+    <p>
+      <strong>Infor LN Jobs — March 2026 Edition</strong><br>
+      Curated from LinkedIn, Indeed, Naukri, Gulf Talent &amp; direct company postings.<br>
+      Last updated: <strong>March 7, 2026</strong> &nbsp;·&nbsp; <strong>27 positions</strong> across functional &amp; technical tracks.
+    </p>
+    <p class="disclaimer">
+      Job listings are sourced from public boards and may have changed. Always verify directly with the employer before applying.
+      Salary ranges are approximate and vary by location, seniority, and negotiation.
+    </p>
+    <p style="margin-top:1.2rem; opacity:.6;">© 2026 Infor LN Jobs Digest — For informational purposes only</p>
   </div>
 
-  <div class="footer-divider"></div>
+  <script>
+  (function () {
+    // ── State ──────────────────────────────────────────────────────────────
+    const state = { type: 'all', work: 'all', region: 'all', employment: 'all', salary: 'all', module: 'all', recency: 'all', search: '' };
 
-  <!-- About -->
-  <p>
-    <strong style="color:var(--ink-mid)">FullonBaan.com</strong> is the premier destination for Infor LN and Baan ERP professionals worldwide —
-    aggregating roles from LinkedIn, Indeed, Dice, Monster, ZipRecruiter,<br>
-    Glassdoor, TechFetch, Naukri, Gulf Talent, CareerBuilder &amp; SimplyHired.
-  </p>
-  <p style="margin-top:.6rem">
-    Visit us at <a class="footer-link" href="https://www.fullobaan.com" target="_blank">www.fullobaan.com</a>
-    &nbsp;&middot;&nbsp; Jobs updated regularly &nbsp;&middot;&nbsp; Covering USA &middot; India &middot; Middle East &middot; Europe &middot; Global Remote
-  </p>
-  <p style="margin-top:.4rem">
-    Infor LN &amp; Baan are registered trademarks of Infor Inc. &middot; Salary &amp; rate data is indicative and subject to change.
-  </p>
+    // ── Get all rows (func + tech) ─────────────────────────────────────────
+    const allRows = () => Array.from(document.querySelectorAll('tr[data-type]'));
 
-  <!-- Disclaimer -->
-  <div class="disclaimer">
-    This aggregated listing is compiled by FullonBaan.com for informational purposes only. Always verify roles directly
-    with the hiring company or posting platform before applying. FullonBaan.com is not a recruiter and accepts no
-    liability for the accuracy of third-party postings. Salary &amp; rate data may vary by experience, location and negotiation.
-  </div>
-
-  <!-- Copyright -->
-  <div class="footer-copyright">
-    &copy; 2026 FullonBaan.com &nbsp;&middot;&nbsp; All rights reserved &nbsp;&middot;&nbsp;
-    Compiled March 2026 &nbsp;&middot;&nbsp; Infor LN Jobs — Global Opportunities
-  </div>
-
-</div>
-
-<script>
-(function() {
-  // ── State ──
-  const filters = { type:'all', work:'all', region:'all', employment:'all', module:'all', salary:'all', recency:'all' };
-  const cutoffNow = new Date('2026-03-07');
-
-  // ── Chip click handlers ──
-  document.querySelectorAll('.filter-chips').forEach(group => {
-    group.addEventListener('click', e => {
-      const chip = e.target.closest('.chip');
-      if (!chip) return;
-      const g = group.dataset.group;
-      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active','active-func','active-tech','active-remote','active-hybrid','active-onsite'));
-      chip.classList.add('active');
-      filters[g] = chip.dataset.val;
-      applyFilters();
-    });
-  });
-
-  // ── Search ──
-  document.getElementById('searchBox').addEventListener('input', applyFilters);
-
-  // ── Clear filters ──
-  document.getElementById('clearFilters').addEventListener('click', () => {
-    Object.keys(filters).forEach(k => filters[k] = 'all');
-    document.getElementById('searchBox').value = '';
+    // ── Chip click handler ─────────────────────────────────────────────────
     document.querySelectorAll('.filter-chips').forEach(group => {
-      group.querySelectorAll('.chip').forEach((c,i) => {
-        c.classList.remove('active','active-func','active-tech','active-remote','active-hybrid','active-onsite');
-        if(i===0) c.classList.add('active');
+      group.addEventListener('click', e => {
+        const chip = e.target.closest('.chip');
+        if (!chip) return;
+        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        state[group.dataset.group] = chip.dataset.val;
+        applyFilters();
       });
     });
+
+    // ── Search handler ─────────────────────────────────────────────────────
+    const searchBox = document.getElementById('searchBox');
+    if (searchBox) {
+      searchBox.addEventListener('input', e => {
+        state.search = e.target.value.toLowerCase().trim();
+        applyFilters();
+      });
+    }
+
+    // ── Clear filters ──────────────────────────────────────────────────────
+    const clearBtn = document.getElementById('clearFilters');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        Object.keys(state).forEach(k => state[k] = k === 'search' ? '' : 'all');
+        document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
+        if (searchBox) searchBox.value = '';
+        applyFilters();
+      });
+    }
+
+    // ── Core filter logic ──────────────────────────────────────────────────
+    function applyFilters() {
+      let visible = 0;
+      let funcVisible = 0;
+      let techVisible = 0;
+
+      allRows().forEach(row => {
+        const d = row.dataset;
+        let show = true;
+
+        if (state.type !== 'all' && d.type !== state.type) show = false;
+        if (state.work !== 'all' && d.work !== state.work) show = false;
+        if (state.region !== 'all' && d.region !== state.region) show = false;
+        if (state.employment !== 'all' && d.employment !== state.employment) show = false;
+        if (state.salary !== 'all' && d.salary !== state.salary) show = false;
+        if (state.module !== 'all' && d.module !== state.module) show = false;
+
+        // Recency filter
+        if (state.recency !== 'all' && d.posted) {
+          const posted = d.posted; // format: YYYY-MM
+          const now = new Date();
+          const postedDate = new Date(posted + '-01');
+          const diffMonths = (now.getFullYear() - postedDate.getFullYear()) * 12 + (now.getMonth() - postedDate.getMonth());
+          if (state.recency === '1month' && diffMonths > 1) show = false;
+          if (state.recency === '3months' && diffMonths > 3) show = false;
+          if (state.recency === '6months' && diffMonths > 6) show = false;
+        }
+
+        // Text search
+        if (state.search) {
+          const text = row.textContent.toLowerCase();
+          if (!text.includes(state.search)) show = false;
+        }
+
+        row.style.display = show ? '' : 'none';
+        if (show) {
+          visible++;
+          if (d.type === 'functional') funcVisible++;
+          if (d.type === 'technical') techVisible++;
+        }
+      });
+
+      // Update count badge
+      const badge = document.getElementById('visibleCount');
+      if (badge) badge.textContent = visible;
+
+      // Update section live counts
+      const funcCount = document.getElementById('func-count');
+      if (funcCount) funcCount.textContent = funcVisible + ' shown';
+
+      const techCount = document.getElementById('tech-count');
+      if (techCount) techCount.textContent = techVisible + ' shown';
+
+      // Show/hide section wrappers if all rows hidden
+      ['functional', 'technical'].forEach(type => {
+        const section = document.getElementById(type);
+        if (!section) return;
+        const sectionRows = Array.from(document.querySelectorAll('tr[data-type="' + type + '"]'));
+        const anyVisible = sectionRows.some(r => r.style.display !== 'none');
+        // find the table-wrap after this section header
+        let el = section.nextElementSibling;
+        while (el) {
+          if (el.classList.contains('table-wrap')) {
+            el.style.display = anyVisible ? '' : 'none';
+            break;
+          }
+          el = el.nextElementSibling;
+        }
+      });
+    }
+
+    // Initial run
     applyFilters();
-  });
-
-  // ── Main filter function ──
-  function applyFilters() {
-    const q = (document.getElementById('searchBox').value || '').toLowerCase();
-    const rows = document.querySelectorAll('tr[data-type]');
-    let funcCount = 0, techCount = 0;
-
-    rows.forEach(row => {
-      const match =
-        (filters.type === 'all' || row.dataset.type === filters.type) &&
-        (filters.work === 'all' || row.dataset.work === filters.work) &&
-        (filters.region === 'all' || row.dataset.region === filters.region) &&
-        (filters.employment === 'all' || row.dataset.employment === filters.employment) &&
-        (filters.module === 'all' || row.dataset.module === filters.module) &&
-        (filters.salary === 'all' || row.dataset.salary === filters.salary) &&
-        matchRecency(row.dataset.posted, filters.recency) &&
-        matchSearch(row, q);
-
-      row.classList.toggle('hidden-row', !match);
-      if (match) {
-        if (row.dataset.type === 'functional') funcCount++;
-        else techCount++;
-      }
-    });
-
-    const total = funcCount + techCount;
-    document.getElementById('visibleCount').textContent = total;
-    document.getElementById('func-count').textContent = funcCount + ' shown';
-    document.getElementById('tech-count').textContent = techCount + ' shown';
-
-    // Show no-results messages
-    ['func-no-results','tech-no-results'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        const type = id.startsWith('func') ? 'functional' : 'technical';
-        const anyVisible = [...rows].some(r => r.dataset.type === type && !r.classList.contains('hidden-row'));
-        el.style.display = anyVisible ? 'none' : 'table-row';
-      }
-    });
-  }
-
-  function matchRecency(posted, filter) {
-    if (filter === 'all') return true;
-    if (!posted) return true;
-    const [y, m] = posted.split('-').map(Number);
-    const postDate = new Date(y, m - 1, 1);
-    const days = parseInt(filter);
-    const diff = (cutoffNow - postDate) / (1000 * 60 * 60 * 24);
-    return diff <= days;
-  }
-
-  function matchSearch(row, q) {
-    if (!q) return true;
-    const text = row.textContent.toLowerCase();
-    return text.includes(q);
-  }
-
-  // Initial count
-  applyFilters();
-})();
-</script>
+  })();
+  </script>
 </body>
 </html>
