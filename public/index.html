@@ -1532,4 +1532,25 @@ function triggerManualRefresh() { fetchJobs(); }
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('lastRefreshTime').textContent = 'Fetching now…';
   
-  // Check
+  // Check session cache (30 min TTL)
+  const cached = sessionStorage.getItem('fob_jobs');
+  if (cached) {
+    try {
+      const c = JSON.parse(cached);
+      if (c.jobs?.length && (Date.now() - c.ts) < 30 * 60 * 1000) {
+        allJobs = c.jobs;
+        document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
+        showTables();
+        allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+        startCountdown();
+        return;
+      }
+    } catch(e) {}
+  }
+
+  // Fresh fetch
+  fetchJobs().then(() => startCountdown());
+});
+</script>
+</body>
+</html>
