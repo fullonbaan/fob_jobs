@@ -931,7 +931,7 @@
     <a class="fob-footer-link main"      href="https://www.fullonbaan.com/"      target="_blank" rel="noopener">🌐 FullonBaan.com</a>
   </div>
   <div class="fob-footer-copy">
-    © 2026 FullonBaan · <a href="/cdn-cgi/l/email-protection#d6b0a3babab9b8b4b7b7b896b1bbb7bfbaf8b5b9bb"><span class="__cf_email__" data-cfemail="a3c5d6cfcfcccdc1c2c2cde3c4cec2cacf8dc0ccce">[email&#160;protected]</span></a> · +91 63605 93122 · Bangalore, India<br>
+    © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
     Jobs are AI-curated from LinkedIn, Indeed, Dice, Glassdoor, ZipRecruiter, Foundit &amp; more. Always verify on the source platform.
   </div>
 </div>
@@ -985,7 +985,7 @@
 .ai-source-wrap { text-align:center; margin-bottom:1.5rem; }
 </style>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ═══════════════════════════════════════════════════════════════
 // FULLONBAAN LIVE JOB FETCHER
 // Uses Claude API to generate fresh, current Infor LN job listings
@@ -1319,17 +1319,21 @@ async function fetchJobs() {
 
   try {
     // ── Call our Vercel serverless proxy (key is server-side, never exposed) ──
+    console.log('[FOB] Calling /api/jobs...');
     const response = await fetch('/api/jobs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
     });
 
+    console.log('[FOB] Response status:', response.status);
     if (!response.ok) {
       const errBody = await response.json().catch(() => ({ error: response.statusText }));
-      throw new Error(errBody.error || `HTTP ${response.status}`);
+      console.error('[FOB] API error:', errBody);
+      throw new Error(errBody.error || 'HTTP ' + response.status);
     }
 
     const data = await response.json();
+    console.log('[FOB] Got', data.jobs?.length, 'jobs');
     const jobs = data.jobs;
     if (!Array.isArray(jobs) || jobs.length === 0) throw new Error('No jobs returned from server');
 
