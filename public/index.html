@@ -1355,6 +1355,13 @@ async function fetchJobs() {
 
     allJobs = jobs;
 
+    // Sort by posted date — latest first
+    allJobs.sort((a, b) => {
+      const da = new Date(a.displayDate || a.posted || 0);
+      const db = new Date(b.displayDate || b.posted || 0);
+      return db - da;
+    });
+
     // Show tables then render each row with staggered animation
     showTables();
     jobs.forEach((job, i) => {
@@ -1389,6 +1396,7 @@ async function fetchJobs() {
         const c = JSON.parse(cached);
         if (c.jobs?.length) {
           allJobs = c.jobs;
+    allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
           document.getElementById('error-detail').textContent = 'Showing cached listings (' + err.message + ')';
           showTables();
           allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); }, i * 20));
@@ -1397,6 +1405,7 @@ async function fetchJobs() {
       } catch {}
     }
     allJobs = getFallbackJobs();
+    allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
     document.getElementById('error-detail').textContent = 'Showing curated sample listings. (' + err.message + ')';
     showTables();
     allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
@@ -1555,6 +1564,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const c = JSON.parse(cached);
       if (c.jobs?.length && (Date.now() - c.ts) < 30 * 60 * 1000) {
         allJobs = c.jobs;
+    allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
         document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
         showTables();
         allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
