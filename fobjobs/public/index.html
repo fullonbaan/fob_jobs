@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FullonBaan · Infor LN Jobs — March 2026 | 57 Global Opportunities</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --pearl-0: #fdfcfb;
+      --pearl-1: #f9f6f1;
+      --pearl-2: #f2ece3;
+      --pearl-3: #e8ddd1;
+      --gold:    #b8973c;
+      --gold-lt: #d4af5a;
+      --gold-dk: #8c6e28;
+      --ink:     #2a2219;
+      --ink-mid: #5a4e3e;
+      --ink-lt:  #8a7e6e;
+      --func:    #2d5a3d;
+      --func-lt: #4a8a62;
+      --tech:    #1e3a5f;
+      --tech-lt: #2d5f9e;
+      --shadow:  rgba(139,110,40,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background-color: var(--pearl-1);
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(255,252,245,0.95) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 90%, rgba(232,221,209,0.6) 0%, transparent 55%),
+        radial-gradient(ellipse at 60% 40%, rgba(249,246,241,0.7) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      color: var(--ink);
+      min-height: 100vh;
+      padding-bottom: 6rem;
+    }
+
+    /* ── AUTO-REFRESH BANNER ── */
+    .refresh-banner {
+      background: linear-gradient(135deg, #1a2e50, #0c1830);
+      border-bottom: 1px solid rgba(184,151,60,0.3);
+      padding: .55rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+      font-family: 'Jost', sans-serif;
+      font-size: .72rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .refresh-left { display: flex; align-items: center; gap: .7rem; }
+    .refresh-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:.4; transform:scale(.7); }
+    }
+    .refresh-status { color: rgba(255,255,255,0.85); }
+    .refresh-status strong { color: #E2B96A; }
+    .refresh-right { display: flex; align-items: center; gap: .8rem; }
+    #countdownDisplay { color: #E2B96A; font-weight: 600; letter-spacing:.04em; }
+    .btn-refresh-now {
+      background: rgba(184,151,60,0.2);
+      border: 1px solid rgba(184,151,60,0.5);
+      color: #E2B96A;
+      padding: .28rem .85rem;
+      border-radius: 50px;
+      font-family: 'Jost', sans-serif;
+      font-size: .7rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: .06em;
+      transition: background .2s, border-color .2s;
+    }
+    .btn-refresh-now:hover { background: rgba(184,151,60,0.35); border-color: rgba(184,151,60,0.8); }
+    .btn-refresh-now:disabled { opacity: .5; cursor: not-allowed; }
+    #refreshSpinner { display: none; }
+    #refreshSpinner.spinning { display: inline; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .refresh-tag-new {
+      display: inline-flex; align-items: center;
+      background: rgba(74,222,128,0.18); border: 1px solid rgba(74,222,128,0.4);
+      color: #4ade80; border-radius: 50px; padding: .12rem .55rem;
+      font-size: .6rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; margin-left: .3rem; vertical-align: middle;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 4.5rem 2rem 3.5rem;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(175deg, rgba(255,253,250,0.9) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--gold);
+      border: 1px solid var(--gold-lt); border-radius: 50px;
+      padding: .35rem 1.1rem; margin-bottom: 1.6rem;
+      background: rgba(253,250,245,0.85); backdrop-filter: blur(4px);
+    }
+    .hero-badge::before { content: '◆'; font-size: .55rem; }
+
+    h1.hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 300;
+      letter-spacing: -.01em; line-height: 1.15; color: var(--ink); margin-bottom: .6rem;
+    }
+    h1.hero-title em { font-style: italic; color: var(--gold-dk); }
+    .hero-sub {
+      font-family: 'Jost', sans-serif; font-size: .95rem; font-weight: 300;
+      color: var(--ink-mid); letter-spacing: .04em; margin-bottom: 2.6rem;
+    }
+
+    /* ── STAT PILLS ── */
+    .stats-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2.4rem; }
+    .stat {
+      background: white; border: 1px solid var(--pearl-3); border-radius: 12px;
+      padding: .8rem 1.5rem; text-align: center; box-shadow: 0 2px 14px var(--shadow);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+      font-weight: 600; color: var(--gold-dk); line-height: 1;
+    }
+    .stat-lbl { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-lt); margin-top: .3rem; }
+
+    /* ── DIVIDER ── */
+    .gold-rule { width: 80px; height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 0 auto 3rem; }
+
+    /* ── NAV PILLS ── */
+    .nav-pills { display: flex; justify-content: center; gap: .8rem; margin-bottom: 2rem; }
+    .nav-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .55rem 1.4rem; border-radius: 50px; font-size: .78rem;
+      font-weight: 600; letter-spacing: .06em; text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .nav-pill:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow); }
+    .nav-pill.func { background: linear-gradient(135deg,#2d5a3d,#1a3827); color:#fff; border:1px solid rgba(184,151,60,.3); }
+    .nav-pill.tech { background: linear-gradient(135deg,#1e3a5f,#0c1830); color:#fff; border:1px solid rgba(184,151,60,.3); }
+
+    /* ── SECTION HEADERS ── */
+    .section-header-wrap {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; padding: 0 .5rem;
+    }
+    .section-header-left { display: flex; align-items: center; gap: 1rem; }
+    .section-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+    }
+    .section-icon.func { background: linear-gradient(135deg,#2d5a3d22,#4a8a6222); border: 1.5px solid #2d5a3d44; }
+    .section-icon.tech { background: linear-gradient(135deg,#1e3a5f22,#2d5f9e22); border: 1.5px solid #1e3a5f44; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 500; letter-spacing: -.01em; }
+    .section-title.func { color: var(--func); }
+    .section-title.tech { color: var(--tech); }
+    .live-count {
+      font-size: .7rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--ink-lt); background: var(--pearl-2); border: 1px solid var(--pearl-3);
+      border-radius: 50px; padding: .35rem .9rem;
+    }
+
+    /* ── TABLE WRAPPER ── */
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 1rem; }
+    .table-wrap {
+      border-radius: 16px; border: 1px solid var(--pearl-3);
+      box-shadow: 0 4px 32px var(--shadow), 0 1px 0 rgba(255,255,255,0.8) inset;
+      margin-bottom: 3rem; background: rgba(255,255,255,0.72); backdrop-filter: blur(8px); overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+
+    col.col-id    { width: 3.5%; }
+    col.col-title { width: 20%; }
+    col.col-desc  { width: 26%; }
+    col.col-co    { width: 12%; }
+    col.col-loc   { width: 11%; }
+    col.col-date  { width: 7%; }
+    col.col-rate  { width: 8.5%; }
+    col.col-apply { width: 12%; }
+
+    thead tr { background: linear-gradient(135deg,var(--pearl-2),var(--pearl-1)); border-bottom: 2px solid var(--pearl-3); }
+    th {
+      padding: .85rem .75rem; font-family: 'Jost', sans-serif; font-size: .62rem;
+      font-weight: 600; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-lt);
+      text-align: left; white-space: nowrap;
+    }
+    td {
+      padding: .7rem .75rem; font-size: .78rem; line-height: 1.45; vertical-align: top;
+      border-bottom: 1px solid var(--pearl-2); color: var(--ink-mid);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(249,246,241,0.7); }
+
+    .td-id { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; text-align: center; }
+    .td-id.func { color: var(--func-lt); }
+    .td-id.tech { color: var(--tech-lt); }
+    .td-title { font-weight: 500; color: var(--ink); font-size: .8rem; }
+    .td-desc { color: var(--ink-lt); font-size: .74rem; }
+    .td-company { font-weight: 500; color: var(--ink); }
+    .td-location { font-size: .74rem; }
+    .td-date { font-size: .73rem; white-space: nowrap; }
+    .td-rate { font-size: .73rem; font-weight: 500; color: var(--gold-dk); }
+
+    .btn-cell { display: flex; flex-direction: column; gap: .45rem; }
+    .btn-apply {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .35rem .85rem; border-radius: 8px; font-family: 'Jost', sans-serif;
+      font-size: .7rem; font-weight: 600; letter-spacing: .04em;
+      text-decoration: none; cursor: pointer; transition: opacity .18s, transform .18s;
+      white-space: nowrap;
+    }
+    .btn-apply:hover { opacity: .85; transform: translateY(-1px); }
+    .btn-apply svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .func-btn { background: linear-gradient(135deg,#2d5a3d,#1a3827); color:#fff; border:1px solid rgba(45,90,61,.3); }
+    .tech-btn { background: linear-gradient(135deg,#1e3a5f,#0c1830); color:#fff; border:1px solid rgba(30,58,95,.3); }
+
+    /* ── WORK MODE BADGES ── */
+    .badge-remote, .badge-hybrid, .badge-onsite {
+      display: inline-block; padding: .15rem .5rem; border-radius: 50px;
+      font-size: .62rem; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; white-space: nowrap; margin-top: .2rem;
+    }
+    .badge-remote { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+    .badge-hybrid { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; }
+    .badge-onsite { background: #e3f2fd; color: #1565c0; border: 1px solid #90caf9; }
+
+    /* ── NEW BADGE ── */
+    .badge-new {
+      display: inline-block; padding: .1rem .4rem; border-radius: 4px;
+      font-size: .58rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; background: #fff8e1; color: #f57f17;
+      border: 1px solid #ffcc02; margin-left: .3rem; vertical-align: middle;
+    }
+
+    /* ── FILTER PANEL ── */
+    .filter-panel {
+      background: rgba(255,255,255,0.82); backdrop-filter: blur(14px);
+      border: 1px solid var(--pearl-3); border-radius: 20px;
+      box-shadow: 0 4px 32px var(--shadow), 0 1px 0 rgba(255,255,255,0.9) inset;
+      padding: 1.4rem 1.8rem 1.6rem; margin-bottom: 2.8rem;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .filter-panel-title {
+      font-family: 'Jost', sans-serif; font-size: .65rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--gold-dk);
+      margin-bottom: 1.1rem; display: flex; align-items: center; gap: .5rem;
+    }
+    .filter-panel-title::before { content: '◆'; font-size: .5rem; }
+    .filter-rows { display: flex; flex-direction: column; gap: .9rem; }
+    .filter-row { display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+    .filter-label {
+      font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--ink-lt); min-width: 90px; padding-top: .35rem; flex-shrink: 0;
+    }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+    .chip {
+      display: inline-flex; align-items: center; gap: .3rem;
+      padding: .32rem .85rem; border-radius: 50px;
+      font-family: 'Jost', sans-serif; font-size: .72rem; font-weight: 500;
+      background: var(--pearl-2); border: 1px solid var(--pearl-3);
+      color: var(--ink-mid); cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s, transform .1s;
+      user-select: none;
+    }
+    .chip:hover { background: var(--pearl-3); transform: translateY(-1px); }
+    .chip.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .chip.active:hover { background: var(--ink-mid); border-color: var(--ink-mid); }
+
+    .search-box-wrap { position: relative; display: flex; align-items: center; flex: 1; max-width: 380px; }
+    .search-icon { position: absolute; left: .9rem; font-size: .85rem; pointer-events: none; color: var(--ink-lt); }
+    .search-box {
+      width: 100%; padding: .38rem .85rem .38rem 2.4rem; border-radius: 50px;
+      border: 1.5px solid var(--pearl-3); background: var(--pearl-0);
+      font-family: 'Jost', sans-serif; font-size: .78rem; color: var(--ink);
+      outline: none; transition: border-color .2s;
+    }
+    .search-box:focus { border-color: var(--gold); }
+    .search-box::placeholder { color: var(--ink-lt); }
+
+    .filter-divider { width: 100%; height: 1px; background: var(--pearl-2); margin: .2rem 0; }
+    .filter-actions { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .filter-results-badge {
+      font-family: 'Jost', sans-serif; font-size: .72rem; font-weight: 500; color: var(--ink-mid);
+      background: var(--pearl-2); border: 1px solid var(--pearl-3); border-radius: 50px; padding: .3rem .9rem;
+    }
+    .filter-results-badge strong { color: var(--gold-dk); font-weight: 700; }
+    .btn-clear-filters {
+      font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 600;
+      letter-spacing: .06em; color: var(--ink-lt); background: none;
+      border: 1px solid var(--pearl-3); border-radius: 50px; padding: .3rem .9rem;
+      cursor: pointer; transition: color .15s, border-color .15s;
+    }
+    .btn-clear-filters:hover { color: var(--ink); border-color: var(--ink-lt); }
+
+    /* ── FOOTER ── */
+    .footer { text-align: center; padding: 3rem 2rem 1rem; border-top: 1px solid var(--pearl-3); margin-top: 2rem; }
+    .footer p { font-size: .78rem; color: var(--ink-lt); line-height: 1.8; }
+    .footer .disclaimer {
+      font-size: .72rem; color: var(--ink-lt); max-width: 700px; margin: .8rem auto 0;
+      background: var(--pearl-2); border-radius: 10px; padding: .7rem 1rem;
+      border: 1px solid var(--pearl-3); text-align: left; line-height: 1.7;
+    }
+    .footer .disclaimer::before { content: '⚠ '; }
+
+    /* ── AUTO-REFRESH MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(30,20,10,0.55); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--pearl-0); border: 1px solid var(--pearl-3); border-radius: 20px;
+      padding: 2rem 2.4rem; max-width: 460px; width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 500;
+      color: var(--ink); margin-bottom: .5rem;
+    }
+    .modal-body { font-size: .82rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 1.5rem; }
+    .modal-actions { display: flex; gap: .8rem; justify-content: flex-end; }
+    .modal-btn {
+      padding: .5rem 1.4rem; border-radius: 50px; font-family: 'Jost', sans-serif;
+      font-size: .78rem; font-weight: 600; cursor: pointer; transition: opacity .18s;
+    }
+    .modal-btn-primary { background: var(--ink); color: #fff; border: none; }
+    .modal-btn-secondary { background: none; border: 1px solid var(--pearl-3); color: var(--ink-mid); }
+    .modal-btn:hover { opacity: .85; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes rowFadeIn {
+      from { opacity: 0; transform: translateX(-6px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    /* ── stream progress bar ── */
+    .stream-bar-wrap {
+      width: 260px; height: 4px; background: rgba(255,255,255,0.15);
+      border-radius: 4px; margin-top: .9rem; overflow: hidden;
+    }
+    .stream-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+      border-radius: 4px;
+      transition: width .3s ease;
+      animation: streamPulse 1.4s ease-in-out infinite;
+    }
+    @keyframes streamPulse {
+      0%,100% { opacity: 1; }
+      50%      { opacity: .55; }
+    }
+
+    /* ── RESOURCE HUB ── */
+    .resource-hub { margin: 0 auto 2.2rem; max-width: 680px; animation: fadeUp .7s .3s ease both; }
+    .rh-label {
+      font-family: 'Jost', sans-serif; font-size: .65rem; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--gold-dk);
+      margin-bottom: .85rem; display: flex; align-items: center; justify-content: center; gap: .4rem;
+    }
+    .rh-label::before, .rh-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold)); }
+    .rh-label::after { background: linear-gradient(to left, transparent, var(--gold)); }
+    .rh-cards { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+    .rh-card {
+      display: flex; align-items: flex-start; gap: .9rem; padding: 1rem 1.1rem 1rem;
+      border-radius: 14px; border: 1.5px solid transparent; text-decoration: none;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .rh-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.12); }
+    .rh-training { background: linear-gradient(135deg, #1a2e50 0%, #0c1830 100%); border-color: rgba(168,120,42,0.35); }
+    .rh-training:hover { border-color: rgba(226,185,106,0.65); }
+    .rh-interview { background: linear-gradient(135deg, #2d5a3d 0%, #1a3827 100%); border-color: rgba(168,120,42,0.28); }
+    .rh-interview:hover { border-color: rgba(226,185,106,0.55); }
+    .rh-card-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: .1rem; }
+    .rh-card-body { flex: 1; }
+    .rh-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: #fff; margin-bottom: .22rem; letter-spacing: .01em; }
+    .rh-card-desc { font-size: .72rem; color: rgba(255,255,255,0.55); line-height: 1.5; margin-bottom: .5rem; }
+    .rh-card-cta { font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 600; letter-spacing: .06em; color: #E2B96A; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      col.col-desc { width: 0; }
+      .td-desc { display: none; }
+    }
+    @media (max-width: 650px) {
+      .filter-row { flex-direction: column; gap: .5rem; }
+      .filter-label { min-width: auto; padding-top: 0; }
+      .filter-panel { padding: 1rem; }
+    }
+    @media (max-width: 540px) {
+      .rh-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ── FULLONBAAN BRANDING ── */
+    .fob-topbar {
+      background: linear-gradient(135deg, #0c1830 0%, #1a2e50 60%, #0c1830 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: .55rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .6rem;
+    }
+    .fob-logo {
+      display: flex; align-items: center; gap: .75rem; text-decoration: none;
+    }
+    .fob-logo-mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem;
+      font-weight: 700; color: #0c1830; letter-spacing: -.02em;
+      box-shadow: 0 2px 8px rgba(184,151,60,0.4); flex-shrink: 0;
+    }
+    .fob-logo-text { line-height: 1.15; }
+    .fob-logo-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.15rem;
+      font-weight: 600; color: #fff; letter-spacing: .02em; display: block;
+    }
+    .fob-logo-name em { color: var(--gold-lt); font-style: normal; }
+    .fob-logo-tagline {
+      font-family: 'Jost', sans-serif; font-size: .58rem; font-weight: 500;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); display: block;
+    }
+    .fob-topbar-links {
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+    }
+    .fob-topbar-link {
+      font-family: 'Jost', sans-serif; font-size: .68rem; font-weight: 600;
+      letter-spacing: .06em; text-decoration: none; padding: .3rem .85rem;
+      border-radius: 50px; transition: background .18s, border-color .18s;
+    }
+    .fob-topbar-link.training {
+      background: rgba(184,151,60,0.15); border: 1px solid rgba(184,151,60,0.45);
+      color: var(--gold-lt);
+    }
+    .fob-topbar-link.interview {
+      background: rgba(45,90,61,0.25); border: 1px solid rgba(74,138,98,0.45);
+      color: #7dd3a8;
+    }
+    .fob-topbar-link:hover { opacity: .82; transform: translateY(-1px); }
+    .fob-topbar-link.training:hover { background: rgba(184,151,60,0.28); }
+    .fob-topbar-link.interview:hover { background: rgba(45,90,61,0.4); }
+    .fob-topbar-sep {
+      width: 1px; height: 18px; background: rgba(255,255,255,0.15);
+    }
+    .fob-topbar-label {
+      font-family: 'Jost', sans-serif; font-size: .6rem; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.38); padding-right: .2rem;
+    }
+
+    /* ── FULLONBAAN FOOTER BRAND STRIP ── */
+    .fob-footer-strip {
+      background: linear-gradient(135deg, #0c1830 0%, #1a2e50 100%);
+      border-top: 2px solid var(--gold);
+      padding: 2.2rem 2rem 1.6rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .fob-footer-logo {
+      display: inline-flex; align-items: center; gap: .8rem;
+      margin-bottom: 1.1rem; text-decoration: none;
+    }
+    .fob-footer-mark {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dk));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+      font-weight: 700; color: #0c1830;
+      box-shadow: 0 4px 16px rgba(184,151,60,0.35);
+    }
+    .fob-footer-wordmark {
+      text-align: left;
+    }
+    .fob-footer-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+      font-weight: 600; color: #fff; letter-spacing: .01em; display: block;
+    }
+    .fob-footer-name em { color: var(--gold-lt); font-style: normal; }
+    .fob-footer-sub {
+      font-family: 'Jost', sans-serif; font-size: .62rem; font-weight: 500;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); display: block;
+    }
+    .fob-footer-links {
+      display: flex; justify-content: center; gap: .9rem;
+      flex-wrap: wrap; margin-bottom: 1.1rem;
+    }
+    .fob-footer-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: 'Jost', sans-serif; font-size: .72rem; font-weight: 600;
+      letter-spacing: .05em; text-decoration: none; padding: .4rem 1.1rem;
+      border-radius: 50px; transition: opacity .18s;
+    }
+    .fob-footer-link.training {
+      background: rgba(184,151,60,0.18); border: 1.5px solid rgba(184,151,60,0.5);
+      color: var(--gold-lt);
+    }
+    .fob-footer-link.interview {
+      background: rgba(45,90,61,0.28); border: 1.5px solid rgba(74,138,98,0.45);
+      color: #7dd3a8;
+    }
+    .fob-footer-link:hover { opacity: .8; }
+    .fob-footer-copy {
+      font-family: 'Jost', sans-serif; font-size: .68rem;
+      color: rgba(255,255,255,0.35); margin-top: .6rem;
+      line-height: 1.8;
+    }
+    .fob-footer-copy a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .fob-footer-copy a:hover { color: var(--gold-lt); }
+
+    /* ── TOPBAR ECO LINKS ── */
+    .fob-topbar-link.eco-training  { background:rgba(184,151,60,0.15); border:1px solid rgba(184,151,60,0.45); color:var(--gold-lt); }
+    .fob-topbar-link.eco-interview { background:rgba(45,90,61,0.25);   border:1px solid rgba(74,138,98,0.45);  color:#7dd3a8; }
+    .fob-topbar-link.eco-jobs      { background:rgba(30,58,95,0.3);    border:1px solid rgba(45,95,158,0.45);  color:#93c5fd; }
+    .fob-topbar-link.eco-repo      { background:rgba(109,40,217,0.2);  border:1px solid rgba(139,92,246,0.4);  color:#c4b5fd; }
+    .fob-topbar-link.eco-exams     { background:rgba(220,38,38,0.15);  border:1px solid rgba(248,113,113,0.4); color:#fca5a5; }
+    .fob-topbar-link.eco-main      { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; }
+    .fob-topbar-link.eco-training:hover  { background:rgba(184,151,60,0.3); }
+    .fob-topbar-link.eco-interview:hover { background:rgba(45,90,61,0.4); }
+    .fob-topbar-link.eco-jobs:hover      { background:rgba(30,58,95,0.45); }
+    .fob-topbar-link.eco-repo:hover      { background:rgba(109,40,217,0.35); }
+    .fob-topbar-link.eco-exams:hover     { background:rgba(220,38,38,0.3); }
+    .fob-topbar-link.eco-main:hover      { background:rgba(255,255,255,0.18); }
+
+    /* ── 6-CARD RESOURCE HUB ── */
+    .resource-hub { max-width: 900px; }
+    .rh-cards-6 { grid-template-columns: repeat(3, 1fr); }
+    .rh-jobs  { background: linear-gradient(135deg, #1e3a5f 0%, #0c1830 100%); border-color: rgba(147,197,253,0.25); }
+    .rh-jobs:hover  { border-color: rgba(147,197,253,0.55); }
+    .rh-repo  { background: linear-gradient(135deg, #3b0764 0%, #1e0036 100%); border-color: rgba(196,181,253,0.25); }
+    .rh-repo:hover  { border-color: rgba(196,181,253,0.55); }
+    .rh-exams { background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); border-color: rgba(252,165,165,0.25); }
+    .rh-exams:hover { border-color: rgba(252,165,165,0.55); }
+    .rh-main  { background: linear-gradient(135deg, #1c1917 0%, #0c0a09 100%); border-color: rgba(184,151,60,0.3); }
+    .rh-main:hover  { border-color: rgba(184,151,60,0.65); }
+    @media (max-width: 780px) { .rh-cards-6 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .rh-cards-6 { grid-template-columns: 1fr; } }
+
+    /* ── FOOTER ECO LINK COLOURS ── */
+    .fob-footer-eco-label {
+      font-family:'Jost',sans-serif; font-size:.62rem; font-weight:600;
+      letter-spacing:.16em; text-transform:uppercase;
+      color:rgba(255,255,255,0.4); margin-bottom:.7rem;
+    }
+    .fob-footer-link.jobs  { background:rgba(30,58,95,0.3);    border:1.5px solid rgba(45,95,158,0.45);  color:#93c5fd; }
+    .fob-footer-link.repo  { background:rgba(109,40,217,0.2);  border:1.5px solid rgba(139,92,246,0.4);  color:#c4b5fd; }
+    .fob-footer-link.exams { background:rgba(220,38,38,0.15);  border:1.5px solid rgba(248,113,113,0.4); color:#fca5a5; }
+    .fob-footer-link.main  { background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.25); color:#fff; }
+
+    /* ── APPLY NOW BUTTON ── */
+    .btn-apply-mailto {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .4rem 1rem; border-radius: 8px;
+      font-family: 'Jost', sans-serif; font-size: .71rem; font-weight: 700;
+      letter-spacing: .04em; text-decoration: none;
+      transition: opacity .18s, transform .15s; width: 100%;
+      margin-bottom: .4rem; white-space: nowrap;
+    }
+    .btn-apply-mailto:hover { opacity: .85; transform: translateY(-1px); }
+    .func-mailto { background: linear-gradient(135deg,#2d5a3d,#1a3827); color:#fff; border:1px solid rgba(45,90,61,.4); }
+    .tech-mailto { background: linear-gradient(135deg,#1e3a5f,#0c1830); color:#fff; border:1px solid rgba(30,58,95,.4); }
+    .btn-platform-link {
+      display: inline-flex; align-items: center; gap: .3rem;
+      font-family: 'Jost', sans-serif; font-size: .63rem; font-weight: 500;
+      color: var(--ink-lt); text-decoration: none;
+      border-bottom: 1px dotted var(--pearl-3); padding-bottom: 1px;
+      transition: color .15s;
+    }
+    .btn-platform-link:hover { color: var(--gold-dk); border-bottom-color: var(--gold); }
+    .btn-referral {
+      color: var(--gold-dk) !important;
+      border-bottom-color: rgba(184,151,60,0.35) !important;
+    }
+    .btn-referral:hover {
+      color: var(--gold) !important;
+      border-bottom-color: var(--gold) !important;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- FULLONBAAN TOPBAR -->
+<div class="fob-topbar">
+  <a class="fob-logo" href="https://www.fullonbaan.com/" target="_blank" rel="noopener">
+    <div class="fob-logo-mark">FOB</div>
+    <div class="fob-logo-text">
+      <span class="fob-logo-name">Fullon<em>Baan</em></span>
+      <span class="fob-logo-tagline">One Stop Destination for IT Solutions</span>
+    </div>
+  </a>
+  <div class="fob-topbar-links">
+    <span class="fob-topbar-label">Ecosystem</span>
+    <a class="fob-topbar-link eco-training"   href="https://fobtraining.vercel.app/"  target="_blank" rel="noopener">🎓 Training</a>
+    <a class="fob-topbar-link eco-interview"  href="https://fobinterview.vercel.app/" target="_blank" rel="noopener">📋 Interview</a>
+    <a class="fob-topbar-link eco-jobs"       href="https://fobjobs.vercel.app/"      target="_blank" rel="noopener">💼 Jobs</a>
+    <a class="fob-topbar-link eco-repo"       href="https://fobrepo.vercel.app/"      target="_blank" rel="noopener">📦 Repo</a>
+    <a class="fob-topbar-link eco-exams"      href="https://fobexams.vercel.app/"     target="_blank" rel="noopener">📝 Exams</a>
+    <a class="fob-topbar-link eco-main"       href="https://www.fullonbaan.com/"      target="_blank" rel="noopener">🌐 Main Site</a>
+  </div>
+</div>
+
+<!-- AUTO-REFRESH BANNER -->
+<div class="refresh-banner">
+  <div class="refresh-left">
+    <span class="refresh-dot"></span>
+    <span class="refresh-status">
+      FullonBaan Auto-refresh &nbsp;·&nbsp; Last updated: <strong id="lastRefreshTime">Loading…</strong>
+      &nbsp;·&nbsp; Next refresh in: <strong id="countdownDisplay">24:00:00</strong>
+    </span>
+  </div>
+  <div class="refresh-right">
+    <span id="refreshSpinner">⟳</span>
+    <span id="newJobsAlert" style="display:none;" class="refresh-tag-new">● NEW JOBS</span>
+    <button class="btn-refresh-now" id="btnRefreshNow" onclick="triggerManualRefresh()">⟳ Refresh Now</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">FullonBaan Job Digest · March 2026 · Auto-Refreshed Daily</div>
+  <h1 class="hero-title">Infor LN Job Opportunities<br><em>Functional &amp; Technical</em></h1>
+  <p class="hero-sub">Aggregated from LinkedIn · Indeed · Dice · ZipRecruiter · Glassdoor · Naukri · Gulf Talent · Seek · SimplyHired<br>covering remote, hybrid &amp; on-site roles across USA · India · Middle East · Europe · Australia</p>
+
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" id="stat-func">27</div><div class="stat-lbl">Functional Roles</div></div>
+    <div class="stat"><div class="stat-num" id="stat-tech">30</div><div class="stat-lbl">Technical Roles</div></div>
+    <div class="stat"><div class="stat-num">$45–$210k</div><div class="stat-lbl">Rate / Salary Range</div></div>
+    <div class="stat"><div class="stat-num">9+</div><div class="stat-lbl">Platforms Searched</div></div>
+    <div class="stat"><div class="stat-num">🌐 Global</div><div class="stat-lbl">US · India · ME · Europe</div></div>
+  </div>
+
+  <div class="gold-rule"></div>
+
+  <div class="nav-pills">
+    <a class="nav-pill func" href="#functional">⚙️ Functional Roles</a>
+    <a class="nav-pill tech" href="#technical">🔧 Technical Roles</a>
+  </div>
+
+  <div class="resource-hub">
+    <div class="rh-label">🌐 FullonBaan Ecosystem</div>
+    <div class="rh-cards rh-cards-6">
+      <a class="rh-card rh-training" href="https://fobtraining.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">🎓</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Training Materials</div>
+          <div class="rh-card-desc">eBooks &amp; Video Courses · LN Dev, Finance, Admin &amp; more</div>
+          <div class="rh-card-cta">Browse Courses →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-interview" href="https://fobinterview.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">📋</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Interview Guides</div>
+          <div class="rh-card-desc">55–65+ Expert Q&amp;As · LN Dev, BOD, ION, Finance &amp; SCM</div>
+          <div class="rh-card-cta">Get Interview Ready →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-jobs" href="https://fobjobs.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">💼</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Jobs Portal</div>
+          <div class="rh-card-desc">Live Infor LN openings · Global · Remote &amp; On-site</div>
+          <div class="rh-card-cta">Find Jobs →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-repo" href="https://fobrepo.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">📦</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Repository</div>
+          <div class="rh-card-desc">Scripts, tools &amp; resources for Infor LN professionals</div>
+          <div class="rh-card-cta">Explore Repo →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-exams" href="https://fobexams.vercel.app/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">📝</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Exams &amp; Quizzes</div>
+          <div class="rh-card-desc">Test your Infor LN knowledge · Module-wise practice tests</div>
+          <div class="rh-card-cta">Take a Test →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-main" href="https://www.fullonbaan.com/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">🌐</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">FullonBaan.com</div>
+          <div class="rh-card-desc">Main hub · Offshore IT services · Consulting &amp; placement</div>
+          <div class="rh-card-cta">Visit Website →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER PANEL -->
+<div class="container">
+  <div class="filter-panel">
+    <div class="filter-panel-title">Smart Filters — Refine Your Search</div>
+    <div class="filter-rows">
+      <div class="filter-row">
+        <span class="filter-label">Search</span>
+        <div class="search-box-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-box" id="searchBox" type="text" placeholder="Search by title, module, company, location…">
+        </div>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-row">
+        <span class="filter-label">Job Type</span>
+        <div class="filter-chips" data-group="type">
+          <span class="chip active" data-val="all">All Roles</span>
+          <span class="chip" data-val="functional">⚙️ Functional</span>
+          <span class="chip" data-val="technical">🔧 Technical</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Work Mode</span>
+        <div class="filter-chips" data-group="work">
+          <span class="chip active" data-val="all">All</span>
+          <span class="chip" data-val="remote">🌐 Remote</span>
+          <span class="chip" data-val="hybrid">🔀 Hybrid</span>
+          <span class="chip" data-val="onsite">🏢 On-Site</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Region</span>
+        <div class="filter-chips" data-group="region">
+          <span class="chip active" data-val="all">🌍 All Regions</span>
+          <span class="chip" data-val="usa">🇺🇸 USA</span>
+          <span class="chip" data-val="india">🇮🇳 India</span>
+          <span class="chip" data-val="middleeast">🌙 Middle East</span>
+          <span class="chip" data-val="europe">🇪🇺 Europe</span>
+          <span class="chip" data-val="australia">🦘 Australia</span>
+          <span class="chip" data-val="global">🌐 Global/Remote</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Employment</span>
+        <div class="filter-chips" data-group="employment">
+          <span class="chip active" data-val="all">All Types</span>
+          <span class="chip" data-val="contract">📋 Contract</span>
+          <span class="chip" data-val="fulltime">💼 Full-Time</span>
+          <span class="chip" data-val="w2">🏦 W2</span>
+          <span class="chip" data-val="c2c">🤝 C2C</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Module</span>
+        <div class="filter-chips" data-group="module">
+          <span class="chip active" data-val="all">All Modules</span>
+          <span class="chip" data-val="finance">💰 Finance</span>
+          <span class="chip" data-val="manufacturing">🏭 Manufacturing</span>
+          <span class="chip" data-val="supplychain">🔗 Supply Chain</span>
+          <span class="chip" data-val="integration">🔌 ION/Integration</span>
+          <span class="chip" data-val="projects">📁 Projects/TP</span>
+          <span class="chip" data-val="architecture">🏗 Architecture</span>
+          <span class="chip" data-val="automotive">🚗 Automotive</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Salary</span>
+        <div class="filter-chips" data-group="salary">
+          <span class="chip active" data-val="all">All</span>
+          <span class="chip" data-val="disclosed">💵 Disclosed</span>
+          <span class="chip" data-val="undisclosed">🔒 Undisclosed</span>
+        </div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">Posted</span>
+        <div class="filter-chips" data-group="recency">
+          <span class="chip active" data-val="all">All Time</span>
+          <span class="chip" data-val="1month">Last Month</span>
+          <span class="chip" data-val="2months">Last 2 Months</span>
+          <span class="chip" data-val="3months">Last 3 Months</span>
+        </div>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <div class="filter-results-badge">Showing <strong id="visibleCount">57</strong> of <strong id="totalCount">57</strong> positions</div>
+      <button class="btn-clear-filters" id="clearFilters">✕ Clear All Filters</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LIVE JOB PORTAL SEARCH STRIP ════ -->
+<div class="container">
+  <div class="portal-strip">
+    <div class="portal-strip-title">🔍 Search Live Jobs on Top Platforms</div>
+    <div class="portal-grid">
+      <a class="portal-btn" href="https://www.linkedin.com/jobs/search/?keywords=infor+ln+erp&f_TPR=r86400" target="_blank" rel="noopener"><span>in</span>LinkedIn Jobs</a>
+      <a class="portal-btn" href="https://www.indeed.com/jobs?q=infor+LN+ERP&sort=date" target="_blank" rel="noopener"><span>in</span>Indeed</a>
+      <a class="portal-btn" href="https://www.dice.com/jobs?q=infor+LN&sort=date" target="_blank" rel="noopener"><span>d</span>Dice</a>
+      <a class="portal-btn" href="https://www.glassdoor.com/Job/jobs.htm?sc.keyword=infor+ln" target="_blank" rel="noopener"><span>g</span>Glassdoor</a>
+      <a class="portal-btn" href="https://www.ziprecruiter.com/Jobs/Infor-LN" target="_blank" rel="noopener"><span>z</span>ZipRecruiter</a>
+      <a class="portal-btn" href="https://www.foundit.in/srp/results?query=infor+ln+erp" target="_blank" rel="noopener"><span>f</span>Foundit/Monster</a>
+      <a class="portal-btn" href="https://www.simplyhired.com/search?q=infor+ln" target="_blank" rel="noopener"><span>s</span>SimplyHired</a>
+      <a class="portal-btn" href="https://www.careerbuilder.com/jobs?keywords=infor+ln" target="_blank" rel="noopener"><span>c</span>CareerBuilder</a>
+      <a class="portal-btn" href="https://www.techfetch.com/job/search-infor-ln-jobs.aspx" target="_blank" rel="noopener"><span>t</span>TechFetch</a>
+      <a class="portal-btn" href="https://wellfound.com/role/r/erp-consultant?keywords=infor+ln" target="_blank" rel="noopener"><span>w</span>Wellfound</a>
+      <a class="portal-btn" href="https://www.upwork.com/search/jobs/?q=infor+ln+erp" target="_blank" rel="noopener"><span>u</span>Upwork</a>
+      <a class="portal-btn" href="https://www.guru.com/d/jobs/q/infor-ln/" target="_blank" rel="noopener"><span>g</span>Guru</a>
+      <a class="portal-btn" href="https://www.erpjobs.com/?s=infor+ln" target="_blank" rel="noopener"><span>e</span>ERPJobs</a>
+      <a class="portal-btn" href="https://www.infor.com/about/careers" target="_blank" rel="noopener"><span>i</span>Infor Careers</a>
+      <a class="portal-btn" href="https://www.naukri.com/infor-ln-jobs" target="_blank" rel="noopener"><span>n</span>Naukri.com</a>
+      <a class="portal-btn" href="https://www.bayt.com/en/international/jobs/infor-ln-jobs/" target="_blank" rel="noopener"><span>b</span>Bayt (ME)</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DYNAMIC JOB TABLES ════ -->
+<div class="container" id="jobs-container">
+
+  <!-- Loading State -->
+  <div id="jobs-loading" style="text-align:center; padding:4rem 2rem;">
+    <div style="display:inline-flex;flex-direction:column;align-items:center;gap:.8rem;background:white;border:1px solid var(--pearl-3);border-radius:16px;padding:1.8rem 2.4rem;box-shadow:0 4px 32px var(--shadow);">
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div style="font-size:2rem;animation:spin 1s linear infinite;display:inline-block;">⟳</div>
+        <div style="text-align:left;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;color:var(--ink);">Fetching Latest Infor LN Jobs…</div>
+          <div style="font-size:.78rem;color:var(--ink-lt);margin-top:.3rem;">Streaming from LinkedIn · Indeed · Dice · ZipRecruiter · Glassdoor · Foundit and more</div>
+        </div>
+      </div>
+      <div class="stream-bar-wrap"><div class="stream-bar" id="streamBar"></div></div>
+    </div>
+  </div>
+
+  <!-- Error State (hidden by default) -->
+  <div id="jobs-error" style="display:none;text-align:center;padding:3rem 2rem;">
+    <div style="background:white;border:1px solid var(--pearl-3);border-radius:16px;padding:2rem;max-width:500px;margin:0 auto;box-shadow:0 4px 32px var(--shadow);">
+      <div style="font-size:2rem;margin-bottom:.8rem;">⚠️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--ink);margin-bottom:.5rem;">Job Refresh Unavailable</div>
+      <div style="font-size:.82rem;color:var(--ink-lt);margin-bottom:1.2rem;" id="error-detail">Unable to fetch fresh jobs. Showing cached listings below.</div>
+      <button onclick="fetchJobs()" style="background:var(--ink);color:#fff;border:none;border-radius:50px;padding:.5rem 1.4rem;font-family:'Jost',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;">⟳ Try Again</button>
+    </div>
+  </div>
+
+  <!-- Functional Jobs Section -->
+  <div id="functional" class="section-header-wrap" style="display:none;">
+    <div class="section-header-left">
+      <div class="section-icon func">⚙️</div>
+      <h2 class="section-title func">Infor LN — Functional Roles</h2>
+    </div>
+    <span class="live-count" id="func-count">loading…</span>
+  </div>
+  <div class="table-wrap" id="func-table" style="display:none;">
+    <table>
+      <colgroup>
+        <col class="col-id"><col class="col-title"><col class="col-desc">
+        <col class="col-co"><col class="col-loc"><col class="col-date">
+        <col class="col-rate"><col class="col-apply">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>#</th><th>Position</th><th>Description</th>
+          <th>Company</th><th>Location</th><th>Posted</th>
+          <th>Rate / Salary</th><th>Apply</th>
+        </tr>
+      </thead>
+      <tbody id="func-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Technical Jobs Section -->
+  <div id="technical" class="section-header-wrap" style="display:none;">
+    <div class="section-header-left">
+      <div class="section-icon tech">🔧</div>
+      <h2 class="section-title tech">Infor LN — Technical Roles</h2>
+    </div>
+    <span class="live-count" id="tech-count">loading…</span>
+  </div>
+  <div class="table-wrap" id="tech-table" style="display:none;">
+    <table>
+      <colgroup>
+        <col class="col-id"><col class="col-title"><col class="col-desc">
+        <col class="col-co"><col class="col-loc"><col class="col-date">
+        <col class="col-rate"><col class="col-apply">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>#</th><th>Position</th><th>Description</th>
+          <th>Company</th><th>Location</th><th>Posted</th>
+          <th>Rate / Salary</th><th>Apply</th>
+        </tr>
+      </thead>
+      <tbody id="tech-tbody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="fob-footer-strip">
+  <a class="fob-footer-logo" href="https://www.fullonbaan.com/" target="_blank" rel="noopener">
+    <div class="fob-footer-mark">FOB</div>
+    <div class="fob-footer-wordmark">
+      <span class="fob-footer-name">Fullon<em>Baan</em></span>
+      <span class="fob-footer-sub">One Stop Destination for IT Solutions</span>
+    </div>
+  </a>
+  <div class="fob-footer-eco-label">🌐 FOB Ecosystem</div>
+  <div class="fob-footer-links">
+    <a class="fob-footer-link training"  href="https://fobtraining.vercel.app/"  target="_blank" rel="noopener">🎓 Training Materials</a>
+    <a class="fob-footer-link interview" href="https://fobinterview.vercel.app/" target="_blank" rel="noopener">📋 Interview Guides</a>
+    <a class="fob-footer-link jobs"      href="https://fobjobs.vercel.app/"      target="_blank" rel="noopener">💼 Jobs Portal</a>
+    <a class="fob-footer-link repo"      href="https://fobrepo.vercel.app/"      target="_blank" rel="noopener">📦 Repository</a>
+    <a class="fob-footer-link exams"     href="https://fobexams.vercel.app/"     target="_blank" rel="noopener">📝 Exams</a>
+    <a class="fob-footer-link main"      href="https://www.fullonbaan.com/"      target="_blank" rel="noopener">🌐 FullonBaan.com</a>
+  </div>
+  <div class="fob-footer-copy">
+    © 2026 FullonBaan · <a href="/cdn-cgi/l/email-protection#d6b0a3babab9b8b4b7b7b896b1bbb7bfbaf8b5b9bb"><span class="__cf_email__" data-cfemail="a3c5d6cfcfcccdc1c2c2cde3c4cec2cacf8dc0ccce">[email&#160;protected]</span></a> · +91 63605 93122 · Bangalore, India<br>
+    Jobs are AI-curated from LinkedIn, Indeed, Dice, Glassdoor, ZipRecruiter, Foundit &amp; more. Always verify on the source platform.
+  </div>
+</div>
+
+<style>
+/* ── PORTAL STRIP ── */
+.portal-strip {
+  background: rgba(255,255,255,0.82); backdrop-filter: blur(14px);
+  border: 1px solid var(--pearl-3); border-radius: 20px;
+  box-shadow: 0 4px 32px var(--shadow);
+  padding: 1.4rem 1.8rem 1.6rem; margin-bottom: 2rem;
+}
+.portal-strip-title {
+  font-family: 'Jost', sans-serif; font-size: .65rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--gold-dk);
+  margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem;
+}
+.portal-strip-title::before { content: '◆'; font-size: .5rem; }
+.portal-grid {
+  display: flex; flex-wrap: wrap; gap: .45rem;
+}
+.portal-btn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .32rem .9rem; border-radius: 50px;
+  font-family: 'Jost', sans-serif; font-size: .72rem; font-weight: 500;
+  background: var(--pearl-2); border: 1px solid var(--pearl-3);
+  color: var(--ink-mid); text-decoration: none;
+  transition: background .15s, transform .12s, border-color .15s;
+}
+.portal-btn span {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 4px;
+  background: var(--gold); color: #fff;
+  font-size: .55rem; font-weight: 700; flex-shrink: 0;
+}
+.portal-btn:hover {
+  background: var(--ink); border-color: var(--ink); color: #fff;
+  transform: translateY(-2px);
+}
+.portal-btn:hover span { background: var(--gold-lt); }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── AI REFRESH BADGE ── */
+.ai-source-note {
+  text-align:center; font-size:.7rem; color:var(--ink-lt);
+  margin-bottom:1.5rem; padding:.5rem 1rem;
+  background:rgba(184,151,60,0.08); border:1px solid rgba(184,151,60,0.2);
+  border-radius:50px; display:inline-block;
+}
+.ai-source-wrap { text-align:center; margin-bottom:1.5rem; }
+</style>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══════════════════════════════════════════════════════════════
+// FULLONBAAN LIVE JOB FETCHER
+// Uses Claude API to generate fresh, current Infor LN job listings
+// on every page load, and also drives the filter/search system.
+// ═══════════════════════════════════════════════════════════════
+
+let allJobs = [];
+const EMAIL = 'fullonbaan@gmail.com';
+
+// ── Utility ──────────────────────────────────────────────────
+function now() {
+  return new Date().toLocaleString('en-IN', {
+    day:'2-digit', month:'short', year:'numeric',
+    hour:'2-digit', minute:'2-digit', timeZoneName:'short'
+  });
+}
+
+function getMonthYear() {
+  return new Date().toLocaleString('en-US', { month:'long', year:'numeric' });
+}
+
+// ── Build platform URL from source name ──────────────────────
+function buildPlatformUrl(job) {
+  // If the job has a direct apply URL from the API, use it
+  if (job.applyUrl && job.applyUrl.startsWith('http')) return job.applyUrl;
+  // Otherwise build a search URL for the source portal
+  const t = encodeURIComponent(job.title);
+  const q = encodeURIComponent(job.title + ' ' + job.company);
+  const src = (job.source || '').toLowerCase();
+  if (src.includes('linkedin'))  return `https://www.linkedin.com/jobs/search/?keywords=${q}`;
+  if (src.includes('dice'))      return `https://www.dice.com/jobs?q=${t}&sort=date`;
+  if (src.includes('indeed'))    return `https://www.indeed.com/jobs?q=${t}&sort=date`;
+  if (src.includes('glassdoor')) return `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${t}`;
+  if (src.includes('zip'))       return `https://www.ziprecruiter.com/Jobs/${encodeURIComponent(job.title)}`;
+  if (src.includes('foundit'))   return `https://www.foundit.in/srp/results?query=${t}`;
+  if (src.includes('naukri'))    return `https://www.naukri.com/${encodeURIComponent(job.title.toLowerCase().replace(/\s+/g,'-'))}-jobs`;
+  if (src.includes('monster'))   return `https://www.foundit.in/srp/results?query=${t}`;
+  if (src.includes('simplyhired'))return `https://www.simplyhired.com/search?q=${t}`;
+  if (src.includes('techfetch')) return `https://www.techfetch.com/job/search-${encodeURIComponent(job.title.toLowerCase().replace(/\s+/g,'-'))}-jobs.aspx`;
+  if (src.includes('upwork'))    return `https://www.upwork.com/search/jobs/?q=${t}`;
+  if (src.includes('guru'))      return `https://www.guru.com/d/jobs/q/${encodeURIComponent(job.title.toLowerCase().replace(/\s+/g,'-'))}/`;
+  if (src.includes('freelancer'))return `https://www.freelancer.com/jobs/1/?q=${t}`;
+  if (src.includes('infor'))     return `https://www.infor.com/about/careers`;
+  if (src.includes('erpjobs'))   return `https://www.erpjobs.com/?s=${t}`;
+  if (src.includes('bayt'))      return `https://www.bayt.com/en/international/jobs/${encodeURIComponent(job.title.toLowerCase().replace(/\s+/g,'-'))}-jobs/`;
+  return `https://www.linkedin.com/jobs/search/?keywords=${q}`;
+}
+
+function getPlatformLabel(job) {
+  const src = (job.source || 'LinkedIn');
+  // Normalise common source names
+  const map = {
+    'linkedin':'LinkedIn','indeed':'Indeed','dice':'Dice',
+    'glassdoor':'Glassdoor','ziprecruiter':'ZipRecruiter','zip':'ZipRecruiter',
+    'foundit':'Foundit','monster':'Monster','naukri':'Naukri',
+    'simplyhired':'SimplyHired','techfetch':'TechFetch',
+    'upwork':'Upwork','guru':'Guru','freelancer':'Freelancer',
+    'infor':'Infor Careers','erpjobs':'ERPJobs','bayt':'Bayt'
+  };
+  const lower = src.toLowerCase();
+  for (const [key, label] of Object.entries(map)) {
+    if (lower.includes(key)) return label;
+  }
+  return src;
+}
+
+// ── Build apply button HTML ───────────────────────────────────
+// Strategy:
+//   1. "Apply on [Portal]"  → opens the job listing / search page on the source portal
+//   2. "Ask FOB for Referral" → mailto to fullonbaan@gmail.com with rich, job-specific body
+function applyBtn(job) {
+  const isFunctional = job.type === 'functional';
+  const cls  = isFunctional ? 'func-mailto' : 'tech-mailto';
+  const platformUrl   = buildPlatformUrl(job);
+  const platformLabel = getPlatformLabel(job);
+
+  // Rich recruiter email — use job.recruiterEmail if provided, else FOB as referral contact
+  const toEmail = (job.recruiterEmail && job.recruiterEmail.includes('@') && !job.recruiterEmail.includes('example'))
+    ? job.recruiterEmail
+    : EMAIL;
+
+  const isDirectRecruiter = toEmail !== EMAIL;
+
+  const subject = isDirectRecruiter
+    ? `Application for: ${job.title} at ${job.company}`
+    : `Referral Request: ${job.title} at ${job.company} (via FullonBaan Jobs)`;
+
+  const bodyLines = isDirectRecruiter
+    ? [
+        `Dear Hiring Team / ${job.company} Recruiter,`,
+        ``,
+        `I am writing to express my strong interest in the position of ${job.title} at ${job.company}, as listed on ${platformLabel}.`,
+        ``,
+        `Role Details:`,
+        `  • Position  : ${job.title}`,
+        `  • Company   : ${job.company}`,
+        `  • Location  : ${job.location} (${job.workMode || 'Remote'})`,
+        `  • Type      : ${job.employment || 'Contract'}`,
+        `  • Salary    : ${job.salary || 'As per discussion'}`,
+        `  • Module    : ${job.module || 'Infor LN ERP'}`,
+        `  • Source    : ${platformLabel}`,
+        ``,
+        `About Me:`,
+        `  I have hands-on experience with Infor LN / Baan ERP across ${isFunctional ? 'functional modules including Finance, SCM, Manufacturing, and Service Management' : 'technical development including 4GL, LN Studio, ION Integration, BOD, and Extensibility'}.`,
+        `  I am confident that my skills align well with the requirements of this role.`,
+        ``,
+        `I have attached my updated resume for your consideration. I would welcome the opportunity to discuss how my background fits the needs of your team.`,
+        ``,
+        `Please feel free to reach out at your convenience.`,
+        ``,
+        `Warm regards,`,
+        `[Your Full Name]`,
+        `[Your Phone Number]`,
+        `[Your LinkedIn Profile]`,
+      ]
+    : [
+        `Hi FullonBaan Team,`,
+        ``,
+        `I found the following role on the FullonBaan Jobs portal and would like your help applying or getting a referral:`,
+        ``,
+        `Job Details:`,
+        `  • Position  : ${job.title}`,
+        `  • Company   : ${job.company}`,
+        `  • Location  : ${job.location} (${job.workMode || 'Remote'})`,
+        `  • Type      : ${job.employment || 'Contract'}`,
+        `  • Salary    : ${job.salary || 'As per discussion'}`,
+        `  • Module    : ${job.module || 'Infor LN ERP'}`,
+        `  • Source    : ${platformLabel}`,
+        `  • Posted    : ${job.displayDate || 'Recently'}`,
+        ``,
+        `My Background (please edit before sending):`,
+        `  • Total Experience : [X] years in Infor LN / Baan ERP`,
+        `  • ${isFunctional ? 'Functional Modules : Finance / SCM / Manufacturing / [add yours]' : 'Technical Skills   : 4GL / LN Studio / ION / BOD / [add yours]'}`,
+        `  • Current Location : [Your City, Country]`,
+        `  • Availability     : [Immediate / [X] weeks notice]`,
+        `  • Work Preference  : Remote / Hybrid / On-site`,
+        `  • Citizenship/Visa : [e.g., US Citizen, H1B, etc.]`,
+        ``,
+        `I have attached my updated resume. Please let me know how to proceed or if you can connect me with the recruiter.`,
+        ``,
+        `Thank you,`,
+        `[Your Full Name]`,
+        `[Your Phone Number]`,
+        `[Your LinkedIn Profile]`,
+      ];
+
+  const mailto = `mailto:${toEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+
+  const svgApply = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:11px;height:11px;flex-shrink:0"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>`;
+  const svgMail  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:11px;height:11px;flex-shrink:0"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`;
+
+  const referralLabel = isDirectRecruiter ? `Email Recruiter` : `Ask FOB Referral`;
+
+  return `<div class="btn-cell">
+    <a class="btn-apply-mailto ${cls}" href="${platformUrl}" target="_blank" rel="noopener">${svgApply}&nbsp;Apply on ${platformLabel}</a>
+    <a class="btn-platform-link btn-referral" href="${mailto}">${svgMail}&nbsp;${referralLabel}</a>
+  </div>`;
+}
+
+function workBadge(mode) {
+  if (!mode) return '';
+  const m = mode.toLowerCase();
+  if (m.includes('remote')) return `<span class="badge-remote">Remote</span>`;
+  if (m.includes('hybrid')) return `<span class="badge-hybrid">Hybrid</span>`;
+  return `<span class="badge-onsite">On-Site</span>`;
+}
+
+function isNew(dateStr) {
+  // Mark as new if posted in current or last month
+  const now = new Date();
+  const d = new Date(dateStr + '-01');
+  const diff = (now.getFullYear() - d.getFullYear()) * 12 + (now.getMonth() - d.getMonth());
+  return diff <= 1;
+}
+
+// ── Render jobs to DOM ────────────────────────────────────────
+function renderJobs(jobs) {
+  const funcJobs = jobs.filter(j => j.type === 'functional');
+  const techJobs = jobs.filter(j => j.type === 'technical');
+
+  // Update stats
+  document.getElementById('stat-func').textContent = funcJobs.length;
+  document.getElementById('stat-tech').textContent = techJobs.length;
+  document.getElementById('visibleCount').textContent = jobs.length;
+  document.getElementById('totalCount').textContent = jobs.length;
+
+  // Render functional
+  const funcTbody = document.getElementById('func-tbody');
+  funcTbody.innerHTML = funcJobs.map((job, i) => {
+    const newBadge = isNew(job.posted) ? '<span class="badge-new">NEW</span>' : '';
+    return `<tr class="func-row"
+      data-type="functional"
+      data-work="${job.workMode || 'remote'}"
+      data-region="${(job.region || 'usa').toLowerCase()}"
+      data-employment="${(job.employment || 'contract').toLowerCase()}"
+      data-salary="${job.salary ? 'disclosed' : 'undisclosed'}"
+      data-module="${(job.module || 'supplychain').toLowerCase()}"
+      data-posted="${job.posted || '2026-03'}">
+      <td class="td-id func">F${i+1}</td>
+      <td class="td-title">${job.title}${newBadge}</td>
+      <td class="td-desc">${job.description}</td>
+      <td class="td-company">${job.company}</td>
+      <td class="td-location">${job.location}<br>${workBadge(job.workMode)}</td>
+      <td class="td-date">${job.displayDate || 'Mar 2026'}</td>
+      <td class="td-rate">${job.salary || 'Not Disclosed'}</td>
+      <td>${applyBtn(job)}</td>
+    </tr>`;
+  }).join('');
+
+  // Render technical
+  const techTbody = document.getElementById('tech-tbody');
+  techTbody.innerHTML = techJobs.map((job, i) => {
+    const newBadge = isNew(job.posted) ? '<span class="badge-new">NEW</span>' : '';
+    return `<tr class="tech-row"
+      data-type="technical"
+      data-work="${job.workMode || 'remote'}"
+      data-region="${(job.region || 'usa').toLowerCase()}"
+      data-employment="${(job.employment || 'contract').toLowerCase()}"
+      data-salary="${job.salary ? 'disclosed' : 'undisclosed'}"
+      data-module="${(job.module || 'architecture').toLowerCase()}"
+      data-posted="${job.posted || '2026-03'}">
+      <td class="td-id tech">T${i+1}</td>
+      <td class="td-title">${job.title}${newBadge}</td>
+      <td class="td-desc">${job.description}</td>
+      <td class="td-company">${job.company}</td>
+      <td class="td-location">${job.location}<br>${workBadge(job.workMode)}</td>
+      <td class="td-date">${job.displayDate || 'Mar 2026'}</td>
+      <td class="td-rate">${job.salary || 'Not Disclosed'}</td>
+      <td>${applyBtn(job)}</td>
+    </tr>`;
+  }).join('');
+
+  // Update counts
+  document.getElementById('func-count').textContent = `${funcJobs.length} roles`;
+  document.getElementById('tech-count').textContent = `${techJobs.length} roles`;
+
+  // Show sections
+  document.getElementById('jobs-loading').style.display = 'none';
+  document.getElementById('jobs-error').style.display = 'none';
+  document.getElementById('functional').style.display = 'flex';
+  document.getElementById('func-table').style.display = 'block';
+  document.getElementById('technical').style.display = 'flex';
+  document.getElementById('tech-table').style.display = 'block';
+
+  // Update refresh banner
+  document.getElementById('lastRefreshTime').textContent = now();
+  document.getElementById('newJobsAlert').style.display = 'inline-flex';
+
+  // Re-apply filters
+  applyFilters();
+}
+
+// ── Show job table sections ─────────────────────────────────
+function showTables() {
+  document.getElementById('jobs-loading').style.display = 'none';
+  document.getElementById('jobs-error').style.display   = 'none';
+  document.getElementById('functional').style.display   = 'flex';
+  document.getElementById('func-table').style.display   = 'block';
+  document.getElementById('technical').style.display    = 'flex';
+  document.getElementById('tech-table').style.display   = 'block';
+}
+
+// ── Claude API job fetch ─────────────────────────────────────
+async function fetchJobs() {
+  // Reset UI
+  document.getElementById('jobs-loading').style.display = 'block';
+  document.getElementById('jobs-error').style.display   = 'none';
+  document.getElementById('functional').style.display   = 'none';
+  document.getElementById('func-table').style.display   = 'none';
+  document.getElementById('technical').style.display    = 'none';
+  document.getElementById('tech-table').style.display   = 'none';
+  document.getElementById('func-tbody').innerHTML = '';
+  document.getElementById('tech-tbody').innerHTML = '';
+
+  const spinner = document.getElementById('refreshSpinner');
+  const btn     = document.getElementById('btnRefreshNow');
+  if (spinner) spinner.className = 'spinning';
+  if (btn)     btn.disabled = true;
+
+  allJobs = [];
+  let funcCount = 0, techCount = 0;
+
+  function appendJobRow(job) {
+    const isFunc = job.type === 'functional';
+    const tbody  = document.getElementById(isFunc ? 'func-tbody' : 'tech-tbody');
+    const idx    = isFunc ? ++funcCount : ++techCount;
+    const prefix = isFunc ? 'F' : 'T';
+    const cls    = isFunc ? 'func-row' : 'tech-row';
+    const idCls  = isFunc ? 'func' : 'tech';
+    const newBadge = isNew(job.posted) ? '<span class="badge-new">NEW</span>' : '';
+
+    const tr = document.createElement('tr');
+    tr.className = cls;
+    tr.dataset.type       = job.type;
+    tr.dataset.work       = job.workMode     || 'remote';
+    tr.dataset.region     = (job.region      || 'usa').toLowerCase();
+    tr.dataset.employment = (job.employment  || 'contract').toLowerCase();
+    tr.dataset.salary     = job.salary ? 'disclosed' : 'undisclosed';
+    tr.dataset.module     = (job.module      || 'architecture').toLowerCase();
+    tr.dataset.posted     = job.posted       || '2026-03';
+
+    // Slide-in animation
+    tr.style.animation = 'rowFadeIn .35s ease both';
+
+    tr.innerHTML = `
+      <td class="td-id ${idCls}">${prefix}${idx}</td>
+      <td class="td-title">${job.title}${newBadge}</td>
+      <td class="td-desc">${job.description}</td>
+      <td class="td-company">${job.company}</td>
+      <td class="td-location">${job.location}<br>${workBadge(job.workMode)}</td>
+      <td class="td-date">${job.displayDate || 'Mar 2026'}</td>
+      <td class="td-rate">${job.salary || 'Not Disclosed'}</td>
+      <td>${applyBtn(job)}</td>`;
+
+    tbody.appendChild(tr);
+    allJobs.push(job);
+
+    // Animate progress bar (target 30 jobs)
+    const bar = document.getElementById('streamBar');
+    if (bar) bar.style.width = Math.min(100, Math.round((allJobs.length / 30) * 100)) + '%';
+
+    // Update live counters
+    document.getElementById('func-count').textContent = `${funcCount} roles`;
+    document.getElementById('tech-count').textContent = `${techCount} roles`;
+    document.getElementById('stat-func').textContent  = funcCount;
+    document.getElementById('stat-tech').textContent  = techCount;
+    const total = funcCount + techCount;
+    document.getElementById('visibleCount').textContent = total;
+    document.getElementById('totalCount').textContent   = total;
+  }
+
+  try {
+    // ── Call our Vercel serverless proxy (key is server-side, never exposed) ──
+    const response = await fetch('/api/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    if (!response.ok) {
+      const errBody = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(errBody.error || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    const jobs = data.jobs;
+    if (!Array.isArray(jobs) || jobs.length === 0) throw new Error('No jobs returned from server');
+
+    allJobs = jobs;
+
+    // Show tables then render each row with staggered animation
+    showTables();
+    jobs.forEach((job, i) => {
+      setTimeout(() => {
+        appendJobRow(job);
+        applyFilters();
+      }, i * 40); // 40ms stagger — all 30 rows appear within ~1.2s
+    });
+
+    // Update progress bar to 100% when done
+    setTimeout(() => {
+      const bar = document.getElementById('streamBar');
+      if (bar) bar.style.width = '100%';
+    }, jobs.length * 40 + 100);
+
+    sessionStorage.setItem('fob_jobs', JSON.stringify({ ts: Date.now(), jobs: allJobs }));
+    document.getElementById('lastRefreshTime').textContent = now();
+    document.getElementById('newJobsAlert').style.display  = 'inline-flex';
+
+  } catch (err) {
+    console.error('Fetch error:', err);
+
+    // Show error detail on screen so it's visible
+    document.getElementById('jobs-loading').style.display = 'none';
+    document.getElementById('jobs-error').style.display   = 'block';
+    document.getElementById('error-detail').textContent   = err.message;
+
+    // Fallback chain: session cache → static jobs
+    const cached = sessionStorage.getItem('fob_jobs');
+    if (cached) {
+      try {
+        const c = JSON.parse(cached);
+        if (c.jobs?.length) {
+          allJobs = c.jobs;
+          document.getElementById('error-detail').textContent = 'Showing cached listings (' + err.message + ')';
+          showTables();
+          allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); }, i * 20));
+          return;
+        }
+      } catch {}
+    }
+    allJobs = getFallbackJobs();
+    document.getElementById('error-detail').textContent = 'Showing curated sample listings. (' + err.message + ')';
+    showTables();
+    allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+
+  } finally {
+    if (spinner) spinner.className = '';
+    if (btn)     btn.disabled = false;
+  }
+}
+
+function showError(msg) {
+  document.getElementById('jobs-loading').style.display = 'none';
+  document.getElementById('jobs-error').style.display = 'block';
+  document.getElementById('error-detail').textContent = msg || 'Unable to load jobs.';
+}
+
+// ── Fallback static jobs (used if API unavailable) ──────────
+function getFallbackJobs() {
+  return [
+    { type:'functional', title:'Infor LN Finance Consultant', description:'Implement and support Infor LN Finance modules including AR, AP, GL, and Fixed Assets. Work with US manufacturing clients on process improvements and system enhancements.', company:'Deloitte Consulting', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$85–$110/hr', module:'finance', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+finance+consultant+deloitte', recruiterEmail:'erp-staffing@deloitte.com' },
+    { type:'functional', title:'Infor LN ERP Functional Analyst — Manufacturing', description:'Support Infor LN Manufacturing and Production Control modules. Configure BOM, routing, work orders and shop floor operations for aerospace client.', company:'NTT Data Services', location:'Hybrid Chicago, IL', workMode:'hybrid', employment:'contract', salary:'$75–$95/hr', module:'manufacturing', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+manufacturing+analyst&sort=date', recruiterEmail:'recruiting@nttdata.com' },
+    { type:'functional', title:'Infor LN SCM Consultant — Logistics & Warehousing', description:'Configure and support LN Warehousing, Inventory, and Procurement modules. Conduct user training and go-live support. 6-month contract.', company:'Capgemini', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$80–$100/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+scm+consultant+capgemini&sort=date', recruiterEmail:'erp.careers@capgemini.com' },
+    { type:'functional', title:'Senior Infor LN Functional Consultant (Finance & Projects)', description:'Lead design and configuration of LN Finance and Project Management modules. Must have 8+ years Infor LN experience. Long-term W2 engagement.', company:'Right Skale Inc.', location:'Remote USA', workMode:'remote', employment:'w2', salary:'$110k–$130k/yr', module:'projects', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+functional+consultant+right+skale', recruiterEmail:'jobs@rightskale.com' },
+    { type:'functional', title:'Infor LN Baan ERP Consultant — Automotive', description:'Experienced Infor LN (formerly Baan) consultant for implementation and support. Automotive industry experience preferred. Onsite Michigan.', company:'Staffing Direct', location:'On-Site Auburn Hills, MI', workMode:'onsite', employment:'contract', salary:'$70–$90/hr', module:'automotive', region:'usa', posted:'2026-02', displayDate:'Feb 2026', source:'ZipRecruiter', applyUrl:'https://www.ziprecruiter.com/Jobs/Infor-LN-Baan-ERP-Consultant', recruiterEmail:'' },
+    { type:'functional', title:'Infor LN Functional Lead — Supply Chain', description:'Lead SCM workstream for LN 10.7 implementation. Manage requirements, design workshops, UAT and go-live. 12-month contract.', company:'HCL Technologies', location:'Hybrid San Diego, CA', workMode:'hybrid', employment:'contract', salary:'$90–$120/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+supply+chain+lead+HCL&sort=date', recruiterEmail:'erp.hiring@hcl.com' },
+    { type:'functional', title:'Infor LN Finance & Accounting Specialist', description:'Support financial close, intercompany, and multi-currency operations in Infor LN. 5+ years LN Finance required. Fulltime role with benefits.', company:'Aerospace Manufacturer', location:'On-Site Wichita, KS', workMode:'onsite', employment:'fulltime', salary:'$95k–$115k/yr', module:'finance', region:'usa', posted:'2026-02', displayDate:'Feb 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+finance+specialist+wichita&sort=date', recruiterEmail:'' },
+    { type:'functional', title:'Infor LN ERP Business Analyst — Distribution', description:'Analyze and document business requirements for LN Distribution and Order Management. Work with global teams on process standardisation.', company:'DXC Technology', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$75–$95/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+business+analyst+DXC', recruiterEmail:'erp.talent@dxc.com' },
+    { type:'functional', title:'Infor LN Functional Consultant (Finance)', description:'Hands-on LN Finance configuration, support and end-user training for manufacturing client in Bangalore. 5+ years required.', company:'Wipro Technologies', location:'Hybrid Bangalore, India', workMode:'hybrid', employment:'fulltime', salary:'₹18–25 LPA', module:'finance', region:'india', posted:'2026-03', displayDate:'Mar 2026', source:'Naukri', applyUrl:'https://www.naukri.com/infor-ln-finance-consultant-jobs', recruiterEmail:'erp.careers@wipro.com' },
+    { type:'functional', title:'Infor LN SCM Functional Expert', description:'Configure and support Infor LN Supply Chain modules for a leading Indian manufacturer. ION integration knowledge is a plus.', company:'Infosys BPM', location:'Remote India', workMode:'remote', employment:'fulltime', salary:'₹12–18 LPA', module:'supplychain', region:'india', posted:'2026-03', displayDate:'Mar 2026', source:'Foundit', applyUrl:'https://www.foundit.in/srp/results?query=infor+ln+scm+infosys', recruiterEmail:'erp.recruitment@infosys.com' },
+    { type:'functional', title:'Infor LN ERP Consultant — Middle East', description:'Support Infor LN implementation for major oil & gas company in Abu Dhabi. Finance and Projects modules. 2-year contract with housing allowance.', company:'Accenture ME', location:'On-Site Abu Dhabi, UAE', workMode:'onsite', employment:'contract', salary:'AED 25,000–35,000/mo', module:'projects', region:'middleeast', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+consultant+accenture+abu+dhabi', recruiterEmail:'middleeast.erp@accenture.com' },
+    { type:'functional', title:'Infor LN Finance Consultant — Europe', description:'Implement and configure Infor LN Finance for Dutch manufacturing client. Dutch or English fluency required. Hybrid Amsterdam.', company:'Atos SE', location:'Hybrid Amsterdam, Netherlands', workMode:'hybrid', employment:'fulltime', salary:'€80k–€100k/yr', module:'finance', region:'europe', posted:'2026-02', displayDate:'Feb 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+finance+atos+amsterdam', recruiterEmail:'erp.jobs@atos.net' },
+    { type:'functional', title:'Infor LN Manufacturing Consultant (Remote)', description:'Configure Production Planning, MRP, and Shop Floor Control in LN for global manufacturing rollout. All-remote engagement.', company:'Tata Consultancy Services', location:'Remote, Global', workMode:'remote', employment:'contract', salary:'$70–$90/hr', module:'manufacturing', region:'global', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+manufacturing+tcs+remote', recruiterEmail:'erp.hiring@tcs.com' },
+    { type:'functional', title:'Infor LN Functional Analyst — Service Management', description:'Implement LN Service and Maintenance modules for an industrial equipment company. 4+ years LN Service experience required.', company:'Client via ERPJobs', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$80–$100/hr', module:'supplychain', region:'usa', posted:'2026-02', displayDate:'Feb 2026', source:'ERPJobs', applyUrl:'https://www.erpjobs.com/?s=infor+ln+service+management', recruiterEmail:'' },
+    { type:'functional', title:'Infor LN Planning Consultant', description:'Configure MPS, MRP and Distribution Requirements Planning in Infor LN. Experience with LN Planning module mandatory. 6-month engagement.', company:'Innova Solutions', location:'Hybrid Philadelphia, PA', workMode:'hybrid', employment:'contract', salary:'$75–$95/hr', module:'projects', region:'usa', posted:'2026-02', displayDate:'Feb 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+planning+consultant+innova+solutions&sort=date', recruiterEmail:'erp.staffing@innovasolutions.com' },
+    { type:'technical', title:'Infor LN 4GL Developer — LN Studio', description:'Develop and customise Infor LN sessions using 4GL, LN Studio, and Baan Tools. Experience with triggers, DLL scripts, and menu modules. Remote US.', company:'PCG Technical Practice', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$85–$110/hr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+4gl+developer+PCG&sort=date', recruiterEmail:'erp@pcgconsulting.com' },
+    { type:'technical', title:'Infor ION Integration Developer', description:'Design and implement Infor ION BOD flows, connection points, and IDM integrations. Experience with REST APIs, XML, and BOD framework required.', company:'Deloitte Digital', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$100–$130/hr', module:'integration', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ion+integration+developer+deloitte', recruiterEmail:'erp-staffing@deloitte.com' },
+    { type:'technical', title:'Infor LN Technical Architect — LN 10.7 Migration', description:'Lead technical architecture for LN 10.5 to 10.7 Multisite migration. Architect, code and delegate to offshore team. 12-month contract, San Diego.', company:'Innova Solutions', location:'Hybrid San Diego, CA', workMode:'hybrid', employment:'contract', salary:'$110–$140/hr', module:'architecture', region:'usa', posted:'2026-02', displayDate:'Feb 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+technical+architect+innova+san+diego&sort=date', recruiterEmail:'erp.staffing@innovasolutions.com' },
+    { type:'technical', title:'Infor LN Developer — Extensibility & Hooks', description:'Develop LN Extensibility solutions using hook scripts, UI scripts, and business logic hooks. Experience with Infor LN 10.x required.', company:'NTT Data Services', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$90–$115/hr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+extensibility+developer+ntt+data', recruiterEmail:'recruiting@nttdata.com' },
+    { type:'technical', title:'Infor BOD Developer / Integration Consultant', description:'Create and maintain Infor BOD schemas for integration with external systems. Deep XML/JSON and Infor ION experience needed.', company:'Capgemini', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$95–$120/hr', module:'integration', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'ZipRecruiter', applyUrl:'https://www.ziprecruiter.com/Jobs/Infor-BOD-Integration-Consultant', recruiterEmail:'erp.careers@capgemini.com' },
+    { type:'technical', title:'Techno-Functional Consultant — Infor LN 10.4', description:'Support and enhance Infor LN 10.4 ERP. Blended role requiring LN Studio, ION, and functional Finance/SCM knowledge. W2 long-term.', company:'Right Skale Inc.', location:'Remote, USA', workMode:'remote', employment:'w2', salary:'$100k/yr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+techno+functional+right+skale&sort=date', recruiterEmail:'jobs@rightskale.com' },
+    { type:'technical', title:'Infor LN ERP Technical Consultant — Baan/LN 8+ yrs', description:'Technical consulting for requirements analysis, process mapping, and implementation. Infor LN 10x version expertise mandatory.', company:'PCG Technical Practice', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'Not Disclosed', module:'architecture', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+technical+consultant+PCG&sort=date', recruiterEmail:'erp@pcgconsulting.com' },
+    { type:'technical', title:'Senior Infor LN Developer — Finance Customisation', description:'Develop custom sessions and reports in LN Finance area using 4GL. Support complex multi-company, multi-currency configurations.', company:'Aerospace Client via Staffing', location:'On-Site Wichita, KS', workMode:'onsite', employment:'contract', salary:'$90–$115/hr', module:'finance', region:'usa', posted:'2026-02', displayDate:'Feb 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+finance+developer+wichita&sort=date', recruiterEmail:'' },
+    { type:'technical', title:'Infor LN ION & IDM Specialist', description:'Configure Infor ION workflows, IDM document management, and cloud connector integrations. Knowledge of Infor OS and Ming.le preferred.', company:'DXC Technology', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$95–$125/hr', module:'integration', region:'usa', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ion+idm+specialist+DXC', recruiterEmail:'erp.talent@dxc.com' },
+    { type:'technical', title:'Infor LN Technical Developer (India)', description:'Develop LN 4GL customisations, reports, and integrations for Indian manufacturing client. 4+ years Baan/LN development required.', company:'HCL Technologies', location:'Hybrid Pune, India', workMode:'hybrid', employment:'fulltime', salary:'₹15–22 LPA', module:'architecture', region:'india', posted:'2026-03', displayDate:'Mar 2026', source:'Naukri', applyUrl:'https://www.naukri.com/infor-ln-developer-jobs-in-pune', recruiterEmail:'erp.hiring@hcl.com' },
+    { type:'technical', title:'Infor ION Integration Consultant (India)', description:'Build and maintain ION BOD integrations between LN and third-party systems. REST API and XML expertise required. Bangalore based.', company:'Infosys', location:'Remote India', workMode:'remote', employment:'fulltime', salary:'₹12–18 LPA', module:'integration', region:'india', posted:'2026-03', displayDate:'Mar 2026', source:'Foundit', applyUrl:'https://www.foundit.in/srp/results?query=infor+ion+consultant+infosys+bangalore', recruiterEmail:'erp.recruitment@infosys.com' },
+    { type:'technical', title:'Infor LN Technical Consultant — ME Rollout', description:'Technical development and support for Infor LN rollout in Saudi Arabia. 4GL development, ION integration, and Arabic language support.', company:'Accenture ME', location:'On-Site Riyadh, Saudi Arabia', workMode:'onsite', employment:'contract', salary:'SAR 30,000–45,000/mo', module:'architecture', region:'middleeast', posted:'2026-02', displayDate:'Feb 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+consultant+accenture+riyadh', recruiterEmail:'middleeast.erp@accenture.com' },
+    { type:'technical', title:'Infor LN Developer — Freelance / Remote Project', description:'3-month freelance engagement: develop custom LN sessions for Manufacturing Planning module. All-remote. Strong 4GL + LN Studio required.', company:'Client via Upwork', location:'Remote, Global', workMode:'remote', employment:'contract', salary:'$60–$85/hr', module:'manufacturing', region:'global', posted:'2026-03', displayDate:'Mar 2026', source:'Upwork', applyUrl:'https://www.upwork.com/search/jobs/?q=infor+ln+developer+4gl', recruiterEmail:'' },
+    { type:'technical', title:'Infor LN Administration & Performance Tuning', description:'LN system administration, user management, performance tuning, and upgrade support. Experience with LN 10.6/10.7 and Oracle DB required.', company:'Manufacturing Company', location:'Hybrid Melbourne, Australia', workMode:'hybrid', employment:'fulltime', salary:'A$120k–$145k/yr', module:'architecture', region:'australia', posted:'2026-02', displayDate:'Feb 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+administrator+melbourne', recruiterEmail:'' },
+    { type:'technical', title:'Infor LN Full-Stack ERP Developer — Europe', description:'Develop end-to-end LN customisations including UI, 4GL back-end, and ION integrations. Dutch manufacturing sector experience preferred.', company:'Sogeti Netherlands', location:'Hybrid Eindhoven, Netherlands', workMode:'hybrid', employment:'fulltime', salary:'€75k–€95k/yr', module:'architecture', region:'europe', posted:'2026-03', displayDate:'Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+developer+sogeti+eindhoven', recruiterEmail:'erp.careers@sogeti.com' }
+  ];
+}
+
+// ── Filter system ────────────────────────────────────────────
+const activeFilters = { type:'all', work:'all', region:'all', employment:'all', salary:'all', module:'all', recency:'all' };
+
+function applyFilters() {
+  const searchTerm = (document.getElementById('searchBox')?.value || '').toLowerCase();
+  const allRows = document.querySelectorAll('.func-row, .tech-row');
+  let visible = 0;
+
+  allRows.forEach(row => {
+    const type = row.dataset.type || '';
+    const work = row.dataset.work || '';
+    const region = row.dataset.region || '';
+    const emp = row.dataset.employment || '';
+    const sal = row.dataset.salary || '';
+    const mod = row.dataset.module || '';
+    const posted = row.dataset.posted || '';
+
+    let show = true;
+    if (activeFilters.type !== 'all' && type !== activeFilters.type) show = false;
+    if (activeFilters.work !== 'all' && work !== activeFilters.work) show = false;
+    if (activeFilters.region !== 'all' && region !== activeFilters.region) show = false;
+    if (activeFilters.employment !== 'all' && emp !== activeFilters.employment) show = false;
+    if (activeFilters.salary !== 'all' && sal !== activeFilters.salary) show = false;
+    if (activeFilters.module !== 'all' && mod !== activeFilters.module) show = false;
+    if (activeFilters.recency !== 'all') {
+      const now = new Date();
+      const d = new Date(posted + '-01');
+      const months = (now.getFullYear() - d.getFullYear()) * 12 + (now.getMonth() - d.getMonth());
+      if (activeFilters.recency === '1month' && months > 1) show = false;
+      if (activeFilters.recency === '2months' && months > 2) show = false;
+      if (activeFilters.recency === '3months' && months > 3) show = false;
+    }
+
+    if (show && searchTerm) {
+      const text = row.textContent.toLowerCase();
+      if (!text.includes(searchTerm)) show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  document.getElementById('visibleCount').textContent = visible;
+
+  // Update live counts
+  const funcVisible = [...document.querySelectorAll('.func-row')].filter(r => r.style.display !== 'none').length;
+  const techVisible = [...document.querySelectorAll('.tech-row')].filter(r => r.style.display !== 'none').length;
+  if (document.getElementById('func-count')) document.getElementById('func-count').textContent = `${funcVisible} shown`;
+  if (document.getElementById('tech-count')) document.getElementById('tech-count').textContent = `${techVisible} shown`;
+}
+
+// Chip filter clicks
+document.querySelectorAll('.chip[data-val]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const group = chip.closest('[data-group]')?.dataset.group;
+    if (!group) return;
+    chip.closest('[data-group]').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilters[group] = chip.dataset.val;
+    applyFilters();
+  });
+});
+
+document.getElementById('searchBox')?.addEventListener('input', applyFilters);
+document.getElementById('clearFilters')?.addEventListener('click', () => {
+  document.querySelectorAll('.chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.val === 'all');
+  });
+  Object.keys(activeFilters).forEach(k => activeFilters[k] = 'all');
+  if (document.getElementById('searchBox')) document.getElementById('searchBox').value = '';
+  applyFilters();
+});
+
+// ── Countdown timer ──────────────────────────────────────────
+function startCountdown() {
+  // Refresh every 6 hours
+  let secs = 6 * 3600;
+  const el = document.getElementById('countdownDisplay');
+  const interval = setInterval(() => {
+    if (secs <= 0) {
+      clearInterval(interval);
+      fetchJobs();
+      return;
+    }
+    secs--;
+    const h = Math.floor(secs / 3600).toString().padStart(2, '0');
+    const m = Math.floor((secs % 3600) / 60).toString().padStart(2, '0');
+    const s = (secs % 60).toString().padStart(2, '0');
+    if (el) el.textContent = `${h}:${m}:${s}`;
+  }, 1000);
+}
+
+// ── Manual refresh button ────────────────────────────────────
+function triggerManualRefresh() { fetchJobs(); }
+
+// ── Init ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('lastRefreshTime').textContent = 'Fetching now…';
+  
+  // Check
