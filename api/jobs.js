@@ -36,8 +36,8 @@ Key rules:
 - employment: "contract" | "fulltime" | "w2" | "c2c"
 - module: "finance" | "manufacturing" | "supplychain" | "integration" | "projects" | "architecture" | "automotive"
 - region: "usa" | "india" | "middleeast" | "europe" | "australia" | "global"
-- posted: "2026-03" or "2026-02"
-- displayDate: "Mar 2026" or "Feb 2026"
+- posted: a realistic specific date in "DD MMM YYYY" format, mostly within the last 14 days (e.g. "10 Mar 2026", "05 Mar 2026", "28 Feb 2026"). Vary the dates.
+- displayDate: same as posted (e.g. "10 Mar 2026")
 - description: 15-20 words max
 - applyUrl: realistic URL for that source portal
 - recruiterEmail: company domain email (e.g. erp@deloitte.com) or "" if anonymous
