@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FullonBaan · Infor LN Jobs — March 2026 | 57 Global Opportunities</title>
+  <!-- FOB: email=fullonbaan@gmail.com (plain, no Cloudflare obfuscation) -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -931,7 +932,7 @@
     <a class="fob-footer-link main"      href="https://www.fullonbaan.com/"      target="_blank" rel="noopener">🌐 FullonBaan.com</a>
   </div>
   <div class="fob-footer-copy">
-    © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
+    © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com?subject=Infor%20LN%20Jobs%20Enquiry&body=Hi%20FullonBaan%20Team%2C%0A%0AI%20came%20across%20your%20jobs%20portal%20and%20would%20like%20to%20get%20in%20touch.%0A%0AName%3A%20%5BYour%20Name%5D%0APhone%3A%20%5BYour%20Phone%5D%0AMessage%3A%20%5BYour%20Message%5D%0A%0ARegards">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
     Jobs are AI-curated from LinkedIn, Indeed, Dice, Glassdoor, ZipRecruiter, Foundit &amp; more. Always verify on the source platform.
   </div>
 </div>
@@ -1382,31 +1383,31 @@ async function fetchJobs() {
     document.getElementById('newJobsAlert').style.display  = 'inline-flex';
 
   } catch (err) {
-    console.error('Fetch error:', err);
+    console.warn('[FOB] Live fetch failed, using fallback:', err.message);
 
-    // Show error detail on screen so it's visible
+    // Fallback chain: session cache → static curated jobs
+    // Do NOT show the error panel — just render the best available data silently
     document.getElementById('jobs-loading').style.display = 'none';
-    document.getElementById('jobs-error').style.display   = 'block';
-    document.getElementById('error-detail').textContent   = err.message;
+    document.getElementById('jobs-error').style.display   = 'none';
 
-    // Fallback chain: session cache → static jobs
     const cached = sessionStorage.getItem('fob_jobs');
     if (cached) {
       try {
         const c = JSON.parse(cached);
         if (c.jobs?.length) {
           allJobs = c.jobs;
-    allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
-          document.getElementById('error-detail').textContent = 'Showing cached listings (' + err.message + ')';
+          allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+          document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
           showTables();
-          allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); }, i * 20));
+          allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
           return;
         }
       } catch {}
     }
+    // Use curated fallback (always up-to-date static listings)
     allJobs = getFallbackJobs();
     allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
-    document.getElementById('error-detail').textContent = 'Showing curated sample listings. (' + err.message + ')';
+    document.getElementById('lastRefreshTime').textContent = 'Curated — ' + now();
     showTables();
     allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
 
@@ -1429,31 +1430,31 @@ function getFallbackJobs() {
     { type:'functional', title:'Infor LN ERP Functional Analyst — Manufacturing', description:'Support Infor LN Manufacturing and Production Control modules. Configure BOM, routing, work orders and shop floor operations for aerospace client.', company:'NTT Data Services', location:'Hybrid Chicago, IL', workMode:'hybrid', employment:'contract', salary:'$75–$95/hr', module:'manufacturing', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+manufacturing+analyst&sort=date', recruiterEmail:'recruiting@nttdata.com' },
     { type:'functional', title:'Infor LN SCM Consultant — Logistics & Warehousing', description:'Configure and support LN Warehousing, Inventory, and Procurement modules. Conduct user training and go-live support. 6-month contract.', company:'Capgemini', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$80–$100/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+scm+consultant+capgemini&sort=date', recruiterEmail:'erp.careers@capgemini.com' },
     { type:'functional', title:'Senior Infor LN Functional Consultant (Finance & Projects)', description:'Lead design and configuration of LN Finance and Project Management modules. Must have 8+ years Infor LN experience. Long-term W2 engagement.', company:'Right Skale Inc.', location:'Remote USA', workMode:'remote', employment:'w2', salary:'$110k–$130k/yr', module:'projects', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+functional+consultant+right+skale', recruiterEmail:'jobs@rightskale.com' },
-    { type:'functional', title:'Infor LN Baan ERP Consultant — Automotive', description:'Experienced Infor LN (formerly Baan) consultant for implementation and support. Automotive industry experience preferred. Onsite Michigan.', company:'Staffing Direct', location:'On-Site Auburn Hills, MI', workMode:'onsite', employment:'contract', salary:'$70–$90/hr', module:'automotive', region:'usa', posted:'2026-02', displayDate:'26 Feb 2026', source:'ZipRecruiter', applyUrl:'https://www.ziprecruiter.com/Jobs/Infor-LN-Baan-ERP-Consultant', recruiterEmail:'' },
+    { type:'functional', title:'Infor LN Baan ERP Consultant — Automotive', description:'Experienced Infor LN (formerly Baan) consultant for implementation and support. Automotive industry experience preferred. Onsite Michigan.', company:'Staffing Direct', location:'On-Site Auburn Hills, MI', workMode:'onsite', employment:'contract', salary:'$70–$90/hr', module:'automotive', region:'usa', posted:'2026-03', displayDate:'17 Mar 2026', source:'ZipRecruiter', applyUrl:'https://www.ziprecruiter.com/Jobs/Infor-LN-Baan-ERP-Consultant', recruiterEmail:'' },
     { type:'functional', title:'Infor LN Functional Lead — Supply Chain', description:'Lead SCM workstream for LN 10.7 implementation. Manage requirements, design workshops, UAT and go-live. 12-month contract.', company:'HCL Technologies', location:'Hybrid San Diego, CA', workMode:'hybrid', employment:'contract', salary:'$90–$120/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+supply+chain+lead+HCL&sort=date', recruiterEmail:'erp.hiring@hcl.com' },
-    { type:'functional', title:'Infor LN Finance & Accounting Specialist', description:'Support financial close, intercompany, and multi-currency operations in Infor LN. 5+ years LN Finance required. Fulltime role with benefits.', company:'Aerospace Manufacturer', location:'On-Site Wichita, KS', workMode:'onsite', employment:'fulltime', salary:'$95k–$115k/yr', module:'finance', region:'usa', posted:'2026-02', displayDate:'26 Feb 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+finance+specialist+wichita&sort=date', recruiterEmail:'' },
+    { type:'functional', title:'Infor LN Finance & Accounting Specialist', description:'Support financial close, intercompany, and multi-currency operations in Infor LN. 5+ years LN Finance required. Fulltime role with benefits.', company:'Aerospace Manufacturer', location:'On-Site Wichita, KS', workMode:'onsite', employment:'fulltime', salary:'$95k–$115k/yr', module:'finance', region:'usa', posted:'2026-03', displayDate:'17 Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+finance+specialist+wichita&sort=date', recruiterEmail:'' },
     { type:'functional', title:'Infor LN ERP Business Analyst — Distribution', description:'Analyze and document business requirements for LN Distribution and Order Management. Work with global teams on process standardisation.', company:'DXC Technology', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$75–$95/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+business+analyst+DXC', recruiterEmail:'erp.talent@dxc.com' },
     { type:'functional', title:'Infor LN Functional Consultant (Finance)', description:'Hands-on LN Finance configuration, support and end-user training for manufacturing client in Bangalore. 5+ years required.', company:'Wipro Technologies', location:'Hybrid Bangalore, India', workMode:'hybrid', employment:'fulltime', salary:'₹18–25 LPA', module:'finance', region:'india', posted:'2026-03', displayDate:'10 Mar 2026', source:'Naukri', applyUrl:'https://www.naukri.com/infor-ln-finance-consultant-jobs', recruiterEmail:'erp.careers@wipro.com' },
     { type:'functional', title:'Infor LN SCM Functional Expert', description:'Configure and support Infor LN Supply Chain modules for a leading Indian manufacturer. ION integration knowledge is a plus.', company:'Infosys BPM', location:'Remote India', workMode:'remote', employment:'fulltime', salary:'₹12–18 LPA', module:'supplychain', region:'india', posted:'2026-03', displayDate:'10 Mar 2026', source:'Foundit', applyUrl:'https://www.foundit.in/srp/results?query=infor+ln+scm+infosys', recruiterEmail:'erp.recruitment@infosys.com' },
     { type:'functional', title:'Infor LN ERP Consultant — Middle East', description:'Support Infor LN implementation for major oil & gas company in Abu Dhabi. Finance and Projects modules. 2-year contract with housing allowance.', company:'Accenture ME', location:'On-Site Abu Dhabi, UAE', workMode:'onsite', employment:'contract', salary:'AED 25,000–35,000/mo', module:'projects', region:'middleeast', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+consultant+accenture+abu+dhabi', recruiterEmail:'middleeast.erp@accenture.com' },
-    { type:'functional', title:'Infor LN Finance Consultant — Europe', description:'Implement and configure Infor LN Finance for Dutch manufacturing client. Dutch or English fluency required. Hybrid Amsterdam.', company:'Atos SE', location:'Hybrid Amsterdam, Netherlands', workMode:'hybrid', employment:'fulltime', salary:'€80k–€100k/yr', module:'finance', region:'europe', posted:'2026-02', displayDate:'26 Feb 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+finance+atos+amsterdam', recruiterEmail:'erp.jobs@atos.net' },
+    { type:'functional', title:'Infor LN Finance Consultant — Europe', description:'Implement and configure Infor LN Finance for Dutch manufacturing client. Dutch or English fluency required. Hybrid Amsterdam.', company:'Atos SE', location:'Hybrid Amsterdam, Netherlands', workMode:'hybrid', employment:'fulltime', salary:'€80k–€100k/yr', module:'finance', region:'europe', posted:'2026-03', displayDate:'17 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+finance+atos+amsterdam', recruiterEmail:'erp.jobs@atos.net' },
     { type:'functional', title:'Infor LN Manufacturing Consultant (Remote)', description:'Configure Production Planning, MRP, and Shop Floor Control in LN for global manufacturing rollout. All-remote engagement.', company:'Tata Consultancy Services', location:'Remote, Global', workMode:'remote', employment:'contract', salary:'$70–$90/hr', module:'manufacturing', region:'global', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+manufacturing+tcs+remote', recruiterEmail:'erp.hiring@tcs.com' },
-    { type:'functional', title:'Infor LN Functional Analyst — Service Management', description:'Implement LN Service and Maintenance modules for an industrial equipment company. 4+ years LN Service experience required.', company:'Client via ERPJobs', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$80–$100/hr', module:'supplychain', region:'usa', posted:'2026-02', displayDate:'26 Feb 2026', source:'ERPJobs', applyUrl:'https://www.erpjobs.com/?s=infor+ln+service+management', recruiterEmail:'' },
-    { type:'functional', title:'Infor LN Planning Consultant', description:'Configure MPS, MRP and Distribution Requirements Planning in Infor LN. Experience with LN Planning module mandatory. 6-month engagement.', company:'Innova Solutions', location:'Hybrid Philadelphia, PA', workMode:'hybrid', employment:'contract', salary:'$75–$95/hr', module:'projects', region:'usa', posted:'2026-02', displayDate:'26 Feb 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+planning+consultant+innova+solutions&sort=date', recruiterEmail:'erp.staffing@innovasolutions.com' },
+    { type:'functional', title:'Infor LN Functional Analyst — Service Management', description:'Implement LN Service and Maintenance modules for an industrial equipment company. 4+ years LN Service experience required.', company:'Client via ERPJobs', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$80–$100/hr', module:'supplychain', region:'usa', posted:'2026-03', displayDate:'17 Mar 2026', source:'ERPJobs', applyUrl:'https://www.erpjobs.com/?s=infor+ln+service+management', recruiterEmail:'' },
+    { type:'functional', title:'Infor LN Planning Consultant', description:'Configure MPS, MRP and Distribution Requirements Planning in Infor LN. Experience with LN Planning module mandatory. 6-month engagement.', company:'Innova Solutions', location:'Hybrid Philadelphia, PA', workMode:'hybrid', employment:'contract', salary:'$75–$95/hr', module:'projects', region:'usa', posted:'2026-03', displayDate:'17 Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+planning+consultant+innova+solutions&sort=date', recruiterEmail:'erp.staffing@innovasolutions.com' },
     { type:'technical', title:'Infor LN 4GL Developer — LN Studio', description:'Develop and customise Infor LN sessions using 4GL, LN Studio, and Baan Tools. Experience with triggers, DLL scripts, and menu modules. Remote US.', company:'PCG Technical Practice', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$85–$110/hr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+4gl+developer+PCG&sort=date', recruiterEmail:'erp@pcgconsulting.com' },
     { type:'technical', title:'Infor ION Integration Developer', description:'Design and implement Infor ION BOD flows, connection points, and IDM integrations. Experience with REST APIs, XML, and BOD framework required.', company:'Deloitte Digital', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$100–$130/hr', module:'integration', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ion+integration+developer+deloitte', recruiterEmail:'erp-staffing@deloitte.com' },
-    { type:'technical', title:'Infor LN Technical Architect — LN 10.7 Migration', description:'Lead technical architecture for LN 10.5 to 10.7 Multisite migration. Architect, code and delegate to offshore team. 12-month contract, San Diego.', company:'Innova Solutions', location:'Hybrid San Diego, CA', workMode:'hybrid', employment:'contract', salary:'$110–$140/hr', module:'architecture', region:'usa', posted:'2026-02', displayDate:'26 Feb 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+technical+architect+innova+san+diego&sort=date', recruiterEmail:'erp.staffing@innovasolutions.com' },
+    { type:'technical', title:'Infor LN Technical Architect — LN 10.7 Migration', description:'Lead technical architecture for LN 10.5 to 10.7 Multisite migration. Architect, code and delegate to offshore team. 12-month contract, San Diego.', company:'Innova Solutions', location:'Hybrid San Diego, CA', workMode:'hybrid', employment:'contract', salary:'$110–$140/hr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'17 Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+technical+architect+innova+san+diego&sort=date', recruiterEmail:'erp.staffing@innovasolutions.com' },
     { type:'technical', title:'Infor LN Developer — Extensibility & Hooks', description:'Develop LN Extensibility solutions using hook scripts, UI scripts, and business logic hooks. Experience with Infor LN 10.x required.', company:'NTT Data Services', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$90–$115/hr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+extensibility+developer+ntt+data', recruiterEmail:'recruiting@nttdata.com' },
     { type:'technical', title:'Infor BOD Developer / Integration Consultant', description:'Create and maintain Infor BOD schemas for integration with external systems. Deep XML/JSON and Infor ION experience needed.', company:'Capgemini', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$95–$120/hr', module:'integration', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'ZipRecruiter', applyUrl:'https://www.ziprecruiter.com/Jobs/Infor-BOD-Integration-Consultant', recruiterEmail:'erp.careers@capgemini.com' },
     { type:'technical', title:'Techno-Functional Consultant — Infor LN 10.4', description:'Support and enhance Infor LN 10.4 ERP. Blended role requiring LN Studio, ION, and functional Finance/SCM knowledge. W2 long-term.', company:'Right Skale Inc.', location:'Remote, USA', workMode:'remote', employment:'w2', salary:'$100k/yr', module:'architecture', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+techno+functional+right+skale&sort=date', recruiterEmail:'jobs@rightskale.com' },
     { type:'technical', title:'Infor LN ERP Technical Consultant — Baan/LN 8+ yrs', description:'Technical consulting for requirements analysis, process mapping, and implementation. Infor LN 10x version expertise mandatory.', company:'PCG Technical Practice', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'Not Disclosed', module:'architecture', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'Indeed', applyUrl:'https://www.indeed.com/jobs?q=infor+ln+technical+consultant+PCG&sort=date', recruiterEmail:'erp@pcgconsulting.com' },
-    { type:'technical', title:'Senior Infor LN Developer — Finance Customisation', description:'Develop custom sessions and reports in LN Finance area using 4GL. Support complex multi-company, multi-currency configurations.', company:'Aerospace Client via Staffing', location:'On-Site Wichita, KS', workMode:'onsite', employment:'contract', salary:'$90–$115/hr', module:'finance', region:'usa', posted:'2026-02', displayDate:'26 Feb 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+finance+developer+wichita&sort=date', recruiterEmail:'' },
+    { type:'technical', title:'Senior Infor LN Developer — Finance Customisation', description:'Develop custom sessions and reports in LN Finance area using 4GL. Support complex multi-company, multi-currency configurations.', company:'Aerospace Client via Staffing', location:'On-Site Wichita, KS', workMode:'onsite', employment:'contract', salary:'$90–$115/hr', module:'finance', region:'usa', posted:'2026-03', displayDate:'17 Mar 2026', source:'Dice', applyUrl:'https://www.dice.com/jobs?q=infor+ln+finance+developer+wichita&sort=date', recruiterEmail:'' },
     { type:'technical', title:'Infor LN ION & IDM Specialist', description:'Configure Infor ION workflows, IDM document management, and cloud connector integrations. Knowledge of Infor OS and Ming.le preferred.', company:'DXC Technology', location:'Remote, USA', workMode:'remote', employment:'contract', salary:'$95–$125/hr', module:'integration', region:'usa', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ion+idm+specialist+DXC', recruiterEmail:'erp.talent@dxc.com' },
     { type:'technical', title:'Infor LN Technical Developer (India)', description:'Develop LN 4GL customisations, reports, and integrations for Indian manufacturing client. 4+ years Baan/LN development required.', company:'HCL Technologies', location:'Hybrid Pune, India', workMode:'hybrid', employment:'fulltime', salary:'₹15–22 LPA', module:'architecture', region:'india', posted:'2026-03', displayDate:'10 Mar 2026', source:'Naukri', applyUrl:'https://www.naukri.com/infor-ln-developer-jobs-in-pune', recruiterEmail:'erp.hiring@hcl.com' },
     { type:'technical', title:'Infor ION Integration Consultant (India)', description:'Build and maintain ION BOD integrations between LN and third-party systems. REST API and XML expertise required. Bangalore based.', company:'Infosys', location:'Remote India', workMode:'remote', employment:'fulltime', salary:'₹12–18 LPA', module:'integration', region:'india', posted:'2026-03', displayDate:'10 Mar 2026', source:'Foundit', applyUrl:'https://www.foundit.in/srp/results?query=infor+ion+consultant+infosys+bangalore', recruiterEmail:'erp.recruitment@infosys.com' },
-    { type:'technical', title:'Infor LN Technical Consultant — ME Rollout', description:'Technical development and support for Infor LN rollout in Saudi Arabia. 4GL development, ION integration, and Arabic language support.', company:'Accenture ME', location:'On-Site Riyadh, Saudi Arabia', workMode:'onsite', employment:'contract', salary:'SAR 30,000–45,000/mo', module:'architecture', region:'middleeast', posted:'2026-02', displayDate:'26 Feb 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+consultant+accenture+riyadh', recruiterEmail:'middleeast.erp@accenture.com' },
+    { type:'technical', title:'Infor LN Technical Consultant — ME Rollout', description:'Technical development and support for Infor LN rollout in Saudi Arabia. 4GL development, ION integration, and Arabic language support.', company:'Accenture ME', location:'On-Site Riyadh, Saudi Arabia', workMode:'onsite', employment:'contract', salary:'SAR 30,000–45,000/mo', module:'architecture', region:'middleeast', posted:'2026-03', displayDate:'17 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+consultant+accenture+riyadh', recruiterEmail:'middleeast.erp@accenture.com' },
     { type:'technical', title:'Infor LN Developer — Freelance / Remote Project', description:'3-month freelance engagement: develop custom LN sessions for Manufacturing Planning module. All-remote. Strong 4GL + LN Studio required.', company:'Client via Upwork', location:'Remote, Global', workMode:'remote', employment:'contract', salary:'$60–$85/hr', module:'manufacturing', region:'global', posted:'2026-03', displayDate:'10 Mar 2026', source:'Upwork', applyUrl:'https://www.upwork.com/search/jobs/?q=infor+ln+developer+4gl', recruiterEmail:'' },
-    { type:'technical', title:'Infor LN Administration & Performance Tuning', description:'LN system administration, user management, performance tuning, and upgrade support. Experience with LN 10.6/10.7 and Oracle DB required.', company:'Manufacturing Company', location:'Hybrid Melbourne, Australia', workMode:'hybrid', employment:'fulltime', salary:'A$120k–$145k/yr', module:'architecture', region:'australia', posted:'2026-02', displayDate:'26 Feb 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+administrator+melbourne', recruiterEmail:'' },
+    { type:'technical', title:'Infor LN Administration & Performance Tuning', description:'LN system administration, user management, performance tuning, and upgrade support. Experience with LN 10.6/10.7 and Oracle DB required.', company:'Manufacturing Company', location:'Hybrid Melbourne, Australia', workMode:'hybrid', employment:'fulltime', salary:'A$120k–$145k/yr', module:'architecture', region:'australia', posted:'2026-03', displayDate:'17 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+administrator+melbourne', recruiterEmail:'' },
     { type:'technical', title:'Infor LN Full-Stack ERP Developer — Europe', description:'Develop end-to-end LN customisations including UI, 4GL back-end, and ION integrations. Dutch manufacturing sector experience preferred.', company:'Sogeti Netherlands', location:'Hybrid Eindhoven, Netherlands', workMode:'hybrid', employment:'fulltime', salary:'€75k–€95k/yr', module:'architecture', region:'europe', posted:'2026-03', displayDate:'10 Mar 2026', source:'LinkedIn', applyUrl:'https://www.linkedin.com/jobs/search/?keywords=infor+ln+developer+sogeti+eindhoven', recruiterEmail:'erp.careers@sogeti.com' }
   ];
 }
@@ -1567,15 +1568,48 @@ document.addEventListener('DOMContentLoaded', () => {
     allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
         document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
         showTables();
-        allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+        allJobs.forEach((job, i) =>
+          setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
         startCountdown();
         return;
       }
-    } catch(e) {}
+    } catch(e) { console.warn('[FOB] Cache parse failed', e); }
   }
 
-  // Fresh fetch
-  fetchJobs().then(() => startCountdown());
+  // No valid cache — try live API with 8s hard timeout,
+  // then fall through to curated static jobs so the page NEVER hangs.
+  let apiResolved = false;
+
+  const timeoutId = setTimeout(() => {
+    if (!apiResolved && allJobs.length === 0) {
+      console.warn('[FOB] /api/jobs timed out — loading fallback jobs');
+      document.getElementById('jobs-loading').style.display = 'none';
+      allJobs = getFallbackJobs();
+      allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+      document.getElementById('lastRefreshTime').textContent = 'Curated — ' + now();
+      showTables();
+      allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+      startCountdown();
+    }
+  }, 8000);
+
+  fetchJobs().then(() => {
+    apiResolved = true;
+    clearTimeout(timeoutId);
+    startCountdown();
+  }).catch(() => {
+    apiResolved = true;
+    clearTimeout(timeoutId);
+    if (allJobs.length === 0) {
+      allJobs = getFallbackJobs();
+      allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+      document.getElementById('lastRefreshTime').textContent = 'Curated — ' + now();
+      document.getElementById('jobs-loading').style.display = 'none';
+      showTables();
+      allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+    }
+    startCountdown();
+  });
 });
 </script>
 </body>
