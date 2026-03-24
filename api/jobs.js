@@ -2,6 +2,9 @@
 // Secure proxy: Anthropic API key stays server-side, never in the browser.
 // Set ANTHROPIC_API_KEY in Vercel project → Settings → Environment Variables.
 
+// Allow up to 30s for the Anthropic API round-trip (Hobby plan caps at 10s; Pro at 60s)
+module.exports.config = { maxDuration: 30 };
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
