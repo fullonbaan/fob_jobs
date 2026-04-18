@@ -1,28 +1,14 @@
 // api/jobs.js — Vercel Serverless Function (Node.js 18+)
-// Secure proxy: Anthropic API key stays server-side, never in the browser.
-// Set ANTHROPIC_API_KEY in Vercel project → Settings → Environment Variables.
+// Free LLM provider chain: Groq (primary) → Google Gemini Flash (secondary)
+// Set GROQ_API_KEY and/or GEMINI_API_KEY in Vercel → Settings → Environment Variables.
+// Both are 100% free — no credit card needed for the free tiers.
 
-// Allow up to 30s for the Anthropic API round-trip (Hobby plan caps at 10s; Pro at 60s)
 module.exports.config = { maxDuration: 30 };
 
-module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
-
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({
-      error: 'ANTHROPIC_API_KEY is not set. Add it in Vercel → Settings → Environment Variables, then redeploy.'
-    });
-  }
-
+// ── Shared prompt ────────────────────────────────────────────────────────────
+function buildPrompt() {
   const monthYear = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
-
-  const prompt = `Generate a JSON object containing an array of 30 current Infor LN / Baan ERP job openings as of ${monthYear}.
+  return `Generate a JSON object containing an array of 30 current Infor LN / Baan ERP job openings as of ${monthYear}.
 
 Mix: 15 functional + 15 technical.
 Regions: USA 60%, India 20%, ME 10%, EU 7%, AU 3%.
@@ -47,53 +33,124 @@ Key rules:
 
 Return ONLY this JSON, nothing else — no markdown, no code fences, no explanation:
 {"jobs": [ ... ]}`;
+}
 
-  try {
-    const upstream = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 4000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
+// ── Parse jobs from raw LLM text ─────────────────────────────────────────────
+function parseJobs(text) {
+  text = text.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '').trim();
+  const start = text.indexOf('{');
+  const end   = text.lastIndexOf('}');
+  if (start === -1 || end === -1) throw new Error('No JSON object found in response');
+  const parsed = JSON.parse(text.slice(start, end + 1));
+  const jobs = Array.isArray(parsed.jobs) ? parsed.jobs : (Array.isArray(parsed) ? parsed : []);
+  if (jobs.length === 0) throw new Error('Parsed JSON had no jobs array');
+  return jobs;
+}
 
-    if (!upstream.ok) {
-      const errBody = await upstream.text();
-      console.error('Anthropic error:', errBody);
-      return res.status(upstream.status).json({ error: 'Anthropic API error ' + upstream.status + ': ' + errBody.slice(0, 300) });
-    }
-
-    const data = await upstream.json();
-    let text = (data.content || []).map(b => b.text || '').join('');
-
-    // Strip accidental markdown fences
-    text = text.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '').trim();
-
-    // Extract outermost JSON object
-    const start = text.indexOf('{');
-    const end   = text.lastIndexOf('}');
-    if (start === -1 || end === -1) {
-      console.error('No JSON found. Raw:', text.slice(0, 500));
-      return res.status(500).json({ error: 'Model did not return valid JSON', raw: text.slice(0, 300) });
-    }
-
-    const parsed = JSON.parse(text.slice(start, end + 1));
-    const jobs   = Array.isArray(parsed.jobs) ? parsed.jobs : (Array.isArray(parsed) ? parsed : []);
-
-    if (jobs.length === 0) {
-      return res.status(500).json({ error: 'Parsed JSON had no jobs array', raw: text.slice(0, 300) });
-    }
-
-    return res.status(200).json({ jobs });
-
-  } catch (err) {
-    console.error('Handler error:', err);
-    return res.status(500).json({ error: err.message });
+// ── Provider 1: Groq (free — 14,400 req/day, llama3 or mixtral) ─────────────
+async function fetchFromGroq(apiKey, prompt) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',   // free, very fast (~1-2s)
+      max_tokens: 4000,
+      temperature: 0.7,
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a helpful assistant that returns only valid JSON. Never include markdown, code fences, or any explanation.'
+        },
+        { role: 'user', content: prompt }
+      ]
+    })
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Groq ${res.status}: ${err.slice(0, 200)}`);
   }
+  const data = await res.json();
+  const text = (data.choices || []).map(c => c.message?.content || '').join('');
+  return parseJobs(text);
+}
+
+// ── Provider 2: Google Gemini Flash (free — 1,500 req/day) ───────────────────
+async function fetchFromGemini(apiKey, prompt) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        maxOutputTokens: 4000,
+        temperature: 0.7
+      }
+    })
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Gemini ${res.status}: ${err.slice(0, 200)}`);
+  }
+  const data = await res.json();
+  const text = (data.candidates || [])
+    .flatMap(c => (c.content?.parts || []).map(p => p.text || ''))
+    .join('');
+  return parseJobs(text);
+}
+
+// ── Main handler ─────────────────────────────────────────────────────────────
+module.exports = async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+
+  const GROQ_KEY   = process.env.GROQ_API_KEY;
+  const GEMINI_KEY = process.env.GEMINI_API_KEY;
+
+  if (!GROQ_KEY && !GEMINI_KEY) {
+    return res.status(500).json({
+      error: 'No API key configured. Set GROQ_API_KEY (free at console.groq.com) or GEMINI_API_KEY (free at aistudio.google.com) in Vercel → Settings → Environment Variables, then redeploy.'
+    });
+  }
+
+  const prompt = buildPrompt();
+  const errors = [];
+
+  // Try Groq first (fastest, free)
+  if (GROQ_KEY) {
+    try {
+      console.log('[FOB] Trying Groq (llama-3.1-8b-instant)...');
+      const jobs = await fetchFromGroq(GROQ_KEY, prompt);
+      console.log('[FOB] Groq returned', jobs.length, 'jobs');
+      return res.status(200).json({ jobs, provider: 'groq' });
+    } catch (err) {
+      console.warn('[FOB] Groq failed:', err.message);
+      errors.push('Groq: ' + err.message);
+    }
+  }
+
+  // Fallback: Google Gemini Flash (also free)
+  if (GEMINI_KEY) {
+    try {
+      console.log('[FOB] Trying Gemini Flash...');
+      const jobs = await fetchFromGemini(GEMINI_KEY, prompt);
+      console.log('[FOB] Gemini returned', jobs.length, 'jobs');
+      return res.status(200).json({ jobs, provider: 'gemini' });
+    } catch (err) {
+      console.warn('[FOB] Gemini failed:', err.message);
+      errors.push('Gemini: ' + err.message);
+    }
+  }
+
+  return res.status(500).json({
+    error: 'All providers failed. Check your API keys and Vercel logs.',
+    details: errors
+  });
 };

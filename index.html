@@ -1013,7 +1013,7 @@
 <script>
 // ═══════════════════════════════════════════════════════════════
 // FULLONBAAN LIVE JOB FETCHER
-// Uses Claude API to generate fresh, current Infor LN job listings
+// Uses Groq / Gemini free API to generate fresh, current Infor LN job listings
 // on every page load, and also drives the filter/search system.
 // ═══════════════════════════════════════════════════════════════
 
@@ -1346,7 +1346,7 @@ function resetJobUI() {
   techCount = 0;
 }
 
-// ── Claude API job fetch ─────────────────────────────────────
+// ── Free LLM job fetch (Groq primary → Gemini fallback) ──────
 async function fetchJobs() {
   // Reset UI
   document.getElementById('jobs-loading').style.display = 'block';
