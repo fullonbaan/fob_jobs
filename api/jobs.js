@@ -6,9 +6,9 @@ export const config = { maxDuration: 30 };
 
 function buildPrompt() {
   const monthYear = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
-  return `Generate a JSON object with an array of 30 current Infor LN / Baan ERP job openings as of ${monthYear}.
+  return `Generate a JSON object with an array of 20 current Infor LN / Baan ERP job openings as of ${monthYear}.
 
-Mix: 15 functional + 15 technical.
+Mix: 10 functional + 10 technical.
 Regions: USA 60%, India 20%, ME 10%, EU 7%, AU 3%.
 Companies: Deloitte, Accenture, NTT Data, HCL, Capgemini, Infosys, Wipro, TCS, DXC, Innova, PCG, Right Skale.
 Salary: USA $45-$130/hr or $80k-$160k/yr; India 8-25 LPA; ME AED 15k-35k/mo.
@@ -24,35 +24,59 @@ Rules:
 - region: "usa" | "india" | "middleeast" | "europe" | "australia" | "global"
 - posted: date in "DD MMM YYYY" format within last 14 days e.g. "12 Apr 2026"
 - displayDate: same as posted
-- description: 15-20 words max
-- applyUrl: realistic job portal URL
-- recruiterEmail: company email or ""
+- description: 10-15 words max
+- applyUrl: realistic job portal URL like https://www.linkedin.com/jobs/view/123456
+- recruiterEmail: company domain email or ""
 
 Return ONLY valid JSON, no markdown, no explanation:
 {"jobs": [ ... ]}`;
 }
 
 function parseJobs(text) {
+  // Strip any markdown fences
   text = text.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/g, '').trim();
+
   const start = text.indexOf('{');
-  const end   = text.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('No JSON found in response');
-  const parsed = JSON.parse(text.slice(start, end + 1));
-  const jobs = Array.isArray(parsed.jobs) ? parsed.jobs : [];
-  if (jobs.length === 0) throw new Error('No jobs array in response');
-  return jobs;
+  if (start === -1) throw new Error('No JSON object found in response');
+
+  // Try clean full parse first
+  try {
+    const end = text.lastIndexOf('}');
+    if (end > start) {
+      const parsed = JSON.parse(text.slice(start, end + 1));
+      const jobs = Array.isArray(parsed.jobs) ? parsed.jobs : [];
+      if (jobs.length > 0) return jobs;
+    }
+  } catch (_) { /* fall through to repair */ }
+
+  // Salvage truncated output — find last fully closed job object
+  const arrStart = text.indexOf('[');
+  if (arrStart !== -1) {
+    const arrText = text.slice(arrStart);
+    const lastClose = arrText.lastIndexOf('},');
+    if (lastClose !== -1) {
+      try {
+        const jobs = JSON.parse(arrText.slice(0, lastClose + 1) + ']');
+        if (Array.isArray(jobs) && jobs.length > 0) {
+          console.log(`[FOB] Salvaged ${jobs.length} jobs from truncated response`);
+          return jobs;
+        }
+      } catch (_) { /* continue */ }
+    }
+  }
+
+  throw new Error('No valid jobs array found in response');
 }
 
 async function fetchFromGroq(apiKey, prompt) {
-  // Try models in order — first working one wins
+  // Active Groq models as of April 2026 — decommissioned: mixtral-8x7b-32768, llama3-8b-8192
   const models = [
-    'llama-3.1-8b-instant',
-    'llama3-8b-8192',
     'llama-3.3-70b-versatile',
-    'mixtral-8x7b-32768'
+    'llama-3.1-8b-instant',
+    'gemma2-9b-it'
   ];
 
-  let lastError = '';
+  const errors = [];
   for (const model of models) {
     try {
       console.log(`[FOB] Groq trying model: ${model}`);
@@ -64,7 +88,7 @@ async function fetchFromGroq(apiKey, prompt) {
         },
         body: JSON.stringify({
           model,
-          max_tokens: 4096,
+          max_tokens: 8192,
           temperature: 0.7,
           messages: [
             { role: 'system', content: 'Return only valid JSON with no markdown or explanation.' },
@@ -75,29 +99,32 @@ async function fetchFromGroq(apiKey, prompt) {
 
       if (!res.ok) {
         const err = await res.text();
-        lastError = `Groq ${model} HTTP ${res.status}: ${err.slice(0, 300)}`;
-        console.error(`[FOB] ${lastError}`);
-        continue; // try next model
+        const msg = `Groq ${model} HTTP ${res.status}: ${err.slice(0, 300)}`;
+        console.error(`[FOB] ${msg}`);
+        errors.push(msg);
+        continue;
       }
 
       const data = await res.json();
-      const text = (data.choices || []).map(c => c.message?.content || '').join('');
-      const jobs = parseJobs(text);
+      const rawText = (data.choices || []).map(c => c.message?.content || '').join('');
+      const jobs = parseJobs(rawText);
       console.log(`[FOB] Groq ${model} returned ${jobs.length} jobs`);
       return jobs;
 
     } catch (e) {
-      lastError = `Groq ${model} error: ${e.message}`;
-      console.error(`[FOB] ${lastError}`);
+      const msg = `Groq ${model} error: ${e.message}`;
+      console.error(`[FOB] ${msg}`);
+      errors.push(msg);
     }
   }
-  throw new Error(lastError || 'All Groq models failed');
+  throw new Error(errors.join(' | ') || 'All Groq models failed');
 }
 
 async function fetchFromGemini(apiKey, prompt) {
-  const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'];
+  // Active Gemini models — gemini-1.5-flash-8b removed (404 on v1beta)
+  const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
 
-  let lastError = '';
+  const errors = [];
   for (const model of models) {
     try {
       console.log(`[FOB] Gemini trying model: ${model}`);
@@ -107,31 +134,33 @@ async function fetchFromGemini(apiKey, prompt) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
+          generationConfig: { maxOutputTokens: 8192, temperature: 0.7 }
         })
       });
 
       if (!res.ok) {
         const err = await res.text();
-        lastError = `Gemini ${model} HTTP ${res.status}: ${err.slice(0, 300)}`;
-        console.error(`[FOB] ${lastError}`);
+        const msg = `Gemini ${model} HTTP ${res.status}: ${err.slice(0, 300)}`;
+        console.error(`[FOB] ${msg}`);
+        errors.push(msg);
         continue;
       }
 
       const data = await res.json();
-      const text = (data.candidates || [])
+      const rawText = (data.candidates || [])
         .flatMap(c => (c.content?.parts || []).map(p => p.text || ''))
         .join('');
-      const jobs = parseJobs(text);
+      const jobs = parseJobs(rawText);
       console.log(`[FOB] Gemini ${model} returned ${jobs.length} jobs`);
       return jobs;
 
     } catch (e) {
-      lastError = `Gemini ${model} error: ${e.message}`;
-      console.error(`[FOB] ${lastError}`);
+      const msg = `Gemini ${model} error: ${e.message}`;
+      console.error(`[FOB] ${msg}`);
+      errors.push(msg);
     }
   }
-  throw new Error(lastError || 'All Gemini models failed');
+  throw new Error(errors.join(' | ') || 'All Gemini models failed');
 }
 
 export default async function handler(req, res) {
