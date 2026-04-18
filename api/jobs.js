@@ -15,9 +15,48 @@ function buildPrompt() {
 Regions: USA 60%, India 20%, ME 10%, EU 7%, AU 3%.
 Companies: Deloitte, Accenture, NTT Data, HCL, Capgemini, Infosys, Wipro, TCS, DXC, Innova.
 Salary: USA $45-$130/hr; India 8-25 LPA; ME AED 15k-35k/mo.
-Each job has keys: type,title,description,company,location,workMode,employment,salary,module,region,posted,displayDate,source,applyUrl,recruiterEmail
-Values: type=functional|technical; workMode=remote|hybrid|onsite; employment=contract|fulltime|w2|c2c; module=finance|manufacturing|supplychain|integration|projects|architecture|automotive; region=usa|india|middleeast|europe|australia|global; posted=DD MMM YYYY within last 14 days; displayDate=same as posted; description=10 words max; applyUrl=linkedin or indeed URL; recruiterEmail=company email or "".
+Each job has ONLY these keys: type,title,description,company,location,workMode,employment,salary,module,region,posted,displayDate
+Values: type=functional|technical; workMode=remote|hybrid|onsite; employment=contract|fulltime|w2|c2c; module=finance|manufacturing|supplychain|integration|projects|architecture|automotive; region=usa|india|middleeast|europe|australia|global; posted=DD MMM YYYY within last 14 days; displayDate=same as posted; description=10 words max; location=city and country e.g. "Chicago, USA".
 Return ONLY: {"jobs":[...]}`;
+}
+
+// ── Build real job-search URLs from title + location (no fake job IDs) ───────
+function buildApplyUrls(job, index) {
+  // Strip leading "Infor LN" / "Baan" from title to avoid duplicate in search query
+  const cleanTitle = (job.title || '').replace(/^(infor\s+ln|baan)\s*/i, '').trim();
+  const q   = encodeURIComponent(`"Infor LN" ${cleanTitle}`);
+  const loc = encodeURIComponent(job.location || '');
+  const isRemote = job.workMode === 'remote';
+
+  // Alternate LinkedIn / Indeed for variety across listings
+  if (index % 2 === 0) {
+    // LinkedIn Jobs search
+    const remoteParam = isRemote ? '&f_WT=2' : '';
+    const locParam    = (!isRemote && loc) ? `&location=${loc}` : '';
+    return {
+      applyUrl: `https://www.linkedin.com/jobs/search/?keywords=${q}${locParam}${remoteParam}`,
+      source:   'LinkedIn'
+    };
+  } else {
+    // Indeed search
+    const locParam = isRemote ? 'Remote' : (job.location || '');
+    return {
+      applyUrl: `https://www.indeed.com/jobs?q=${q}&l=${encodeURIComponent(locParam)}`,
+      source:   'Indeed'
+    };
+  }
+}
+
+function enrichJobs(jobs) {
+  return jobs.map((job, i) => {
+    const { applyUrl, source } = buildApplyUrls(job, i);
+    return {
+      ...job,
+      applyUrl,
+      source,
+      recruiterEmail: ''
+    };
+  });
 }
 
 function parseJobs(text) {
@@ -98,7 +137,7 @@ async function fetchFromGroq(apiKey, prompt) {
 
       const data = await res.json();
       const rawText = (data.choices || []).map(c => c.message?.content || '').join('');
-      const jobs = parseJobs(rawText);
+      const jobs = enrichJobs(parseJobs(rawText));
       console.log(`[FOB] Groq ${model} returned ${jobs.length} jobs`);
       return jobs;
 
@@ -142,7 +181,7 @@ async function fetchFromGemini(apiKey, prompt) {
       const rawText = (data.candidates || [])
         .flatMap(c => (c.content?.parts || []).map(p => p.text || ''))
         .join('');
-      const jobs = parseJobs(rawText);
+      const jobs = enrichJobs(parseJobs(rawText));
       console.log(`[FOB] Gemini ${model} returned ${jobs.length} jobs`);
       return jobs;
 
