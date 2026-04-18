@@ -4,32 +4,20 @@
 
 export const config = { maxDuration: 30 };
 
+// ── Server-side in-memory cache (survives across warm invocations) ──────────
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+let _cachedJobs = null;
+let _cachedAt   = 0;
+
 function buildPrompt() {
   const monthYear = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
-  return `Generate a JSON object with an array of 20 current Infor LN / Baan ERP job openings as of ${monthYear}.
-
-Mix: 10 functional + 10 technical.
+  return `Generate JSON with 15 Infor LN/Baan ERP job openings as of ${monthYear}. Mix: 8 functional + 7 technical.
 Regions: USA 60%, India 20%, ME 10%, EU 7%, AU 3%.
-Companies: Deloitte, Accenture, NTT Data, HCL, Capgemini, Infosys, Wipro, TCS, DXC, Innova, PCG, Right Skale.
-Salary: USA $45-$130/hr or $80k-$160k/yr; India 8-25 LPA; ME AED 15k-35k/mo.
-
-Each job MUST have exactly these keys:
-type, title, description, company, location, workMode, employment, salary, module, region, posted, displayDate, source, applyUrl, recruiterEmail
-
-Rules:
-- type: "functional" or "technical"
-- workMode: "remote" | "hybrid" | "onsite"
-- employment: "contract" | "fulltime" | "w2" | "c2c"
-- module: "finance" | "manufacturing" | "supplychain" | "integration" | "projects" | "architecture" | "automotive"
-- region: "usa" | "india" | "middleeast" | "europe" | "australia" | "global"
-- posted: date in "DD MMM YYYY" format within last 14 days e.g. "12 Apr 2026"
-- displayDate: same as posted
-- description: 10-15 words max
-- applyUrl: realistic job portal URL like https://www.linkedin.com/jobs/view/123456
-- recruiterEmail: company domain email or ""
-
-Return ONLY valid JSON, no markdown, no explanation:
-{"jobs": [ ... ]}`;
+Companies: Deloitte, Accenture, NTT Data, HCL, Capgemini, Infosys, Wipro, TCS, DXC, Innova.
+Salary: USA $45-$130/hr; India 8-25 LPA; ME AED 15k-35k/mo.
+Each job has keys: type,title,description,company,location,workMode,employment,salary,module,region,posted,displayDate,source,applyUrl,recruiterEmail
+Values: type=functional|technical; workMode=remote|hybrid|onsite; employment=contract|fulltime|w2|c2c; module=finance|manufacturing|supplychain|integration|projects|architecture|automotive; region=usa|india|middleeast|europe|australia|global; posted=DD MMM YYYY within last 14 days; displayDate=same as posted; description=10 words max; applyUrl=linkedin or indeed URL; recruiterEmail=company email or "".
+Return ONLY: {"jobs":[...]}`;
 }
 
 function parseJobs(text) {
@@ -69,17 +57,20 @@ function parseJobs(text) {
 }
 
 async function fetchFromGroq(apiKey, prompt) {
-  // Active Groq models as of April 2026 — decommissioned: mixtral-8x7b-32768, llama3-8b-8192
+  // Active Groq models + per-model max_tokens tuned to free-tier TPM limits:
+  //   llama-3.3-70b-versatile  → 12000 TPM  → max_tokens 5000 safe
+  //   llama-3.1-8b-instant     →  6000 TPM  → max_tokens 3000 safe (input ~400)
+  //   llama-3.1-70b-versatile  → 12000 TPM  → max_tokens 5000 safe
   const models = [
-    'llama-3.3-70b-versatile',
-    'llama-3.1-8b-instant',
-    'gemma2-9b-it'
+    { id: 'llama-3.3-70b-versatile',  maxTok: 5000 },
+    { id: 'llama-3.1-8b-instant',     maxTok: 3000 },
+    { id: 'llama-3.1-70b-versatile',  maxTok: 5000 }
   ];
 
   const errors = [];
-  for (const model of models) {
+  for (const { id: model, maxTok } of models) {
     try {
-      console.log(`[FOB] Groq trying model: ${model}`);
+      console.log(`[FOB] Groq trying model: ${model} (max_tokens: ${maxTok})`);
       const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -88,7 +79,7 @@ async function fetchFromGroq(apiKey, prompt) {
         },
         body: JSON.stringify({
           model,
-          max_tokens: 8192,
+          max_tokens: maxTok,
           temperature: 0.7,
           messages: [
             { role: 'system', content: 'Return only valid JSON with no markdown or explanation.' },
@@ -121,8 +112,9 @@ async function fetchFromGroq(apiKey, prompt) {
 }
 
 async function fetchFromGemini(apiKey, prompt) {
-  // Active Gemini models — gemini-1.5-flash-8b removed (404 on v1beta)
-  const models = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+  // Active Gemini v1beta models as of April 2026
+  // gemini-1.5-flash and gemini-1.5-flash-8b removed (404 on v1beta)
+  const models = ['gemini-2.0-flash', 'gemini-2.0-flash-lite'];
 
   const errors = [];
   for (const model of models) {
@@ -134,7 +126,7 @@ async function fetchFromGemini(apiKey, prompt) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 8192, temperature: 0.7 }
+          generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
         })
       });
 
@@ -180,12 +172,19 @@ export default async function handler(req, res) {
     });
   }
 
+  // Serve from cache if fresh (avoids burning free-tier quotas on every page load)
+  if (_cachedJobs && (Date.now() - _cachedAt) < CACHE_TTL_MS) {
+    console.log(`[FOB] Serving ${_cachedJobs.length} cached jobs (age: ${Math.round((Date.now()-_cachedAt)/60000)}m)`);
+    return res.status(200).json({ jobs: _cachedJobs, provider: 'cache' });
+  }
+
   const prompt = buildPrompt();
   const errors = [];
 
   if (GROQ_KEY) {
     try {
       const jobs = await fetchFromGroq(GROQ_KEY, prompt);
+      _cachedJobs = jobs; _cachedAt = Date.now();
       return res.status(200).json({ jobs, provider: 'groq' });
     } catch (e) {
       errors.push(e.message);
@@ -196,6 +195,7 @@ export default async function handler(req, res) {
   if (GEMINI_KEY) {
     try {
       const jobs = await fetchFromGemini(GEMINI_KEY, prompt);
+      _cachedJobs = jobs; _cachedAt = Date.now();
       return res.status(200).json({ jobs, provider: 'gemini' });
     } catch (e) {
       errors.push(e.message);
