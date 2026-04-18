@@ -1346,9 +1346,25 @@ function resetJobUI() {
   techCount = 0;
 }
 
-// ── Free LLM job fetch — background update only ───────────────
-// The page always loads fallback jobs instantly; this runs silently and
-// replaces the table only when the API returns valid data.
+// ── Render a list of jobs into the tables ────────────────────
+// Clears both tbodies and re-renders cleanly. No stagger race conditions.
+function renderJobList(jobs, label) {
+  // appendJobRow does allJobs.push(job), so start from empty
+  allJobs = [];
+  funcCount = 0;
+  techCount = 0;
+  document.getElementById('func-tbody').innerHTML = '';
+  document.getElementById('tech-tbody').innerHTML = '';
+  if (label) document.getElementById('lastRefreshTime').textContent = label + ' — ' + now();
+  jobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+  showTables();
+  jobs.forEach(job => appendJobRow(job));
+  applyFilters();
+}
+
+// ── Free LLM job fetch — silent background refresh ───────────
+// Page always shows curated jobs instantly. This runs in background and
+// swaps in fresh data only if the API succeeds within 8 seconds.
 async function fetchJobs() {
   const spinner = document.getElementById('refreshSpinner');
   const btn     = document.getElementById('btnRefreshNow');
@@ -1356,7 +1372,6 @@ async function fetchJobs() {
   if (btn)     btn.disabled = true;
 
   try {
-    // Hard 8-second abort so the browser never hangs waiting
     const controller = new AbortController();
     const abortTimer = setTimeout(() => controller.abort(), 8000);
 
@@ -1368,7 +1383,6 @@ async function fetchJobs() {
     });
     clearTimeout(abortTimer);
 
-    console.log('[FOB] Response status:', response.status);
     if (!response.ok) {
       const errBody = await response.json().catch(() => ({ error: response.statusText }));
       throw new Error(errBody.error || 'HTTP ' + response.status);
@@ -1379,28 +1393,16 @@ async function fetchJobs() {
     if (!Array.isArray(jobs) || jobs.length === 0) throw new Error('No jobs returned');
 
     // API succeeded — swap in fresh data
-    allJobs = jobs;
-    allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
-
-    resetJobUI();
-    document.getElementById('func-tbody').innerHTML = '';
-    document.getElementById('tech-tbody').innerHTML = '';
-    showTables();
-    jobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 40));
-
-    setTimeout(() => {
-      const bar = document.getElementById('streamBar');
-      if (bar) bar.style.width = '100%';
-    }, jobs.length * 40 + 100);
-
-    sessionStorage.setItem('fob_jobs', JSON.stringify({ ts: Date.now(), jobs: allJobs }));
+    renderJobList(jobs, null);
+    sessionStorage.setItem('fob_jobs', JSON.stringify({ ts: Date.now(), jobs }));
     document.getElementById('lastRefreshTime').textContent = now();
     document.getElementById('newJobsAlert').style.display  = 'inline-flex';
+    const bar = document.getElementById('streamBar');
+    if (bar) bar.style.width = '100%';
     console.log('[FOB] Live jobs loaded:', jobs.length);
 
   } catch (err) {
-    // API failed or timed out — fallback already visible, nothing to do
-    console.warn('[FOB] API unavailable, keeping curated jobs:', err.message);
+    console.warn('[FOB] API unavailable, curated jobs remain:', err.message);
   } finally {
     if (spinner) spinner.className = '';
     if (btn)     btn.disabled = false;
@@ -1547,31 +1549,25 @@ function triggerManualRefresh() { fetchJobs(); }
 // ── Init ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── STEP 1: Show jobs immediately (never spin) ────────────────
-  // Priority: session cache (30 min) → static curated list
+  // STEP 1 — show jobs immediately, never spin
+  // Priority: session cache (30 min TTL) → static curated list
   let initialJobs = null;
-  const cached = sessionStorage.getItem('fob_jobs');
-  if (cached) {
-    try {
+  let initialLabel = 'Curated';
+  try {
+    const cached = sessionStorage.getItem('fob_jobs');
+    if (cached) {
       const c = JSON.parse(cached);
       if (c.jobs?.length && (Date.now() - c.ts) < 30 * 60 * 1000) {
         initialJobs = c.jobs;
-        document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
+        initialLabel = 'From cache';
       }
-    } catch(e) { console.warn('[FOB] Cache parse failed', e); }
-  }
-  if (!initialJobs) {
-    initialJobs = getFallbackJobs();
-    document.getElementById('lastRefreshTime').textContent = 'Curated — ' + now();
-  }
+    }
+  } catch(e) { console.warn('[FOB] Cache parse failed', e); }
 
-  allJobs = initialJobs;
-  allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
-  showTables(); // hides spinner, shows tables immediately
-  allJobs.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+  renderJobList(initialJobs || getFallbackJobs(), initialLabel);
   startCountdown();
 
-  // ── STEP 2: Try API silently in background — update if it works ──
+  // STEP 2 — silently try API; swap in fresh data if it works
   fetchJobs();
 });
 </scr
