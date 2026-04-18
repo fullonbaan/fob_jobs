@@ -547,27 +547,32 @@
     .fob-topbar-link.eco-jobs      { background:rgba(30,58,95,0.3);    border:1px solid rgba(45,95,158,0.45);  color:#93c5fd; }
     .fob-topbar-link.eco-repo      { background:rgba(109,40,217,0.2);  border:1px solid rgba(139,92,246,0.4);  color:#c4b5fd; }
     .fob-topbar-link.eco-exams     { background:rgba(220,38,38,0.15);  border:1px solid rgba(248,113,113,0.4); color:#fca5a5; }
-    .fob-topbar-link.eco-main      { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; }
+    .fob-topbar-link.eco-main       { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; }
+    .fob-topbar-link.eco-membership { background:rgba(14,116,144,0.2);  border:1px solid rgba(34,211,238,0.45); color:#67e8f9; }
     .fob-topbar-link.eco-training:hover  { background:rgba(184,151,60,0.3); }
     .fob-topbar-link.eco-interview:hover { background:rgba(45,90,61,0.4); }
     .fob-topbar-link.eco-jobs:hover      { background:rgba(30,58,95,0.45); }
     .fob-topbar-link.eco-repo:hover      { background:rgba(109,40,217,0.35); }
     .fob-topbar-link.eco-exams:hover     { background:rgba(220,38,38,0.3); }
     .fob-topbar-link.eco-main:hover      { background:rgba(255,255,255,0.18); }
+    .fob-topbar-link.eco-membership:hover { background:rgba(14,116,144,0.38); }
 
-    /* ── 6-CARD RESOURCE HUB ── */
-    .resource-hub { max-width: 900px; }
-    .rh-cards-6 { grid-template-columns: repeat(3, 1fr); }
+    /* ── 7-CARD RESOURCE HUB ── */
+    .resource-hub { max-width: 1050px; }
+    .rh-cards-7 { grid-template-columns: repeat(4, 1fr); }
     .rh-jobs  { background: linear-gradient(135deg, #1e3a5f 0%, #0c1830 100%); border-color: rgba(147,197,253,0.25); }
     .rh-jobs:hover  { border-color: rgba(147,197,253,0.55); }
     .rh-repo  { background: linear-gradient(135deg, #3b0764 0%, #1e0036 100%); border-color: rgba(196,181,253,0.25); }
     .rh-repo:hover  { border-color: rgba(196,181,253,0.55); }
     .rh-exams { background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%); border-color: rgba(252,165,165,0.25); }
     .rh-exams:hover { border-color: rgba(252,165,165,0.55); }
+    .rh-membership { background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%); border-color: rgba(34,211,238,0.25); }
+    .rh-membership:hover { border-color: rgba(34,211,238,0.6); }
     .rh-main  { background: linear-gradient(135deg, #1c1917 0%, #0c0a09 100%); border-color: rgba(184,151,60,0.3); }
     .rh-main:hover  { border-color: rgba(184,151,60,0.65); }
-    @media (max-width: 780px) { .rh-cards-6 { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 480px) { .rh-cards-6 { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) { .rh-cards-7 { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .rh-cards-7 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 420px) { .rh-cards-7 { grid-template-columns: 1fr; } }
 
     /* ── FOOTER ECO LINK COLOURS ── */
     .fob-footer-eco-label {
@@ -578,7 +583,8 @@
     .fob-footer-link.jobs  { background:rgba(30,58,95,0.3);    border:1.5px solid rgba(45,95,158,0.45);  color:#93c5fd; }
     .fob-footer-link.repo  { background:rgba(109,40,217,0.2);  border:1.5px solid rgba(139,92,246,0.4);  color:#c4b5fd; }
     .fob-footer-link.exams { background:rgba(220,38,38,0.15);  border:1.5px solid rgba(248,113,113,0.4); color:#fca5a5; }
-    .fob-footer-link.main  { background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.25); color:#fff; }
+    .fob-footer-link.main       { background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.25); color:#fff; }
+    .fob-footer-link.membership { background:rgba(14,116,144,0.18); border:1.5px solid rgba(34,211,238,0.4);  color:#67e8f9; }
 
     /* ── APPLY NOW BUTTON ── */
     .btn-apply-mailto {
@@ -628,8 +634,9 @@
     <a class="fob-topbar-link eco-interview"  href="https://interview.fullonbaan.com/" target="_blank" rel="noopener">📋 Interview</a>
     <a class="fob-topbar-link eco-jobs"       href="https://jobs.fullonbaan.com/"      target="_blank" rel="noopener">💼 Jobs</a>
     <a class="fob-topbar-link eco-repo"       href="https://repo.fullonbaan.com/"      target="_blank" rel="noopener">📦 Repo</a>
-    <a class="fob-topbar-link eco-exams"      href="https://certification.fullonbaan.com/"     target="_blank" rel="noopener">📝 Exams</a>
-    <a class="fob-topbar-link eco-main"       href="https://www.fullonbaan.com/"      target="_blank" rel="noopener">🌐 Main Site</a>
+    <a class="fob-topbar-link eco-exams"      href="https://certification.fullonbaan.com/"  target="_blank" rel="noopener">📝 Exams</a>
+    <a class="fob-topbar-link eco-membership" href="https://membership.fullonbaan.com/"     target="_blank" rel="noopener">💎 Membership</a>
+    <a class="fob-topbar-link eco-main"       href="https://www.fullonbaan.com/"            target="_blank" rel="noopener">🌐 Main Site</a>
   </div>
 </div>
 
@@ -672,7 +679,7 @@
 
   <div class="resource-hub">
     <div class="rh-label">🌐 FullonBaan Ecosystem</div>
-    <div class="rh-cards rh-cards-6">
+    <div class="rh-cards rh-cards-7">
       <a class="rh-card rh-training" href="https://training.fullonbaan.com/" target="_blank" rel="noopener">
         <div class="rh-card-icon">🎓</div>
         <div class="rh-card-body">
@@ -711,6 +718,14 @@
           <div class="rh-card-title">Exams &amp; Quizzes</div>
           <div class="rh-card-desc">Test your Infor LN knowledge · Module-wise practice tests</div>
           <div class="rh-card-cta">Take a Test →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-membership" href="https://membership.fullonbaan.com/" target="_blank" rel="noopener">
+        <div class="rh-card-icon">💎</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Membership</div>
+          <div class="rh-card-desc">Exclusive member access · Premium resources &amp; community</div>
+          <div class="rh-card-cta">Join Now →</div>
         </div>
       </a>
       <a class="rh-card rh-main" href="https://www.fullonbaan.com/" target="_blank" rel="noopener">
@@ -936,8 +951,9 @@
     <a class="fob-footer-link interview" href="https://interview.fullonbaan.com/" target="_blank" rel="noopener">📋 Interview Guides</a>
     <a class="fob-footer-link jobs"      href="https://jobs.fullonbaan.com/"      target="_blank" rel="noopener">💼 Jobs Portal</a>
     <a class="fob-footer-link repo"      href="https://repo.fullonbaan.com/"      target="_blank" rel="noopener">📦 Repository</a>
-    <a class="fob-footer-link exams"     href="https://certification.fullonbaan.com/"     target="_blank" rel="noopener">📝 Exams</a>
-    <a class="fob-footer-link main"      href="https://www.fullonbaan.com/"      target="_blank" rel="noopener">🌐 FullonBaan.com</a>
+    <a class="fob-footer-link exams"      href="https://certification.fullonbaan.com/"  target="_blank" rel="noopener">📝 Exams</a>
+    <a class="fob-footer-link membership" href="https://membership.fullonbaan.com/"    target="_blank" rel="noopener">💎 Membership</a>
+    <a class="fob-footer-link main"       href="https://www.fullonbaan.com/"           target="_blank" rel="noopener">🌐 FullonBaan.com</a>
   </div>
   <div class="fob-footer-copy">
     © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com?subject=Infor%20LN%20Jobs%20Enquiry&body=Hi%20FullonBaan%20Team%2C%0A%0AI%20came%20across%20your%20jobs%20portal%20and%20would%20like%20to%20get%20in%20touch.%0A%0AName%3A%20%5BYour%20Name%5D%0APhone%3A%20%5BYour%20Phone%5D%0AMessage%3A%20%5BYour%20Message%5D%0A%0ARegards">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
@@ -1635,6 +1651,4 @@ document.addEventListener('DOMContentLoaded', () => {
     startCountdown();
   });
 });
-</script>
-</body>
-</html>
+</scr
