@@ -552,6 +552,8 @@
     .fob-topbar-link.eco-training:hover  { background:rgba(184,151,60,0.3); }
     .fob-topbar-link.eco-interview:hover { background:rgba(45,90,61,0.4); }
     .fob-topbar-link.eco-jobs:hover      { background:rgba(30,58,95,0.45); }
+    .fob-topbar-link.eco-remote     { background:rgba(180,83,9,0.2);   border:1px solid rgba(251,146,60,0.45);  color:#fb923c; }
+    .fob-topbar-link.eco-remote:hover { background:rgba(180,83,9,0.38); }
     .fob-topbar-link.eco-repo:hover      { background:rgba(109,40,217,0.35); }
     .fob-topbar-link.eco-exams:hover     { background:rgba(220,38,38,0.3); }
     .fob-topbar-link.eco-main:hover      { background:rgba(255,255,255,0.18); }
@@ -560,6 +562,9 @@
     /* ── 7-CARD RESOURCE HUB ── */
     .resource-hub { max-width: 1050px; }
     .rh-cards-7 { grid-template-columns: repeat(4, 1fr); }
+    .rh-cards-8 { grid-template-columns: repeat(4, 1fr); }
+    .rh-remote { background: linear-gradient(135deg, #7c2d12 0%, #431407 100%); border-color: rgba(251,146,60,0.25); }
+    .rh-remote:hover { border-color: rgba(251,146,60,0.55); }
     .rh-jobs  { background: linear-gradient(135deg, #1e3a5f 0%, #0c1830 100%); border-color: rgba(147,197,253,0.25); }
     .rh-jobs:hover  { border-color: rgba(147,197,253,0.55); }
     .rh-repo  { background: linear-gradient(135deg, #3b0764 0%, #1e0036 100%); border-color: rgba(196,181,253,0.25); }
@@ -570,9 +575,9 @@
     .rh-membership:hover { border-color: rgba(34,211,238,0.6); }
     .rh-main  { background: linear-gradient(135deg, #1c1917 0%, #0c0a09 100%); border-color: rgba(184,151,60,0.3); }
     .rh-main:hover  { border-color: rgba(184,151,60,0.65); }
-    @media (max-width: 900px) { .rh-cards-7 { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 600px) { .rh-cards-7 { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 420px) { .rh-cards-7 { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) { .rh-cards-7, .rh-cards-8 { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .rh-cards-7, .rh-cards-8 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 420px) { .rh-cards-7, .rh-cards-8 { grid-template-columns: 1fr; } }
 
     /* ── FOOTER ECO LINK COLOURS ── */
     .fob-footer-eco-label {
@@ -580,6 +585,7 @@
       letter-spacing:.16em; text-transform:uppercase;
       color:rgba(255,255,255,0.4); margin-bottom:.7rem;
     }
+    .fob-footer-link.remote { background:rgba(180,83,9,0.2);  border:1.5px solid rgba(251,146,60,0.45); color:#fb923c; }
     .fob-footer-link.jobs  { background:rgba(30,58,95,0.3);    border:1.5px solid rgba(45,95,158,0.45);  color:#93c5fd; }
     .fob-footer-link.repo  { background:rgba(109,40,217,0.2);  border:1.5px solid rgba(139,92,246,0.4);  color:#c4b5fd; }
     .fob-footer-link.exams { background:rgba(220,38,38,0.15);  border:1.5px solid rgba(248,113,113,0.4); color:#fca5a5; }
@@ -633,6 +639,7 @@
     <a class="fob-topbar-link eco-training"   href="https://training.fullonbaan.com/"  target="_blank" rel="noopener">🎓 Training</a>
     <a class="fob-topbar-link eco-interview"  href="https://interview.fullonbaan.com/" target="_blank" rel="noopener">📋 Interview</a>
     <a class="fob-topbar-link eco-jobs"       href="https://jobs.fullonbaan.com/"      target="_blank" rel="noopener">💼 Jobs</a>
+    <a class="fob-topbar-link eco-remote"     href="Infor_ERP_Remote_Jobs.html">🌍 Remote Jobs</a>
     <a class="fob-topbar-link eco-repo"       href="https://repo.fullonbaan.com/"      target="_blank" rel="noopener">📦 Repo</a>
     <a class="fob-topbar-link eco-exams"      href="https://certification.fullonbaan.com/"  target="_blank" rel="noopener">📝 Exams</a>
     <a class="fob-topbar-link eco-membership" href="https://membership.fullonbaan.com/"     target="_blank" rel="noopener">💎 Membership</a>
@@ -675,11 +682,12 @@
   <div class="nav-pills">
     <a class="nav-pill func" href="#functional">⚙️ Functional Roles</a>
     <a class="nav-pill tech" href="#technical">🔧 Technical Roles</a>
+    <a class="nav-pill" href="Infor_ERP_Remote_Jobs.html" style="background:linear-gradient(135deg,#7c2d12,#431407);color:#fb923c;border:1px solid rgba(251,146,60,0.35);">🌍 Remote Jobs List</a>
   </div>
 
   <div class="resource-hub">
     <div class="rh-label">🌐 FullonBaan Ecosystem</div>
-    <div class="rh-cards rh-cards-7">
+    <div class="rh-cards rh-cards-8">
       <a class="rh-card rh-training" href="https://training.fullonbaan.com/" target="_blank" rel="noopener">
         <div class="rh-card-icon">🎓</div>
         <div class="rh-card-body">
@@ -702,6 +710,14 @@
           <div class="rh-card-title">Jobs Portal</div>
           <div class="rh-card-desc">Live Infor LN openings · Global · Remote &amp; On-site</div>
           <div class="rh-card-cta">Find Jobs →</div>
+        </div>
+      </a>
+      <a class="rh-card rh-remote" href="Infor_ERP_Remote_Jobs.html">
+        <div class="rh-card-icon">🌍</div>
+        <div class="rh-card-body">
+          <div class="rh-card-title">Remote Jobs List</div>
+          <div class="rh-card-desc">Curated Infor ERP remote &amp; contract openings · Global</div>
+          <div class="rh-card-cta">View Remote Jobs →</div>
         </div>
       </a>
       <a class="rh-card rh-repo" href="https://repo.fullonbaan.com/" target="_blank" rel="noopener">
@@ -859,7 +875,7 @@
 <div class="container" id="jobs-container">
 
   <!-- Loading State -->
-  <div id="jobs-loading" style="display:none;text-align:center; padding:4rem 2rem;">
+  <div id="jobs-loading" style="text-align:center; padding:4rem 2rem;">
     <div style="display:inline-flex;flex-direction:column;align-items:center;gap:.8rem;background:white;border:1px solid var(--pearl-3);border-radius:16px;padding:1.8rem 2.4rem;box-shadow:0 4px 32px var(--shadow);">
       <div style="display:flex;align-items:center;gap:1rem;">
         <div style="font-size:2rem;animation:spin 1s linear infinite;display:inline-block;">⟳</div>
@@ -950,6 +966,7 @@
     <a class="fob-footer-link training"  href="https://training.fullonbaan.com/"  target="_blank" rel="noopener">🎓 Training Materials</a>
     <a class="fob-footer-link interview" href="https://interview.fullonbaan.com/" target="_blank" rel="noopener">📋 Interview Guides</a>
     <a class="fob-footer-link jobs"      href="https://jobs.fullonbaan.com/"      target="_blank" rel="noopener">💼 Jobs Portal</a>
+    <a class="fob-footer-link remote"   href="Infor_ERP_Remote_Jobs.html">🌍 Remote Jobs List</a>
     <a class="fob-footer-link repo"      href="https://repo.fullonbaan.com/"      target="_blank" rel="noopener">📦 Repository</a>
     <a class="fob-footer-link exams"      href="https://certification.fullonbaan.com/"  target="_blank" rel="noopener">📝 Exams</a>
     <a class="fob-footer-link membership" href="https://membership.fullonbaan.com/"    target="_blank" rel="noopener">💎 Membership</a>
@@ -1013,7 +1030,7 @@
 <script>
 // ═══════════════════════════════════════════════════════════════
 // FULLONBAAN LIVE JOB FETCHER
-// Uses Claude API to generate fresh, current Infor LN job listings
+// Uses Groq / Gemini free API to generate fresh, current Infor LN job listings
 // on every page load, and also drives the filter/search system.
 // ═══════════════════════════════════════════════════════════════
 
@@ -1346,44 +1363,107 @@ function resetJobUI() {
   techCount = 0;
 }
 
-// ── Free LLM job fetch — silent background refresh ───────────
-// Page always shows curated jobs instantly on load. This runs in the
-// background and swaps in fresh data only if the API succeeds within 8s.
+// ── Free LLM job fetch (Groq primary → Gemini fallback) ──────
 async function fetchJobs() {
+  // Reset UI
+  document.getElementById('jobs-loading').style.display = 'block';
+  document.getElementById('jobs-error').style.display   = 'none';
+  document.getElementById('functional').style.display   = 'none';
+  document.getElementById('func-table').style.display   = 'none';
+  document.getElementById('technical').style.display    = 'none';
+  document.getElementById('tech-table').style.display   = 'none';
+  document.getElementById('func-tbody').innerHTML = '';
+  document.getElementById('tech-tbody').innerHTML = '';
+
   const spinner = document.getElementById('refreshSpinner');
   const btn     = document.getElementById('btnRefreshNow');
   if (spinner) spinner.className = 'spinning';
   if (btn)     btn.disabled = true;
 
-  try {
-    const controller = new AbortController();
-    const abortTimer = setTimeout(() => controller.abort(), 8000);
+  allJobs = [];
+  resetJobUI();
 
-    console.log('[FOB] Calling /api/jobs (8s timeout)...');
+  try {
+    // ── Call our Vercel serverless proxy (key is server-side, never exposed) ──
+    console.log('[FOB] Calling /api/jobs...');
     const response = await fetch('/api/jobs', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: controller.signal
+      headers: { 'Content-Type': 'application/json' }
     });
-    clearTimeout(abortTimer);
 
+    console.log('[FOB] Response status:', response.status);
     if (!response.ok) {
       const errBody = await response.json().catch(() => ({ error: response.statusText }));
+      console.error('[FOB] API error:', errBody);
       throw new Error(errBody.error || 'HTTP ' + response.status);
     }
 
     const data = await response.json();
+    console.log('[FOB] Got', data.jobs?.length, 'jobs');
     const jobs = data.jobs;
-    if (!Array.isArray(jobs) || jobs.length === 0) throw new Error('No jobs returned');
+    if (!Array.isArray(jobs) || jobs.length === 0) throw new Error('No jobs returned from server');
 
-    // API succeeded — swap in fresh data using the existing renderJobs()
     allJobs = jobs;
-    renderJobs(jobs);
-    sessionStorage.setItem('fob_jobs', JSON.stringify({ ts: Date.now(), jobs }));
-    console.log('[FOB] Live jobs loaded:', jobs.length);
+
+    // Sort by posted date — latest first
+    allJobs.sort((a, b) => {
+      const da = new Date(a.displayDate || a.posted || 0);
+      const db = new Date(b.displayDate || b.posted || 0);
+      return db - da;
+    });
+
+    // Show tables then render each row with staggered animation
+    showTables();
+    jobs.forEach((job, i) => {
+      setTimeout(() => {
+        appendJobRow(job);
+        applyFilters();
+      }, i * 40); // 40ms stagger — all 30 rows appear within ~1.2s
+    });
+
+    // Update progress bar to 100% when done
+    setTimeout(() => {
+      const bar = document.getElementById('streamBar');
+      if (bar) bar.style.width = '100%';
+    }, jobs.length * 40 + 100);
+
+    sessionStorage.setItem('fob_jobs', JSON.stringify({ ts: Date.now(), jobs: allJobs }));
+    document.getElementById('lastRefreshTime').textContent = now();
+    document.getElementById('newJobsAlert').style.display  = 'inline-flex';
 
   } catch (err) {
-    console.warn('[FOB] API unavailable, curated jobs remain:', err.message);
+    console.warn('[FOB] Live fetch failed, using fallback:', err.message);
+
+    // Fallback chain: session cache → static curated jobs
+    // Do NOT show the error panel — just render the best available data silently
+    document.getElementById('jobs-loading').style.display = 'none';
+    document.getElementById('jobs-error').style.display   = 'none';
+
+    // Reset counters for clean fallback render
+    allJobs = [];
+    resetJobUI();
+    document.getElementById('func-tbody').innerHTML = '';
+    document.getElementById('tech-tbody').innerHTML = '';
+
+    let fallbackSource = null;
+    const cached = sessionStorage.getItem('fob_jobs');
+    if (cached) {
+      try {
+        const c = JSON.parse(cached);
+        if (c.jobs?.length) {
+          fallbackSource = c.jobs;
+          document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
+        }
+      } catch {}
+    }
+    if (!fallbackSource) {
+      fallbackSource = getFallbackJobs();
+      document.getElementById('lastRefreshTime').textContent = 'Curated — ' + now();
+    }
+    fallbackSource.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+    showTables();
+    fallbackSource.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+
   } finally {
     if (spinner) spinner.className = '';
     if (btn)     btn.disabled = false;
@@ -1529,27 +1609,63 @@ function triggerManualRefresh() { fetchJobs(); }
 
 // ── Init ─────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-
-  // STEP 1 — show jobs immediately using the existing renderJobs() function
-  // Priority: session cache (30 min TTL) → 30 static curated jobs
-  let initialJobs = null;
-  try {
-    const cached = sessionStorage.getItem('fob_jobs');
-    if (cached) {
+  document.getElementById('lastRefreshTime').textContent = 'Fetching now…';
+  
+  // Check session cache (30 min TTL)
+  const cached = sessionStorage.getItem('fob_jobs');
+  if (cached) {
+    try {
       const c = JSON.parse(cached);
       if (c.jobs?.length && (Date.now() - c.ts) < 30 * 60 * 1000) {
-        initialJobs = c.jobs;
+        allJobs = c.jobs;
+    allJobs.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+        document.getElementById('lastRefreshTime').textContent = 'From cache — ' + now();
+        showTables();
+        allJobs.forEach((job, i) =>
+          setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+        startCountdown();
+        return;
       }
+    } catch(e) { console.warn('[FOB] Cache parse failed', e); }
+  }
+
+  // Helper: render fallback jobs when API is unavailable
+  function renderFallback(label) {
+    document.getElementById('jobs-loading').style.display = 'none';
+    const fallback = getFallbackJobs();
+    fallback.sort((a, b) => new Date(b.displayDate || b.posted || 0) - new Date(a.displayDate || a.posted || 0));
+    allJobs = [];
+    resetJobUI();
+    document.getElementById('func-tbody').innerHTML = '';
+    document.getElementById('tech-tbody').innerHTML = '';
+    document.getElementById('lastRefreshTime').textContent = label + ' — ' + now();
+    showTables();
+    fallback.forEach((job, i) => setTimeout(() => { appendJobRow(job); applyFilters(); }, i * 20));
+  }
+
+  // No valid cache — try live API with 15s hard timeout,
+  // then fall through to curated static jobs so the page NEVER hangs.
+  let apiResolved = false;
+
+  const timeoutId = setTimeout(() => {
+    if (!apiResolved && allJobs.length === 0) {
+      console.warn('[FOB] /api/jobs timed out — loading fallback jobs');
+      renderFallback('Curated');
+      startCountdown();
     }
-  } catch(e) { console.warn('[FOB] Cache parse failed', e); }
+  }, 15000);
 
-  allJobs = initialJobs || getFallbackJobs();
-  renderJobs(allJobs);
-  startCountdown();
-
-  // STEP 2 — silently try API; swap in fresh data if it works
-  fetchJobs();
+  fetchJobs().then(() => {
+    apiResolved = true;
+    clearTimeout(timeoutId);
+    startCountdown();
+  }).catch(() => {
+    apiResolved = true;
+    clearTimeout(timeoutId);
+    if (allJobs.length === 0) {
+      renderFallback('Curated');
+    }
+    startCountdown();
+  });
 });
-</script>
-</body>
-</html>
+</scr

@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infor ERP Remote &amp; Contract Jobs – April 2026 | FullOnBaan</title>
+  <style>
+    /* ═══════════════════════════════════════════════════
+       CSS VARIABLES — Light (default) & Dark themes
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --bg-body:          #f0f4fb;
+      --bg-stats:         #e4eaf8;
+      --border-stats:     #c8d2e8;
+      --bg-filters:       #ffffff;
+      --border-filters:   #d4dbed;
+      --text-body:        #1a2540;
+      --text-label:       #5a6a90;
+      --text-muted:       #7a8aaa;
+      --bg-input:         #f5f7fc;
+      --border-input:     #bfc9df;
+      --text-input:       #1a2540;
+      --bg-row-odd:       #ffffff;
+      --bg-row-even:      #f0f4fb;
+      --bg-row-hover:     #e2eaf8;
+      --border-row:       #dde4f2;
+      --col-title:        #0f1e48;
+      --col-desc:         #4a5a7a;
+      --col-date:         #6a7a9a;
+      --source-link:      #1a55cc;
+      --via-platform:     #8a96b4;
+      --no-results:       #8a96b4;
+      --note-bg:          rgba(180,30,30,0.07);
+      --note-border:      rgba(180,30,30,0.22);
+      --note-text:        #992020;
+      --note-strong:      #cc2020;
+      --bg-footer:        #e4eaf8;
+      --border-footer:    #c8d2e8;
+      --text-footer:      #6a7a9a;
+      --stat-label:       #6a7a9a;
+      --filter-label:     #5a6a90;
+      --results-count:    #6a7a9a;
+      --transition:       background 0.25s, color 0.25s, border-color 0.25s;
+
+      /* ERP badges – light */
+      --erp-ln-bg:   #ddeeff; --erp-ln-txt:   #0a4a9a; --erp-ln-bdr:   #88b8f0;
+      --erp-baan-bg: #d8f5e4; --erp-baan-txt: #0a6630; --erp-baan-bdr: #6ad0a0;
+      --erp-sy-bg:   #f0e0ff; --erp-sy-txt:   #5a1a9a; --erp-sy-bdr:   #c090e8;
+      --erp-m3-bg:   #fff3cc; --erp-m3-txt:   #7a4a00; --erp-m3-bdr:   #e8c050;
+      --erp-ion-bg:  #ffe0e0; --erp-ion-txt:  #991010; --erp-ion-bdr:  #f09090;
+      --erp-os-bg:   #d8f5f8; --erp-os-txt:   #0a5a68; --erp-os-bdr:   #70c8d8;
+
+      /* Type badges – light */
+      --type-remote-bg:  #d6f5e4; --type-remote-txt:  #0a6030; --type-remote-bdr:  #50c880;
+      --type-contr-bg:   #fff0da; --type-contr-txt:   #8a4000; --type-contr-bdr:   #f0a040;
+
+      /* Role badges – light */
+      --role-func-bg:  #ddeeff; --role-func-txt:  #0a4a90; --role-func-bdr:  #80b8f0;
+      --role-tech-bg:  #ffe0ec; --role-tech-txt:  #880a30; --role-tech-bdr:  #f090b0;
+      --role-tf-bg:    #fffacc; --role-tf-txt:    #6a5000; --role-tf-bdr:    #d8c030;
+    }
+
+    html.dark {
+      --bg-body:          #0b0f1a;
+      --bg-stats:         #101828;
+      --border-stats:     #1e2d4a;
+      --bg-filters:       #111827;
+      --border-filters:   #1e2d4a;
+      --text-body:        #d0d8f0;
+      --text-label:       #5a6a8a;
+      --text-muted:       #8a9bbf;
+      --bg-input:         #0f1c3a;
+      --border-input:     #2a3d60;
+      --text-input:       #d0d8f0;
+      --bg-row-odd:       #0b0f1a;
+      --bg-row-even:      #0e1525;
+      --bg-row-hover:     #131f38;
+      --border-row:       #1a2535;
+      --col-title:        #e8eeff;
+      --col-desc:         #9aa8c0;
+      --col-date:         #8a9bbf;
+      --source-link:      #5b9ef0;
+      --via-platform:     #5a6a8a;
+      --no-results:       #4a5a7a;
+      --note-bg:          rgba(127,0,0,0.15);
+      --note-border:      rgba(200,80,80,0.3);
+      --note-text:        #e89090;
+      --note-strong:      #ff9090;
+      --bg-footer:        #080c18;
+      --border-footer:    #1e2d4a;
+      --text-footer:      #3a4a6a;
+      --stat-label:       #5a6a8a;
+      --filter-label:     #8a9bbf;
+      --results-count:    #5a6a8a;
+
+      /* ERP badges – dark */
+      --erp-ln-bg:   rgba(46,116,181,0.22);  --erp-ln-txt:   #6ab0f5; --erp-ln-bdr:   rgba(46,116,181,0.4);
+      --erp-baan-bg: rgba(80,200,120,0.18);  --erp-baan-txt: #6ee0a0; --erp-baan-bdr: rgba(80,200,120,0.35);
+      --erp-sy-bg:   rgba(180,120,220,0.18); --erp-sy-txt:   #c89ae8; --erp-sy-bdr:   rgba(180,120,220,0.35);
+      --erp-m3-bg:   rgba(240,160,50,0.18);  --erp-m3-txt:   #f0c060; --erp-m3-bdr:   rgba(240,160,50,0.35);
+      --erp-ion-bg:  rgba(220,80,80,0.18);   --erp-ion-txt:  #f08080; --erp-ion-bdr:  rgba(220,80,80,0.35);
+      --erp-os-bg:   rgba(80,180,200,0.18);  --erp-os-txt:   #60c8d8; --erp-os-bdr:   rgba(80,180,200,0.35);
+
+      /* Type badges – dark */
+      --type-remote-bg:  rgba(46,200,120,0.13); --type-remote-txt:  #4cd88a; --type-remote-bdr:  rgba(46,200,120,0.3);
+      --type-contr-bg:   rgba(255,140,50,0.13);  --type-contr-txt:   #f09040; --type-contr-bdr:   rgba(255,140,50,0.3);
+
+      /* Role badges – dark */
+      --role-func-bg:  rgba(100,180,255,0.13); --role-func-txt:  #80c0ff; --role-func-bdr:  rgba(100,180,255,0.3);
+      --role-tech-bg:  rgba(255,100,150,0.13); --role-tech-txt:  #ff9ab8; --role-tech-bdr:  rgba(255,100,150,0.3);
+      --role-tf-bg:    rgba(200,180,50,0.13);  --role-tf-txt:    #e8d060; --role-tf-bdr:    rgba(200,180,50,0.3);
+    }
+
+    /* ─── Reset & Base ────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-body);
+      min-height: 100vh;
+      transition: var(--transition);
+    }
+
+    /* ─── Theme Toggle Button ─────────────────────────────── */
+    .theme-toggle {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(201,168,76,0.6);
+      color: #fff;
+      padding: 7px 16px 7px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .theme-toggle:hover {
+      background: rgba(201,168,76,0.25);
+      border-color: #c9a84c;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    html.dark .theme-toggle {
+      background: rgba(15,28,58,0.6);
+    }
+    .theme-toggle .toggle-icon { font-size: 15px; }
+
+    /* ─── Header Banner ───────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, #0f1c3a 0%, #1a3a7e 50%, #0f1c3a 100%);
+      border-bottom: 3px solid #c9a84c;
+      padding: 28px 32px 20px;
+      text-align: center;
+      position: relative;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .header-logo {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .header h1 { font-size: 26px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; }
+    .header h1 span { color: #c9a84c; }
+    .header-sub { margin-top: 8px; font-size: 13px; color: #b0bcd8; }
+    .badge-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-top: 16px;
+    }
+    .badge {
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.4);
+      color: #c9a84c;
+      font-size: 11px; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+
+    /* ─── Stats Bar ───────────────────────────────────────── */
+    .stats-bar {
+      display: flex; justify-content: center; gap: 32px;
+      background: var(--bg-stats);
+      border-bottom: 1px solid var(--border-stats);
+      padding: 14px 32px; flex-wrap: wrap;
+      transition: var(--transition);
+    }
+    .stat-item { text-align: center; }
+    .stat-value { font-size: 22px; font-weight: 700; color: #c9a84c; }
+    .stat-label {
+      font-size: 11px; color: var(--stat-label);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* ─── Filters Section ─────────────────────────────────── */
+    .filters-wrapper {
+      background: var(--bg-filters);
+      border-bottom: 1px solid var(--border-filters);
+      padding: 20px 32px;
+      transition: var(--transition);
+    }
+    .filters-title {
+      font-size: 11px; font-weight: 700; color: var(--filter-label);
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px;
+    }
+    .filters-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .filter-group { display: flex; flex-direction: column; gap: 5px; min-width: 150px; }
+    .filter-group label {
+      font-size: 11px; color: var(--filter-label);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .filter-group select,
+    .filter-group input {
+      background: var(--bg-input);
+      border: 1px solid var(--border-input);
+      color: var(--text-input);
+      padding: 9px 14px; border-radius: 6px;
+      font-size: 13px; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .filter-group select:hover, .filter-group input:hover,
+    .filter-group select:focus, .filter-group input:focus {
+      border-color: #c9a84c;
+    }
+    .search-group { flex: 1; min-width: 220px; }
+    .search-group input { width: 100%; }
+    .btn-reset {
+      background: transparent;
+      border: 1.5px solid #c9a84c;
+      color: #c9a84c;
+      padding: 9px 20px; border-radius: 6px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      letter-spacing: 0.5px; transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-reset:hover { background: #c9a84c; color: #0b0f1a; }
+    .results-count {
+      font-size: 12px; color: var(--results-count); padding-top: 12px;
+    }
+    .results-count span { color: #c9a84c; font-weight: 700; }
+
+    /* ─── Table Container ─────────────────────────────────── */
+    .table-container { padding: 24px 32px 40px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+    thead tr { background: #1a3a7e; }
+    thead th {
+      padding: 13px 14px; text-align: left;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: #c9a84c;
+      border-bottom: 2px solid #c9a84c;
+      white-space: nowrap; cursor: pointer; user-select: none;
+    }
+    thead th:hover { color: #f0d080; }
+    tbody tr {
+      border-bottom: 1px solid var(--border-row);
+      transition: background 0.12s;
+    }
+    tbody tr:nth-child(even) { background: var(--bg-row-even); }
+    tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
+    tbody tr:hover           { background: var(--bg-row-hover); }
+    tbody td { padding: 13px 14px; font-size: 13px; vertical-align: top; line-height: 1.5; }
+    .col-title { font-weight: 600; color: var(--col-title); min-width: 200px; }
+    .col-desc  { color: var(--col-desc); max-width: 260px; font-size: 12px; }
+    .col-contact { white-space: nowrap; }
+    .col-exp   { text-align: center; white-space: nowrap; }
+    .col-date  { white-space: nowrap; font-size: 12px; color: var(--col-date); }
+    .col-location { white-space: nowrap; font-size: 12px; }
+
+    /* ─── ERP Badges ──────────────────────────────────────── */
+    .erp-badge {
+      display: inline-block; padding: 3px 9px;
+      border-radius: 4px; font-size: 11px; font-weight: 700; white-space: nowrap;
+    }
+    .erp-ln       { background: var(--erp-ln-bg);   color: var(--erp-ln-txt);   border: 1px solid var(--erp-ln-bdr); }
+    .erp-baan     { background: var(--erp-baan-bg); color: var(--erp-baan-txt); border: 1px solid var(--erp-baan-bdr); }
+    .erp-syteline { background: var(--erp-sy-bg);   color: var(--erp-sy-txt);   border: 1px solid var(--erp-sy-bdr); }
+    .erp-m3       { background: var(--erp-m3-bg);   color: var(--erp-m3-txt);   border: 1px solid var(--erp-m3-bdr); }
+    .erp-ion      { background: var(--erp-ion-bg);  color: var(--erp-ion-txt);  border: 1px solid var(--erp-ion-bdr); }
+    .erp-os       { background: var(--erp-os-bg);   color: var(--erp-os-txt);   border: 1px solid var(--erp-os-bdr); }
+
+    /* ─── Type Badges ─────────────────────────────────────── */
+    .type-badge {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 4px; font-size: 11px; font-weight: 700; white-space: nowrap;
+    }
+    .type-remote   { background: var(--type-remote-bg); color: var(--type-remote-txt); border: 1px solid var(--type-remote-bdr); }
+    .type-contract { background: var(--type-contr-bg);  color: var(--type-contr-txt);  border: 1px solid var(--type-contr-bdr); }
+
+    /* ─── Role Badges ─────────────────────────────────────── */
+    .role-badge {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap;
+    }
+    .role-functional { background: var(--role-func-bg); color: var(--role-func-txt); border: 1px solid var(--role-func-bdr); }
+    .role-technical  { background: var(--role-tech-bg); color: var(--role-tech-txt); border: 1px solid var(--role-tech-bdr); }
+    .role-techfunc   { background: var(--role-tf-bg);   color: var(--role-tf-txt);   border: 1px solid var(--role-tf-bdr); }
+
+    /* ─── Source Link ─────────────────────────────────────── */
+    .source-link a {
+      color: var(--source-link); text-decoration: none;
+      font-size: 12px; font-weight: 500;
+    }
+    .source-link a:hover { color: #c9a84c; text-decoration: underline; }
+    .via-platform { color: var(--via-platform); font-size: 12px; font-style: italic; }
+
+    /* ─── No Results ──────────────────────────────────────── */
+    .no-results { text-align: center; padding: 60px 20px; color: var(--no-results); }
+    .no-results .icon { font-size: 40px; margin-bottom: 12px; }
+    .no-results p { font-size: 15px; }
+
+    /* ─── Note Bar ────────────────────────────────────────── */
+    .note-bar {
+      background: var(--note-bg);
+      border: 1px solid var(--note-border);
+      border-radius: 8px;
+      margin: 0 32px 12px;
+      padding: 12px 18px; font-size: 12px;
+      color: var(--note-text); line-height: 1.6;
+      transition: var(--transition);
+    }
+    .note-bar strong { color: var(--note-strong); }
+
+    /* ─── Footer ──────────────────────────────────────────── */
+    .footer {
+      background: var(--bg-footer);
+      border-top: 1px solid var(--border-footer);
+      padding: 20px 32px; text-align: center;
+      font-size: 12px; color: var(--text-footer);
+      transition: var(--transition);
+    }
+    .footer a { color: #c9a84c; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* ─── Responsive ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 18px; }
+      .stats-bar { gap: 18px; }
+      .filters-row { flex-direction: column; }
+      .table-container { padding: 16px; }
+      .theme-toggle { top: 10px; right: 10px; font-size: 11px; padding: 6px 12px 6px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ THEME TOGGLE ══════════════ -->
+<button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Switch theme">
+  <span class="toggle-icon" id="themeIcon">🌙</span>
+  <span id="themeLabel">Dark Mode</span>
+</button>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="header">
+  <div class="header-logo">FullOnBaan · Infor ERP Intelligence</div>
+  <h1>Infor ERP <span>Remote &amp; Contract</span> Jobs</h1>
+  <p class="header-sub">Live-scraped from LinkedIn · Indeed · Dice · ZipRecruiter · Glassdoor · Washington Frank &nbsp;|&nbsp; Period: March 20 – April 19, 2026</p>
+  <p style="margin-top:6px;font-size:12px;color:#4cd88a;font-weight:600;">🔴 10 listings live-scraped directly from LinkedIn on 19-Apr-2026</p>
+  <div class="badge-row">
+    <span class="badge">Infor LN</span>
+    <span class="badge">Infor Baan</span>
+    <span class="badge">Infor M3</span>
+    <span class="badge">Infor Syteline</span>
+    <span class="badge">Infor ION</span>
+    <span class="badge">Infor OS</span>
+  </div>
+</header>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value" id="totalCount">35</div>
+    <div class="stat-label">Total Listings</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">100%</div>
+    <div class="stat-label">Remote / Contract</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">6</div>
+    <div class="stat-label">ERP Products</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">$55–$132/hr</div>
+    <div class="stat-label">Typical Rate Range</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value" id="filteredCount">35</div>
+    <div class="stat-label">Showing</div>
+  </div>
+</div>
+
+<!-- ══════════════ FILTERS ══════════════ -->
+<div class="filters-wrapper">
+  <div class="filters-title">🔍 Filter &amp; Search</div>
+  <div class="filters-row">
+
+    <div class="filter-group search-group">
+      <label>Keyword Search</label>
+      <input type="text" id="searchInput" placeholder="Search title, company, description…" oninput="applyFilters()" />
+    </div>
+
+    <div class="filter-group">
+      <label>Role Type</label>
+      <select id="roleFilter" onchange="applyFilters()">
+        <option value="">All Roles</option>
+        <option value="Functional">Functional</option>
+        <option value="Technical">Technical</option>
+        <option value="Techno-Functional">Techno-Functional</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>ERP Product</label>
+      <select id="erpFilter" onchange="applyFilters()">
+        <option value="">All Products</option>
+        <option value="Infor LN">Infor LN</option>
+        <option value="Infor Baan">Infor Baan</option>
+        <option value="Infor M3">Infor M3</option>
+        <option value="Infor Syteline">Infor Syteline</option>
+        <option value="Infor ION">Infor ION</option>
+        <option value="Infor OS">Infor OS</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Location</label>
+      <select id="locationFilter" onchange="applyFilters()">
+        <option value="">All Locations</option>
+        <option value="USA">USA</option>
+        <option value="Global">Global / Worldwide</option>
+        <option value="Europe">Europe</option>
+        <option value="UK">United Kingdom</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Job Type</label>
+      <select id="typeFilter" onchange="applyFilters()">
+        <option value="">All Types</option>
+        <option value="Remote Contract">Remote Contract</option>
+        <option value="Contract">Contract</option>
+        <option value="Contract W2">Contract (W2)</option>
+        <option value="C2C">Contract (C2C)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Source</label>
+      <select id="sourceFilter" onchange="applyFilters()">
+        <option value="">All Sources</option>
+        <option value="LinkedIn">🔴 LinkedIn (Live)</option>
+        <option value="ZipRecruiter">ZipRecruiter</option>
+        <option value="Indeed">Indeed</option>
+        <option value="Glassdoor">Glassdoor</option>
+        <option value="Dice">Dice</option>
+        <option value="Washington Frank">Washington Frank</option>
+      </select>
+    </div>
+
+    <button class="btn-reset" onclick="resetFilters()">✕ Reset</button>
+  </div>
+  <div class="results-count">Showing <span id="resultsText">35</span> of 35 listings &nbsp;·&nbsp; <span style="color:#4cd88a;">🔴 10 live from LinkedIn</span></div>
+</div>
+
+<!-- ══════════════ NOTE BAR ══════════════ -->
+<div class="note-bar">
+  <strong>⚠️ Privacy Notice:</strong> Job boards (LinkedIn, Indeed, Dice, ZipRecruiter) do <em>not</em> publicly expose recruiter email addresses or mobile numbers to prevent spam. Fields marked <em>"Via Platform"</em> require you to log in to the respective job board to retrieve direct contact details. Use the <em>Source / Job Link</em> column to apply and access full contact information within each platform.
+</div>
+
+<!-- ══════════════ TABLE ══════════════ -->
+<div class="table-container">
+  <table id="jobTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Job Title &amp; ERP</th>
+        <th>Role Type</th>
+        <th>Job Description</th>
+        <th>Contact / Company</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Exp (Yrs)</th>
+        <th>Date Posted</th>
+        <th>Location</th>
+        <th>Type</th>
+        <th>Source / Job Link</th>
+      </tr>
+    </thead>
+    <tbody id="jobBody">
+      <!-- Populated by JS -->
+    </tbody>
+  </table>
+  <div class="no-results" id="noResults" style="display:none;">
+    <div class="icon">🔍</div>
+    <p>No jobs match your current filters. Try adjusting the criteria above.</p>
+  </div>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+  <p>
+    Powered by <a href="https://fullonbaan.com" target="_blank">FullOnBaan.com</a> &nbsp;·&nbsp;
+    Infor ERP Consulting &amp; Training &nbsp;·&nbsp;
+    Data aggregated April 19, 2026 &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/company/fullonbaan" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+    <a href="https://www.youtube.com/@fullonbaan" target="_blank">YouTube</a>
+  </p>
+</footer>
+
+<!-- ══════════════ DATA + LOGIC ══════════════ -->
+<script>
+const JOBS = [
+  {
+    id: 1,
+    title: "Infor LN ERP Planning Consultant",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Lead ERP Planning module implementations on Infor LN. Responsible for requirements gathering, design, configuration, and go-live support for planning/supply chain streams.",
+    company: "EROS Technologies Inc",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "7+",
+    date: "08-Jan-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/infor-ln-erp-planning-consultant-remote-contract-at-eros-technologies-inc-4330891362",
+    source: "LinkedIn"
+  },
+  {
+    id: 2,
+    title: "Infor LN SME – Supply Chain",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Subject Matter Expert for Infor LN Supply Chain/Logistics. Deliver full life-cycle implementations covering order management, inventory, and 3PL integration.",
+    company: "VDart",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8+",
+    date: "12-Jan-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/infor-ln-sme-with-supply-chain-at-vdart-3399270928",
+    source: "LinkedIn"
+  },
+  {
+    id: 3,
+    title: "Infor LN Functional Consultant (Senior)",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Senior LN consultant for a 12-month remote engagement covering implementations and upgrades. Must have deep experience across Finance, Manufacturing and Logistics modules.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "10+",
+    date: "15-Mar-2026",
+    location: "USA – San Diego, CA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Remote-Infor-Ln-Consultant",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 4,
+    title: "Techno-Functional Consultant – Infor LN 10.4",
+    erp: "Infor LN",
+    roleType: "Techno-Functional",
+    desc: "Long-term W2 contract for an Infor LN 10.4 techno-functional expert. Support customisations, integrations, and business process mapping across Manufacturing and Finance.",
+    company: "Right Skale Inc",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "6+",
+    date: "20-Mar-2026",
+    location: "USA (Remote)",
+    type: "Contract W2",
+    link: "https://www.ziprecruiter.com/Jobs/Contract-Infor-Ln-Consultant",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 5,
+    title: "ERP Solution Architect – Infor LN Finance",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Architect and lead Infor LN ERP solutions tailored for Finance. Define solution design, lead workshops, and oversee configuration for GL, AP, AR, and Controlling.",
+    company: "PCG Consulting",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "10+",
+    date: "22-Mar-2026",
+    location: "USA – Lisle, IL (Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Infor-Erp-Ln",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 6,
+    title: "Infor ERP LN Finance Consultant",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Provide functional expertise on Infor ERP LN Finance for global customer implementations. Covers GL, AR, AP, Cost Accounting, and integrated 3rd-party logistics.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "6–8",
+    date: "05-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.dice.com/jobs/q-erp+analyst+infor+ln-jobs",
+    source: "Dice"
+  },
+  {
+    id: 7,
+    title: "Infor LN ERP Manufacturing/Planning Consultant",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Deliver business and functional expertise on Infor LN Manufacturing and Planning modules within a project team environment. End-to-end implementation experience required.",
+    company: "PCG Consulting",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "01-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.indeed.com/q-infor-ln-erp-remote-job-jobs.html",
+    source: "Indeed"
+  },
+  {
+    id: 8,
+    title: "Infor LN / Baan Technical Consultant",
+    erp: "Infor Baan",
+    roleType: "Technical",
+    desc: "Provide technical consulting to Infor LN/Baan customers — requirements analysis, custom development, module configuration, and mapping business processes in LN/Baan.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "18-Mar-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.indeed.com/q-baan-ln-erp-jobs.html",
+    source: "Indeed"
+  },
+  {
+    id: 9,
+    title: "Infor LN/Baan ERP Developer",
+    erp: "Infor Baan",
+    roleType: "Technical",
+    desc: "Design and develop custom solutions on Infor LN 10.x / Baan V. Develop BaanC/4GL scripts, build ION integrations, and support upgrade migrations. C2C welcome.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "10-Apr-2026",
+    location: "Global (Remote)",
+    type: "C2C",
+    link: "https://www.washingtonfrank.com/infor-ln-baan-developer-jobs",
+    source: "Washington Frank"
+  },
+  {
+    id: 10,
+    title: "Infor Baan Functional Consultant",
+    erp: "Infor Baan",
+    roleType: "Functional",
+    desc: "Support Infor Baan V/LN functional consulting for existing clients. Configure Baan modules (Finance, Manufacturing, Order Management) and lead user training sessions.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "7+",
+    date: "28-Mar-2026",
+    location: "Europe (Remote)",
+    type: "Remote Contract",
+    link: "https://www.washingtonfrank.com/us/29512/consultant-erp-infor-ln-baan-ou-utilisateur-erp",
+    source: "Washington Frank"
+  },
+  {
+    id: 11,
+    title: "Senior ERP Application Analyst – Infor CloudSuite Industrial (Syteline)",
+    erp: "Infor Syteline",
+    roleType: "Functional",
+    desc: "Senior analyst supporting Infor CSI/Syteline v9–10. Configure, troubleshoot, and enhance the ERP across Manufacturing, Planning, and Finance processes.",
+    company: "Adastra Resource Group",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "25-Mar-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.adastraresourcegroup.com/jobs/senior-erp-application-analyst-infor-cloudsuite-industrial-syteline/",
+    source: "Adastra Resource Group"
+  },
+  {
+    id: 12,
+    title: "Senior Infor Syteline Consultant",
+    erp: "Infor Syteline",
+    roleType: "Functional",
+    desc: "Lead Infor Syteline projects delivering strategic guidance on implementations and optimisations. Long-term remote duration, ideal for independent consultants.",
+    company: "NAVA Software Solutions",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8+",
+    date: "01-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Remote-Infor-Syteline",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 13,
+    title: "Syteline Purchasing & Planning Consultant",
+    erp: "Infor Syteline",
+    roleType: "Functional",
+    desc: "Evaluate, optimise, and enhance Infor Syteline (CSI) Purchasing and Planning modules. Drive process improvements and support end users across supply chain operations.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "14-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Syteline-Consultant",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 14,
+    title: "Infor CloudSuite Administrator",
+    erp: "Infor Syteline",
+    roleType: "Technical",
+    desc: "6-month contract-to-hire. Manage Infor CloudSuite Industrial administration including patches, user security, configurations, and integration monitoring.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "4+",
+    date: "17-Apr-2026",
+    location: "USA (Remote, occasional onsite)",
+    type: "Contract",
+    link: "https://www.indeed.com/q-infor-cloudsuite-l-remote-jobs.html",
+    source: "Indeed"
+  },
+  {
+    id: 15,
+    title: "Infor Syteline Developer / Customisation Specialist",
+    erp: "Infor Syteline",
+    roleType: "Technical",
+    desc: "Design and build Syteline customisations using IDO development, SQL, and .NET. Support integrations with third-party systems and internal BI tools.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "08-Apr-2026",
+    location: "USA – Texas (Remote)",
+    type: "Remote Contract",
+    link: "https://www.washingtonfrank.com/infor-syteline-developer-contract-jobs",
+    source: "Washington Frank"
+  },
+  {
+    id: 16,
+    title: "Infor M3 Sr. Finance Consultant",
+    erp: "Infor M3",
+    roleType: "Functional",
+    desc: "Lead M3 Finance stream in complex solution implementations. Cover GL, AP, AR, Cost Accounting, and intercompany. 5–7 years domain experience in M3 required.",
+    company: "iSoftTek Solutions Inc",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5–7",
+    date: "10-Mar-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.glassdoor.com/job-listing/infor-m3-sr-finance-consultant-remote-role-isofttek-solutions-inc-JV_KO0,42_KE43,65.htm?jl=1009262122103",
+    source: "Glassdoor"
+  },
+  {
+    id: 17,
+    title: "Lead Infor M3 Consultant",
+    erp: "Infor M3",
+    roleType: "Functional",
+    desc: "Handle implementation and supervision of Infor M3 ERP on a C2C basis. Lead discovery workshops, configure M3 modules, and manage client relationships end-to-end.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8+",
+    date: "22-Mar-2026",
+    location: "USA (Remote)",
+    type: "C2C",
+    link: "https://www.ziprecruiter.com/Jobs/Infor-M3",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 18,
+    title: "Infor M3 ERP Developer",
+    erp: "Infor M3",
+    roleType: "Technical",
+    desc: "Design, develop, and implement customised solutions within Infor M3 and Infor ION platform. 6+ month remote contract involving API development, scripts, and integration work.",
+    company: "Pivotal Solutions",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "19-Mar-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.remoterocketship.com/company/pivotalhire/jobs/infor-m3-erp-developer-united-states",
+    source: "Remote Rocketship"
+  },
+  {
+    id: 19,
+    title: "Infor M3 Solution Architect",
+    erp: "Infor M3",
+    roleType: "Techno-Functional",
+    desc: "Define end-to-end M3 solution architecture for enterprise clients. Requires deep knowledge of M3 technical stack, ION, and integration patterns across global deployments.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8–10",
+    date: "28-Mar-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Infor-M3-Systems",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 20,
+    title: "Infor M3 Technical Consultant",
+    erp: "Infor M3",
+    roleType: "Technical",
+    desc: "Provide technical consulting on Infor M3 — customisations, integrations (Infor ION/IEC), and performance tuning. Contract engagement, hourly rate $46–$96.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "02-Apr-2026",
+    location: "Global (Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Infor-M3-Technical-Consultant",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 21,
+    title: "Infor ION Integration Developer (Senior)",
+    erp: "Infor ION",
+    roleType: "Technical",
+    desc: "Design, develop, and deploy ION workflows, BODs, and integrations across Infor CloudSuites. 12-month+ contract, 90% remote. ION, IEC/MEC, and REST API experience required.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5–10",
+    date: "15-Mar-2026",
+    location: "USA (90% Remote)",
+    type: "Remote Contract",
+    link: "https://www.ziprecruiter.com/Jobs/Remote-Infor-Ion",
+    source: "ZipRecruiter"
+  },
+  {
+    id: 22,
+    title: "Infor ION / IDF Consultant",
+    erp: "Infor ION",
+    roleType: "Technical",
+    desc: "Consultant with expertise in Infor ION and IDF. Design integration flows, configure connection points, and support customer deployments of ION-based middleware solutions.",
+    company: "Virtutem",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "4+",
+    date: "10-Apr-2026",
+    location: "Global (Remote)",
+    type: "Remote Contract",
+    link: "https://www.virtutem.com/infor-ion-idf-consulting/",
+    source: "Virtutem"
+  },
+  {
+    id: 23,
+    title: "Infor ION Integration Architect",
+    erp: "Infor ION",
+    roleType: "Techno-Functional",
+    desc: "Architect multi-system integrations using Infor ION. Define BOD strategies, oversee IEC/MEC configurations, and guide delivery teams on a 2-year remote contract.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8+",
+    date: "01-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.glassdoor.com/Job/remote-infor-solution-consultant-jobs-SRCH_IL.0,6_IS11047_KO7,32.htm",
+    source: "Glassdoor"
+  },
+  {
+    id: 24,
+    title: "Infor OS Application Support Analyst",
+    erp: "Infor OS",
+    roleType: "Technical",
+    desc: "Provide remote contract application support for Infor OS (Operating Service). Manage Infor Ming.le, document management, and user access across Infor cloud tenants.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "3+",
+    date: "05-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://remotica.totalh.net/job/infor-as-application-support-analyst-remote-contract",
+    source: "Remotica"
+  },
+  {
+    id: 25,
+    title: "Infor OS / ION Platform Consultant",
+    erp: "Infor OS",
+    roleType: "Techno-Functional",
+    desc: "Manage Infor OS platform projects including tenant configuration, Infor OS administration, and ION integration oversight. Collaborate with functional and technical teams.",
+    company: "Via Platform",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "12-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.glassdoor.com/Job/remote-infor-solution-consultant-jobs-SRCH_IL.0,6_IS11047_KO7,32.htm",
+    source: "Glassdoor"
+  },
+
+  /* ══════════════════════════════════════════════════
+     LIVE FROM LINKEDIN — scraped 19-Apr-2026
+  ══════════════════════════════════════════════════ */
+  {
+    id: 26,
+    title: "Infor ERP LN Functional Consultant (Finance)",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "Hands-on Infor ERP LN Functional role covering Finance (AP, AR, Costing, Budgeting, Cash Flow), Manufacturing/Assembly Control, Procurement, Sales & Warehousing, EDI and 3PL/WMS integration. US Citizens & Green Card only.",
+    company: "Danta Technologies",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "6–8",
+    date: "17-Apr-2026",
+    location: "USA – Dallas, TX (Remote)",
+    type: "Contract W2",
+    link: "https://www.linkedin.com/jobs/view/4403197320",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 27,
+    title: "Infor LN / Baan Functional Consultant",
+    erp: "Infor Baan",
+    roleType: "Functional",
+    desc: "Functional consultant role for Infor LN / Baan ERP implementations. Work with client teams to configure and optimize ERP modules, gather requirements and deliver end-to-end project solutions.",
+    company: "Experis (ManpowerGroup)",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "17-Apr-2026",
+    location: "USA – Jersey City, NJ (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/4370630872",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 28,
+    title: "Infor LN Consultant",
+    erp: "Infor LN",
+    roleType: "Techno-Functional",
+    desc: "6+ years Infor LN application development and support. Working knowledge of ION Platform and BI preferred. Close collaboration with customers on implementations and enhancements. US Citizen only.",
+    company: "AppLab Systems, Inc.",
+    email: "bhavesh@applabsystems.com",
+    mobile: "Not Listed",
+    exp: "6+",
+    date: "16-Apr-2026",
+    location: "USA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/4399979256",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 29,
+    title: "Infor LN Technical Architect",
+    erp: "Infor LN",
+    roleType: "Technical",
+    desc: "Lead end-to-end technical architecture of Infor LN ERP solutions (R12+) across Manufacturing, Supply Chain, Finance & Order Management. Design integrations via Infor ION, Application Studio, BaaN-to-LN migrations, SQL/Java customisations. Mentor junior team.",
+    company: "APPIT Software Inc.",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "14–18",
+    date: "15-Apr-2026",
+    location: "India – Chennai, TN (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/4399949047",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 30,
+    title: "Infor LN / CloudSuite Business Analyst",
+    erp: "Infor LN",
+    roleType: "Functional",
+    desc: "4 openings — LN/Baan Business Analysts for Aerospace & Defense CloudSuite rollouts across London and Norway. Gather requirements, support implementation, develop reports and extensions. Manufacturing background required. US Citizen, open to occasional global travel.",
+    company: "New Resources Consulting (NRC)",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "14-Apr-2026",
+    location: "USA – Madison, WI (Remote + Travel)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/4379098483",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 31,
+    title: "Infor LN ERP Consultant",
+    erp: "Infor LN",
+    roleType: "Techno-Functional",
+    desc: "9-month contract Infor LN ERP Specialist for UK rollout. Lead end-to-end implementation, configuration, UAT management, user training and go-live support across Finance, Supply Chain, Manufacturing and Logistics. UK-based, some travel required.",
+    company: "BOSS ERP Consulting",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "5+",
+    date: "04-Apr-2026",
+    location: "UK (Hybrid Remote)",
+    type: "Contract",
+    link: "https://www.linkedin.com/jobs/view/4392187315",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 32,
+    title: "Senior Infor LN Systems Administrator",
+    erp: "Infor LN",
+    roleType: "Technical",
+    desc: "Administer Infor CloudSuite Aerospace & Defence (LN) platform — ION, IONAPI, DataLake, data integrity, AS9100/SOX compliance, MS SQL, custom BODs and DataLake integration. 7+ years sys-admin experience in regulated A&D environments.",
+    company: "JMD Technologies Inc.",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "7+",
+    date: "10-Apr-2026",
+    location: "USA (Remote)",
+    type: "Contract",
+    link: "https://www.linkedin.com/jobs/view/4376753425",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 33,
+    title: "Infor M3 Manufacturing Consultant",
+    erp: "Infor M3",
+    roleType: "Techno-Functional",
+    desc: "Lead M3 Cloud ↔ MES integration for a greenfield scenario. SME on Infor M3 manufacturing modules — gather requirements, define integration architecture (APIs/middleware), support SIT/UAT and post-go-live. Europe-based remote, occasional travel. 6-month contract + extension.",
+    company: "IT Works Recruitment Europe",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "7+",
+    date: "16-Apr-2026",
+    location: "Europe (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/4399996098",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 34,
+    title: "Senior CloudSuite Industrial (Syteline) Developer / Solution Architect",
+    erp: "Infor Syteline",
+    roleType: "Technical",
+    desc: "Architect and develop end-to-end CSI/SyteLine solutions: IDO development, Extension Classes, Form scripting, Mongoose framework, Infor OS/ION integrations and APIs, Factory Track, multi-site support, and finance process (GL/AP/AR) enhancements.",
+    company: "DKMRBH Inc.",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8+",
+    date: "18-Apr-2026",
+    location: "USA – Los Angeles, CA (Remote)",
+    type: "Remote Contract",
+    link: "https://www.linkedin.com/jobs/view/4402742450",
+    source: "LinkedIn 🔴 LIVE"
+  },
+  {
+    id: 35,
+    title: "CloudSuite Industrial (SyteLine) Developer / Solution Architect",
+    erp: "Infor Syteline",
+    roleType: "Technical",
+    desc: "6-month contract-to-hire. Architect scalable CSI/SyteLine solutions — IDO dev, Extension Classes, Mongoose framework, Infor OS/ION APIs, Factory Track, multi-site environments and financial process design. $85–$105/hr. US-based.",
+    company: "Blackstone Talent Group",
+    email: "Via Platform",
+    mobile: "Not Listed",
+    exp: "8+",
+    date: "16-Apr-2026",
+    location: "USA – Los Angeles Metro, CA (Remote)",
+    type: "Contract",
+    link: "https://www.linkedin.com/jobs/view/4401825328",
+    source: "LinkedIn 🔴 LIVE"
+  }
+];
+
+/* ─── ERP Badge Classes ───────────────────────────────── */
+const ERP_CLASS = {
+  "Infor LN":       "erp-ln",
+  "Infor Baan":     "erp-baan",
+  "Infor M3":       "erp-m3",
+  "Infor Syteline": "erp-syteline",
+  "Infor ION":      "erp-ion",
+  "Infor OS":       "erp-os"
+};
+const ROLE_CLASS = {
+  "Functional":         "role-functional",
+  "Technical":          "role-technical",
+  "Techno-Functional":  "role-techfunc"
+};
+const TYPE_CLASS = {
+  "Remote Contract": "type-remote",
+  "Contract":        "type-contract",
+  "Contract W2":     "type-contract",
+  "C2C":             "type-contract"
+};
+
+/* ─── Render Table ────────────────────────────────────── */
+function renderRows(jobs) {
+  const tbody = document.getElementById('jobBody');
+  if (jobs.length === 0) {
+    tbody.innerHTML = '';
+    document.getElementById('noResults').style.display = 'block';
+    document.getElementById('filteredCount').textContent = '0';
+    document.getElementById('resultsText').textContent = '0';
+    return;
+  }
+  document.getElementById('noResults').style.display = 'none';
+  document.getElementById('filteredCount').textContent = jobs.length;
+  document.getElementById('resultsText').textContent = jobs.length;
+
+  tbody.innerHTML = jobs.map((j, i) => `
+    <tr>
+      <td style="color:#4a5a7a;font-size:12px;text-align:center;">${i + 1}</td>
+      <td class="col-title">
+        <div>${j.title}</div>
+        <div style="margin-top:5px;">
+          <span class="erp-badge ${ERP_CLASS[j.erp] || ''}">${j.erp}</span>
+        </div>
+      </td>
+      <td><span class="role-badge ${ROLE_CLASS[j.roleType] || ''}">${j.roleType}</span></td>
+      <td class="col-desc">${j.desc}</td>
+      <td class="col-contact" style="font-size:13px;font-weight:600;color:#c0ccdf;">${j.company}</td>
+      <td class="via-platform">${j.email}</td>
+      <td class="via-platform">${j.mobile}</td>
+      <td class="col-exp" style="font-weight:700;color:#c9a84c;">${j.exp} yrs</td>
+      <td class="col-date">${j.date}</td>
+      <td class="col-location">${j.location}</td>
+      <td><span class="type-badge ${TYPE_CLASS[j.type] || 'type-contract'}">${j.type}</span></td>
+      <td class="source-link">
+        <a href="${j.link}" target="_blank" rel="noopener noreferrer">🔗 ${j.source}</a>
+      </td>
+    </tr>
+  `).join('');
+}
+
+/* ─── Filter Logic ────────────────────────────────────── */
+function applyFilters() {
+  const kw     = document.getElementById('searchInput').value.toLowerCase();
+  const role   = document.getElementById('roleFilter').value;
+  const erp    = document.getElementById('erpFilter').value;
+  const loc    = document.getElementById('locationFilter').value;
+  const type   = document.getElementById('typeFilter').value;
+  const source = document.getElementById('sourceFilter').value;
+
+  const filtered = JOBS.filter(j => {
+    const matchKw     = !kw     || [j.title, j.desc, j.company, j.erp, j.location].join(' ').toLowerCase().includes(kw);
+    const matchRole   = !role   || j.roleType === role;
+    const matchErp    = !erp    || j.erp === erp;
+    const matchLoc    = !loc    ||
+      (loc === 'USA'    && j.location.includes('USA')) ||
+      (loc === 'Global' && j.location.toLowerCase().includes('global')) ||
+      (loc === 'Europe' && j.location.toLowerCase().includes('europe')) ||
+      (loc === 'UK'     && j.location.toLowerCase().includes('uk'));
+    const matchType   = !type   || j.type.includes(type) || (type === 'C2C' && j.type === 'C2C');
+    const matchSource = !source || j.source.includes(source);
+    return matchKw && matchRole && matchErp && matchLoc && matchType && matchSource;
+  });
+
+  renderRows(filtered);
+}
+
+function resetFilters() {
+  document.getElementById('searchInput').value    = '';
+  document.getElementById('roleFilter').value     = '';
+  document.getElementById('erpFilter').value      = '';
+  document.getElementById('locationFilter').value = '';
+  document.getElementById('typeFilter').value     = '';
+  document.getElementById('sourceFilter').value   = '';
+  renderRows(JOBS);
+}
+
+/* ─── Theme Toggle ────────────────────────────────────── */
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  document.getElementById('themeIcon').textContent  = isDark ? '☀️' : '🌙';
+  document.getElementById('themeLabel').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+  localStorage.setItem('fob-theme', isDark ? 'dark' : 'light');
+}
+
+/* ─── Init ────────────────────────────────────────────── */
+// Default = light; restore saved preference if any
+(function() {
+  const saved = localStorage.getItem('fob-theme');
+  if (saved === 'dark') {
+    document.documentElement.classList.add('dark');
+    document.getElementById('themeIcon').textContent  = '☀️';
+    document.getElementById('themeLabel').textContent = 'Light Mode';
+  }
+})();
+renderRows(JOBS);
+</script>
+</body>
+</html>
