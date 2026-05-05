@@ -354,6 +354,7 @@ let headers = [], allRows = [];
 let activeFilters = {};
 let continentFilter = 'all';
 let locationColIdx = -1;
+let srNoColIdx = -1;
 let showHiddenRows = false;
 
 function isUrl(s) { return typeof s === 'string' && (/^https?:\/\//i.test(s.trim()) || /^mailto:/i.test(s.trim())); }
@@ -513,7 +514,7 @@ function renderBody() {
       if (!joined.includes(search)) return '';
     }
     visible++;
-    return `<tr>${headers.map((h, i) => `<td>${renderCell(row.values[i], h)}</td>`).join('')}</tr>`;
+    return `<tr>${headers.map((h, i) => i === srNoColIdx ? `<td>${visible}</td>` : `<td>${renderCell(row.values[i], h)}</td>`).join('')}</tr>`;
   }).join('');
   body.innerHTML = html;
   document.getElementById('visibleCount').textContent = visible;
@@ -646,6 +647,7 @@ async function loadXlsx() {
     }
 
     headers = aoa[0].map(h => String(h ?? '').trim() || '(blank)');
+    srNoColIdx = headers.findIndex(h => /^(sr\.?\s*no\.?|s\.?\s*no\.?|serial(\s*no)?|sl\.?\s*no\.?|#)$/i.test(String(h || '').trim()));
 
     const rowsMeta = worksheet['!rows'] || [];
     const ref = worksheet['!ref'] || '';

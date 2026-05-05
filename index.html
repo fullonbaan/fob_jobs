@@ -506,6 +506,7 @@ let allRows = [];           // [{ values: [...], hiddenInFile: bool }]
 let activeFilters = {};     // { columnIdx: 'value' | 'all' }
 let continentFilter = 'all';
 let locationColIdx = -1;    // index of the Location column (for continent grouping)
+let srNoColIdx = -1;        // index of the Sr.No column (renumbered to display order)
 let showHiddenRows = false; // toggle to show rows that are hidden in the xlsx file
 
 // ─── Utility ───────────────────────────────────────────────────────────────
@@ -744,6 +745,8 @@ function renderBody() {
 
     visible++;
     const tdHtml = headers.map((h, i) => {
+      // Renumber the Sr.No column to match display order
+      if (i === srNoColIdx) return `<td>${visible}</td>`;
       const v = row.values[i];
       return `<td>${renderCell(v, h)}</td>`;
     }).join('');
@@ -911,6 +914,9 @@ async function loadXlsx() {
 
     // First row = headers
     headers = aoa[0].map(h => String(h ?? '').trim() || '(blank)');
+
+    // Detect a serial-number column (Sr No, S.No, Serial, #, etc.)
+    srNoColIdx = headers.findIndex(h => /^(sr\.?\s*no\.?|s\.?\s*no\.?|serial(\s*no)?|sl\.?\s*no\.?|#)$/i.test(String(h || '').trim()));
 
     // Data rows — track hidden flag from worksheet['!rows']
     const rowsMeta = worksheet['!rows'] || [];
