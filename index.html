@@ -524,11 +524,28 @@ function isPhone(s) {
   return typeof s === 'string' && /^[+\d][\d\s\-().]{6,}$/.test(s.trim());
 }
 function fmtDate(v) {
+  const opts = { day: '2-digit', month: 'short', year: 'numeric' };
   // Excel date serial → JS date → "DD MMM YYYY"
   if (typeof v === 'number' && v > 25569 && v < 60000) {
     const d = new Date((v - 25569) * 86400 * 1000);
-    if (!isNaN(d)) {
-      return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    if (!isNaN(d)) return d.toLocaleDateString('en-GB', opts);
+  }
+  // Native Date object
+  if (v instanceof Date && !isNaN(v.getTime())) {
+    return v.toLocaleDateString('en-GB', opts);
+  }
+  // Date-like string ("April 28, 2026 at 11:06 AM GMT+5:30", "2026-04-28T...", etc.)
+  if (typeof v === 'string') {
+    const s = v.trim();
+    const looksLikeDateTime =
+      /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b\s+\d{1,2}.*\d{4}/i.test(s) ||
+      /\d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}/i.test(s) ||
+      /^\d{4}-\d{2}-\d{2}/.test(s) ||
+      /\bat\s+\d{1,2}:\d{2}/i.test(s) ||
+      /\bgmt[+\-]/i.test(s);
+    if (looksLikeDateTime) {
+      const d = new Date(s);
+      if (!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', opts);
     }
   }
   return v;
