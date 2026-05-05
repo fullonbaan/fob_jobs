@@ -505,6 +505,8 @@ let worksheet = null;
 let headers = [];
 let allRows = [];           // [{ values: [...], hiddenInFile: bool }]
 let activeFilters = {};     // { columnIdx: 'value' | 'all' }
+let continentFilter = 'all';
+let locationColIdx = -1;    // index of the Location column (for continent grouping)
 let showHiddenRows = false; // toggle to show rows that are hidden in the xlsx file
 
 // ─── Utility ───────────────────────────────────────────────────────────────
@@ -533,8 +535,60 @@ function fmtDate(v) {
   return v;
 }
 
+// ── Continent inference from a free-text location string ──────────────────
+function inferContinent(loc) {
+  if (!loc) return 'Other';
+  const raw = String(loc).trim();
+  const s = ' ' + raw.toLowerCase() + ' ';
+
+  // Middle East
+  if (/\b(uae|emirates|dubai|abu dhabi|saudi arabia|riyadh|jeddah|qatar|doha|kuwait|oman|muscat|bahrain|israel|tel aviv|jerusalem|jordan|amman|lebanon|beirut|turkey|istanbul|ankara|iran|tehran|iraq|baghdad)\b/.test(s)) return 'Middle East';
+
+  // Asia
+  if (/\b(india|china|japan|singapore|indonesia|malaysia|thailand|vietnam|philippines|korea|pakistan|bangladesh|sri lanka|nepal|hong kong|taiwan|mongolia|bhutan|cambodia|laos|myanmar|burma|kazakhstan|uzbekistan)\b/.test(s)) return 'Asia';
+  if (/\b(karnataka|tamil nadu|maharashtra|telangana|gujarat|punjab|haryana|rajasthan|kerala|west bengal|andhra pradesh|uttar pradesh|madhya pradesh|odisha|bihar|jharkhand|assam|chhattisgarh|himachal|uttarakhand|goa)\b/.test(s)) return 'Asia';
+  if (/\b(bengaluru|bangalore|mumbai|new delhi|chennai|hyderabad|pune|kolkata|ahmedabad|noida|gurgaon|gurugram|thane|nagpur|jaipur|chandigarh|kochi|trivandrum|coimbatore|surat|indore)\b/.test(s)) return 'Asia';
+  if (/\b(beijing|shanghai|guangzhou|shenzhen|hangzhou|chengdu|tianjin|wuhan|nanjing)\b/.test(s)) return 'Asia';
+
+  // Europe
+  if (/\b(netherlands|holland|germany|france|spain|italy|portugal|ireland|belgium|luxembourg|switzerland|austria|hungary|poland|czech|czechia|slovakia|slovenia|denmark|sweden|norway|finland|iceland|greece|croatia|bulgaria|romania|estonia|latvia|lithuania|serbia|belarus|ukraine|albania|moldova|bosnia|cyprus|malta|russia)\b/.test(s)) return 'Europe';
+  if (/\b(united kingdom|uk|england|scotland|wales|britain|london|manchester|liverpool|edinburgh|glasgow|birmingham|cambridge|oxford)\b/.test(s)) return 'Europe';
+  if (/\b(berlin|munich|hamburg|frankfurt|cologne|stuttgart|dresden|leipzig|bavaria|saxony|hesse|baden|brandenburg|magdeburg|wolfsburg|ingolstadt|rostock|bergheim|mecklenburg|salzburg|lower saxony)\b/.test(s)) return 'Europe';
+  if (/\b(amsterdam|rotterdam|the hague|utrecht|eindhoven|groningen|tilburg|almere|breda|nijmegen|gelderland|overijssel|north brabant|noord-holland|zuid-holland|barneveld|ede|almelo)\b/.test(s)) return 'Europe';
+  if (/\b(paris|lyon|marseille|toulouse|île-de-france|ile-de-france|provence|brittany|normandy|alsace|aquitaine)\b/.test(s)) return 'Europe';
+  if (/\b(madrid|barcelona|valencia|seville|community of madrid|catalonia|andalusia|galicia)\b/.test(s)) return 'Europe';
+  if (/\b(rome|milan|naples|turin|florence|venice|tuscany|lombardy|sicily|piedmont)\b/.test(s)) return 'Europe';
+  if (/\b(vienna|graz|linz|innsbruck)\b/.test(s)) return 'Europe';
+  if (/\b(budapest|debrecen|szeged|miskolc|budaörs|pest)\b/.test(s)) return 'Europe';
+
+  // North America
+  if (/\b(united states|usa|u\.s\.a?\.?|america)\b/.test(s)) return 'North America';
+  if (/\b(canada|ontario|quebec|british columbia|alberta|manitoba|saskatchewan|nova scotia|new brunswick|newfoundland|toronto|vancouver|montreal|ottawa|calgary|edmonton|brampton|sainte-anne-de-bellevue)\b/.test(s)) return 'North America';
+  if (/\b(mexico|mexico city|guadalajara|monterrey|cancun|puebla|tijuana)\b/.test(s)) return 'North America';
+  // US state codes after a comma: ", TX" / ", CA" / ", WI"
+  if (/,\s*(al|ak|az|ar|ca|co|ct|de|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|ok|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|wv|wi|wy|dc)\b/i.test(raw)) return 'North America';
+  if (/\b(houston|greater houston|dallas|austin|chicago|new york|los angeles|san francisco|seattle|miami|atlanta|boston|philadelphia|phoenix|denver|portland|nashville|memphis|charlotte|detroit|orlando|tampa|las vegas|minneapolis|cleveland|cincinnati|pittsburgh|milwaukee|kansas city|omaha|tulsa|wichita|raleigh|columbus|dyersburg|madison|san diego|san antonio|texas)\b/.test(s)) return 'North America';
+
+  // South America
+  if (/\b(brazil|argentina|chile|colombia|peru|venezuela|uruguay|bolivia|ecuador|paraguay|guyana|suriname)\b/.test(s)) return 'South America';
+  if (/\b(são paulo|sao paulo|rio de janeiro|brasília|brasilia|buenos aires|lima|bogotá|bogota|santiago|montevideo|caracas|quito)\b/.test(s)) return 'South America';
+
+  // Africa
+  if (/\b(south africa|egypt|morocco|nigeria|kenya|ethiopia|algeria|tunisia|ghana|tanzania|uganda|zimbabwe|cameroon|senegal|mozambique|angola|botswana|namibia|rwanda|sudan|libya|mali)\b/.test(s)) return 'Africa';
+  if (/\b(johannesburg|cape town|cairo|lagos|nairobi|addis ababa|casablanca|marrakech)\b/.test(s)) return 'Africa';
+
+  // Oceania
+  if (/\b(australia|new zealand|fiji|samoa|tonga|vanuatu|sydney|melbourne|brisbane|perth|adelaide|auckland|wellington|christchurch)\b/.test(s)) return 'Oceania';
+
+  // Generic fallbacks
+  if (/\b(remote|global|worldwide|anywhere)\b/.test(s)) return 'Remote / Global';
+
+  return 'Other';
+}
+
 // Headers that should always get a chip filter even if cardinality is high
-const PRIORITY_FILTER_HEADERS = /^(type|job\s*type|role\s*type|category|functional|technical|location|region|country|city|work\s*mode|mode|employment|module|salary|posted|source|company)$/i;
+// Note: 'location' is intentionally excluded — replaced by Continent grouping
+const PRIORITY_FILTER_HEADERS = /^(type|job\s*type|role\s*type|category|functional|technical|region|country|city|work\s*mode|mode|employment|module|salary|posted|source|company)$/i;
 
 function isPriorityHeader(h) {
   return PRIORITY_FILTER_HEADERS.test(String(h || '').trim());
@@ -605,6 +659,12 @@ function renderBody() {
     // Respect file filter — skip rows hidden in xlsx unless user toggled
     if (row.hiddenInFile && !showHiddenRows) return '';
 
+    // Continent filter (derived from Location column)
+    if (continentFilter !== 'all' && locationColIdx >= 0) {
+      const cont = inferContinent(row.values[locationColIdx]);
+      if (cont !== continentFilter) return '';
+    }
+
     // Apply chip filters
     for (const [colIdxStr, val] of Object.entries(activeFilters)) {
       if (val === 'all') continue;
@@ -645,7 +705,35 @@ function renderBody() {
 function buildDynamicFilters() {
   const wrap = document.getElementById('dynamicFilterRows');
   wrap.innerHTML = '';
+
+  // Identify the Location column (case-insensitive header match)
+  locationColIdx = headers.findIndex(h => /^(location|city)$/i.test(String(h || '').trim()));
+
+  // ── Continent filter (derived from Location column) ─────────────────────
+  if (locationColIdx >= 0) {
+    const counts = {};
+    allRows.forEach(r => {
+      const c = inferContinent(r.values[locationColIdx]);
+      counts[c] = (counts[c] || 0) + 1;
+    });
+    // Order continents in a sensible default order, then any extras
+    const order = ['Asia', 'Europe', 'North America', 'South America', 'Middle East', 'Africa', 'Oceania', 'Remote / Global', 'Other'];
+    const present = order.filter(c => counts[c]).concat(Object.keys(counts).filter(c => !order.includes(c)));
+    if (present.length > 0) {
+      const chips = ['<span class="chip active" data-val="all">All</span>']
+        .concat(present.map(c => `<span class="chip" data-val="${escapeHtml(c)}">${escapeHtml(c)} <small style="opacity:.7">(${counts[c]})</small></span>`))
+        .join('');
+      wrap.insertAdjacentHTML('beforeend', `
+        <div class="filter-row">
+          <span class="filter-label">Continent</span>
+          <div class="filter-chips" data-group="continent">${chips}</div>
+        </div>`);
+    }
+  }
+
+  // ── Auto-generated chip filters for other categorical columns ───────────
   headers.forEach((h, i) => {
+    if (i === locationColIdx) return; // skip — replaced by continent grouping
     const colVals = allRows.map(r => String(r.values[i] ?? '').trim());
     if (!isCategoricalColumn(colVals, h)) return;
     const uniq = [...new Set(colVals.filter(v => v !== ''))].sort();
@@ -663,11 +751,13 @@ function buildDynamicFilters() {
   // Wire up chip clicks
   wrap.querySelectorAll('.filter-chips').forEach(group => {
     const col = group.dataset.col;
+    const groupKey = group.dataset.group;
     group.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
         group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
-        activeFilters[col] = chip.dataset.val;
+        if (groupKey === 'continent') continentFilter = chip.dataset.val;
+        else activeFilters[col] = chip.dataset.val;
         renderBody();
       });
     });
@@ -680,6 +770,7 @@ function wireUpControls() {
   document.getElementById('clearFilters').addEventListener('click', () => {
     document.getElementById('searchBox').value = '';
     Object.keys(activeFilters).forEach(k => activeFilters[k] = 'all');
+    continentFilter = 'all';
     document.querySelectorAll('.filter-chips').forEach(group => {
       group.querySelectorAll('.chip').forEach(c => {
         c.classList.toggle('active', c.dataset.val === 'all');
