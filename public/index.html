@@ -206,6 +206,31 @@
     .fob-footer-copy { font-family: 'Jost', sans-serif; font-size: .68rem;
       color: rgba(255,255,255,0.4); margin-top: .8rem; line-height: 1.7; }
     .fob-footer-copy a { color: rgba(255,255,255,0.55); text-decoration: none; }
+    .fob-footer-copy a:hover { color: var(--gold-lt); }
+    .fob-footer-eco-label {
+      font-family: 'Jost', sans-serif; font-size: .62rem; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin: 1.2rem 0 .7rem;
+    }
+    .fob-footer-links {
+      display: flex; justify-content: center; gap: .7rem;
+      flex-wrap: wrap; margin-bottom: .6rem;
+    }
+    .fob-footer-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 600;
+      letter-spacing: .04em; text-decoration: none;
+      padding: .4rem 1rem; border-radius: 50px; transition: opacity .18s, transform .15s;
+    }
+    .fob-footer-link:hover { opacity: .82; transform: translateY(-1px); }
+    .fob-footer-link.training   { background:rgba(184,151,60,0.18); border:1.5px solid rgba(184,151,60,0.5); color:var(--gold-lt); }
+    .fob-footer-link.interview  { background:rgba(45,90,61,0.28);   border:1.5px solid rgba(74,138,98,0.45);  color:#7dd3a8; }
+    .fob-footer-link.jobs       { background:rgba(30,58,95,0.3);    border:1.5px solid rgba(45,95,158,0.45);  color:#93c5fd; }
+    .fob-footer-link.remote     { background:rgba(180,83,9,0.2);    border:1.5px solid rgba(251,146,60,0.45); color:#fb923c; }
+    .fob-footer-link.repo       { background:rgba(109,40,217,0.2);  border:1.5px solid rgba(139,92,246,0.4);  color:#c4b5fd; }
+    .fob-footer-link.exams      { background:rgba(220,38,38,0.15);  border:1.5px solid rgba(248,113,113,0.4); color:#fca5a5; }
+    .fob-footer-link.membership { background:rgba(14,116,144,0.18); border:1.5px solid rgba(34,211,238,0.4);  color:#67e8f9; }
+    .fob-footer-link.main       { background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.25);color:#fff; }
     @media (max-width: 700px) {
       .filter-row { flex-direction: column; gap: .4rem; }
       .filter-label { min-width: auto; padding-top: 0; }
@@ -250,13 +275,9 @@
 </div>
 
 <div class="container">
-  <div class="file-status" id="fileStatus">
-    <span class="dot"></span>
-    <span>Source: <strong>Latest_Jobs.xlsx</strong></span>
-    <span id="sheetName"></span>
-    <span id="filterTag" class="filter-tag" style="display:none;">File AutoFilter applied</span>
-    <span id="rangeLabel"></span>
-  </div>
+  <span id="sheetName" style="display:none;"></span>
+  <span id="filterTag" style="display:none;"></span>
+  <span id="rangeLabel" style="display:none;"></span>
 
   <div class="filter-panel" id="filterPanel" style="display:none;">
     <div class="filter-panel-title">Smart Filters — Refine Your Search</div>
@@ -306,6 +327,19 @@
       <span class="fob-footer-sub">One Stop Destination for IT Solutions</span>
     </div>
   </a>
+
+  <div class="fob-footer-eco-label">🌐 FOB Ecosystem</div>
+  <div class="fob-footer-links">
+    <a class="fob-footer-link training"   href="https://training.fullonbaan.com/"      target="_blank" rel="noopener">🎓 Training Materials</a>
+    <a class="fob-footer-link interview"  href="https://interview.fullonbaan.com/"     target="_blank" rel="noopener">📋 Interview Guides</a>
+    <a class="fob-footer-link jobs"       href="https://jobs.fullonbaan.com/"          target="_blank" rel="noopener">💼 Jobs Portal</a>
+    <a class="fob-footer-link remote"     href="Infor_ERP_Remote_Jobs.html">🌍 Remote Jobs List</a>
+    <a class="fob-footer-link repo"       href="https://repo.fullonbaan.com/"          target="_blank" rel="noopener">📦 Repository</a>
+    <a class="fob-footer-link exams"      href="https://certification.fullonbaan.com/" target="_blank" rel="noopener">📝 Exams</a>
+    <a class="fob-footer-link membership" href="https://membership.fullonbaan.com/"    target="_blank" rel="noopener">💎 Membership</a>
+    <a class="fob-footer-link main"       href="https://www.fullonbaan.com/"           target="_blank" rel="noopener">🌐 FullonBaan.com</a>
+  </div>
+
   <div class="fob-footer-copy">
     © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
     Data sourced from Latest_Jobs.xlsx · Always verify on the source platform.
@@ -334,12 +368,21 @@ function fmtDate(v) {
 }
 function escapeHtml(s) { const d = document.createElement('div'); d.textContent = String(s == null ? '' : s); return d.innerHTML; }
 
-function isCategoricalColumn(values) {
+// Headers that always deserve a chip filter even with many values
+const PRIORITY_FILTER_HEADERS = /^(type|job\s*type|role\s*type|category|functional|technical|location|region|country|city|work\s*mode|mode|employment|module|salary|posted|source|company)$/i;
+function isPriorityHeader(h) { return PRIORITY_FILTER_HEADERS.test(String(h || '').trim()); }
+
+function isCategoricalColumn(values, headerName) {
   const nonEmpty = values.filter(v => v !== '' && v != null);
   if (nonEmpty.length === 0) return false;
   const uniq = new Set(nonEmpty.map(v => String(v).trim()));
-  if (uniq.size < 2 || uniq.size > 12) return false;
-  for (const u of uniq) { if (u.length > 40 || isUrl(u)) return false; }
+  const priority = isPriorityHeader(headerName);
+  const maxUniq = priority ? 60 : 12;
+  if (uniq.size < 2 || uniq.size > maxUniq) return false;
+  for (const u of uniq) {
+    if (isUrl(u)) return false;
+    if (!priority && u.length > 40) return false;
+  }
   return true;
 }
 
@@ -404,7 +447,7 @@ function buildDynamicFilters() {
   wrap.innerHTML = '';
   headers.forEach((h, i) => {
     const colVals = allRows.map(r => String(r.values[i] ?? '').trim());
-    if (!isCategoricalColumn(colVals)) return;
+    if (!isCategoricalColumn(colVals, h)) return;
     const uniq = [...new Set(colVals.filter(v => v !== ''))].sort();
     const chips = ['<span class="chip active" data-val="all">All</span>']
       .concat(uniq.map(v => `<span class="chip" data-val="${escapeHtml(v)}">${escapeHtml(v)}</span>`)).join('');
