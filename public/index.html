@@ -360,25 +360,38 @@ function isUrl(s) { return typeof s === 'string' && (/^https?:\/\//i.test(s.trim
 function isEmail(s) { return typeof s === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim()); }
 function isLinkedIn(s) { return typeof s === 'string' && /linkedin\.com/i.test(s); }
 function isPhone(s) { return typeof s === 'string' && /^[+\d][\d\s\-().]{6,}$/.test(s.trim()); }
+const MONTH_NAMES = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
 function fmtDate(v) {
   const opts = { day: '2-digit', month: 'short', year: 'numeric' };
   if (typeof v === 'number' && v > 25569 && v < 60000) {
     const d = new Date((v - 25569) * 86400 * 1000);
-    if (!isNaN(d)) return d.toLocaleDateString('en-GB', opts);
+    if (!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', opts);
   }
   if (v instanceof Date && !isNaN(v.getTime())) return v.toLocaleDateString('en-GB', opts);
-  if (typeof v === 'string') {
-    const s = v.trim();
-    const looksLikeDateTime =
-      /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b\s+\d{1,2}.*\d{4}/i.test(s) ||
-      /\d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}/i.test(s) ||
-      /^\d{4}-\d{2}-\d{2}/.test(s) ||
-      /\bat\s+\d{1,2}:\d{2}/i.test(s) ||
-      /\bgmt[+\-]/i.test(s);
-    if (looksLikeDateTime) {
-      const d = new Date(s);
-      if (!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', opts);
+  if (typeof v !== 'string') return v;
+  const s = v.trim();
+  if (!s) return v;
+
+  let m = s.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b\.?\s+(\d{1,2})(?:st|nd|rd|th)?[,]?\s+(\d{4})\b/i);
+  if (m) {
+    const mi = MONTH_NAMES.indexOf(m[1].slice(0,3).toLowerCase());
+    if (mi >= 0) {
+      const d = new Date(Date.UTC(+m[3], mi, +m[2]));
+      if (!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
     }
+  }
+  m = s.match(/\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b\.?\s+(\d{4})\b/i);
+  if (m) {
+    const mi = MONTH_NAMES.indexOf(m[2].slice(0,3).toLowerCase());
+    if (mi >= 0) {
+      const d = new Date(Date.UTC(+m[3], mi, +m[1]));
+      if (!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
+    }
+  }
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) {
+    const d = new Date(Date.UTC(+m[1], +m[2]-1, +m[3]));
+    if (!isNaN(d.getTime())) return d.toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
   }
   return v;
 }
