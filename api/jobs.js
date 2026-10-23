@@ -105,29 +105,38 @@ function mapJSearchJob(j) {
 async function fetchFromJSearch(apiKey) {
   // Two complementary queries for variety; each uses 1 API request
   const queries = ['Infor LN consultant', 'Infor Baan ERP'];
-  let allRaw = [];
 
-  for (const query of queries) {
+  // One query with a hard timeout + a single retry. JSearch occasionally hangs,
+  // so never let one slow call eat the whole 30s function budget.
+  async function runQuery(query, attempt = 1) {
     const url = new URL('https://jsearch.p.rapidapi.com/search');
     url.searchParams.set('query',       query);
     url.searchParams.set('num_pages',   '1');       // 10 results per page (keeps free quota safe)
     url.searchParams.set('date_posted', 'month');   // posted in last 30 days
+    const ctrl  = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 11000);
+    try {
+      console.log(`[FOB] JSearch querying: "${query}" (attempt ${attempt})`);
+      const res = await fetch(url.toString(), {
+        headers: { 'X-RapidAPI-Host': 'jsearch.p.rapidapi.com', 'X-RapidAPI-Key': apiKey },
+        signal: ctrl.signal
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
+      const data = await res.json();
+      return data.data || [];
+    } catch (e) {
+      console.error(`[FOB] JSearch "${query}" attempt ${attempt} failed: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      if (attempt < 2 && !/HTTP 4(01|03|29)/.test(e.message)) return runQuery(query, attempt + 1);
+      throw e;
+    } finally { clearTimeout(timer); }
+  }
 
-    console.log(`[FOB] JSearch querying: "${query}"`);
-    const res = await fetch(url.toString(), {
-      headers: {
-        'X-RapidAPI-Host': 'jsearch.p.rapidapi.com',
-        'X-RapidAPI-Key':  apiKey
-      }
-    });
-
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(`JSearch HTTP ${res.status}: ${err.slice(0, 300)}`);
-    }
-
-    const data = await res.json();
-    allRaw = allRaw.concat(data.data || []);
+  // Run both queries in parallel; use whatever comes back
+  const results = await Promise.allSettled(queries.map(q => runQuery(q)));
+  let allRaw = [];
+  results.forEach(r => { if (r.status === 'fulfilled') allRaw = allRaw.concat(r.value); });
+  if (allRaw.length === 0) {
+    throw new Error('All JSearch queries failed: ' + results.map(r => r.reason && r.reason.message).join(' | '));
   }
 
   // Deduplicate by job_id and by title+company, require title + company + apply link
