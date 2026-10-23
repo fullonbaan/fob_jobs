@@ -8,7 +8,11 @@
 export const config = { maxDuration: 30 };
 
 // ── Server-side cache — 6 hours for real data, 1 hour for AI fallback ────────
+// The Vercel CDN also caches GET responses (see CDN_CACHE_* below), so every
+// page open gets the latest feed while JSearch is called only a few times/day.
 const CACHE_TTL_REAL = 6  * 60 * 60 * 1000;
+const CDN_CACHE_REAL = 'public, max-age=0, s-maxage=21600, stale-while-revalidate=86400';
+const CDN_CACHE_FALLBACK = 'public, max-age=0, s-maxage=600';
 const CACHE_TTL_AI   = 1  * 60 * 60 * 1000;
 let _cachedJobs = null;
 let _cachedAt   = 0;
@@ -84,12 +88,13 @@ function mapJSearchJob(j) {
     description:    desc + (desc.length >= 120 ? '…' : ''),
     company:        j.employer_name || '',
     location,
-    workMode:       j.job_is_remote ? 'remote' : 'onsite',
+    workMode:       (j.job_is_remote || /\bremote\b/i.test(title + ' ' + (j.job_description || '').slice(0, 400))) ? 'remote' : 'onsite',
     employment:     empMap[j.job_employment_type] || 'contract',
     salary:         formatSalary(j),
     module:         inferModule(title),
     region:         inferRegion(j.job_country),
     posted:         formatDate(j.job_posted_at_datetime_utc),
+    postedIso:      j.job_posted_at_datetime_utc || '',
     displayDate:    formatDate(j.job_posted_at_datetime_utc),
     source:         j.job_publisher || 'LinkedIn',
     applyUrl:       j.job_apply_link || j.job_google_link || '#',
@@ -105,7 +110,7 @@ async function fetchFromJSearch(apiKey) {
   for (const query of queries) {
     const url = new URL('https://jsearch.p.rapidapi.com/search');
     url.searchParams.set('query',       query);
-    url.searchParams.set('num_pages',   '2');       // 10 results per page
+    url.searchParams.set('num_pages',   '1');       // 10 results per page (keeps free quota safe)
     url.searchParams.set('date_posted', 'month');   // posted in last 30 days
 
     console.log(`[FOB] JSearch querying: "${query}"`);
@@ -125,18 +130,21 @@ async function fetchFromJSearch(apiKey) {
     allRaw = allRaw.concat(data.data || []);
   }
 
-  // Deduplicate by job_id, require title + company + apply link
+  // Deduplicate by job_id and by title+company, require title + company + apply link
   const seen = new Set();
   const unique = allRaw.filter(j => {
     if (!j.job_title || !j.employer_name || !j.job_apply_link) return false;
-    if (seen.has(j.job_id)) return false;
-    seen.add(j.job_id);
+    const key2 = (j.job_title + '|' + j.employer_name).toLowerCase().replace(/[^a-z0-9|]/g, '');
+    if (seen.has(j.job_id) || seen.has(key2)) return false;
+    seen.add(j.job_id); seen.add(key2);
     return true;
   });
+  // Newest first
+  unique.sort((a, b) => (Date.parse(b.job_posted_at_datetime_utc) || 0) - (Date.parse(a.job_posted_at_datetime_utc) || 0));
 
   if (unique.length === 0) throw new Error('JSearch returned no usable jobs');
 
-  const jobs = unique.map(mapJSearchJob).slice(0, 20);
+  const jobs = unique.map(mapJSearchJob).slice(0, 40);
   console.log(`[FOB] JSearch → ${jobs.length} real jobs (deduped from ${allRaw.length} raw)`);
   return jobs;
 }
@@ -276,11 +284,12 @@ async function fetchFromGemini(apiKey, prompt) {
 // ── Handler ───────────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin',  '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST')   return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== 'POST' && req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+  const fetchedAt = () => new Date(_cachedAt || Date.now()).toISOString();
 
   const JSEARCH_KEY = process.env.RAPIDAPI_KEY;
   const GROQ_KEY    = process.env.GROQ_API_KEY;
@@ -291,7 +300,8 @@ export default async function handler(req, res) {
   if (_cachedJobs && (Date.now() - _cachedAt) < ttl) {
     const ageMin = Math.round((Date.now() - _cachedAt) / 60000);
     console.log(`[FOB] Cache hit — ${_cachedJobs.length} jobs (${_cachedReal ? 'real' : 'AI'}, age: ${ageMin}m)`);
-    return res.status(200).json({ jobs: _cachedJobs, provider: 'cache', real: _cachedReal });
+    res.setHeader('Cache-Control', _cachedReal ? CDN_CACHE_REAL : CDN_CACHE_FALLBACK);
+    return res.status(200).json({ jobs: _cachedJobs, provider: 'cache', real: _cachedReal, fetchedAt: fetchedAt() });
   }
 
   const errors = [];
@@ -301,10 +311,16 @@ export default async function handler(req, res) {
     try {
       const jobs = await fetchFromJSearch(JSEARCH_KEY);
       _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = true;
-      return res.status(200).json({ jobs, provider: 'jsearch', real: true });
+      res.setHeader('Cache-Control', CDN_CACHE_REAL);
+      return res.status(200).json({ jobs, provider: 'jsearch', real: true, fetchedAt: fetchedAt() });
     } catch (e) {
       errors.push(`JSearch: ${e.message}`);
       console.error('[FOB] JSearch failed:', e.message);
+      // Prefer stale real jobs over AI-generated ones
+      if (_cachedJobs && _cachedReal) {
+        res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
+        return res.status(200).json({ jobs: _cachedJobs, provider: 'stale-cache', real: true, fetchedAt: fetchedAt() });
+      }
     }
   }
 
@@ -314,7 +330,8 @@ export default async function handler(req, res) {
     try {
       const jobs = await fetchFromGroq(GROQ_KEY, prompt);
       _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = false;
-      return res.status(200).json({ jobs, provider: 'groq', real: false });
+      res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
+      return res.status(200).json({ jobs, provider: 'groq', real: false, fetchedAt: fetchedAt() });
     } catch (e) {
       errors.push(`Groq: ${e.message}`);
       console.error('[FOB] Groq failed:', e.message);
@@ -326,13 +343,15 @@ export default async function handler(req, res) {
     try {
       const jobs = await fetchFromGemini(GEMINI_KEY, prompt);
       _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = false;
-      return res.status(200).json({ jobs, provider: 'gemini', real: false });
+      res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
+      return res.status(200).json({ jobs, provider: 'gemini', real: false, fetchedAt: fetchedAt() });
     } catch (e) {
       errors.push(`Gemini: ${e.message}`);
       console.error('[FOB] Gemini failed:', e.message);
     }
   }
 
+  res.setHeader('Cache-Control', 'no-store');
   if (errors.length === 0) {
     return res.status(500).json({ error: 'No API keys configured. Add RAPIDAPI_KEY, GROQ_API_KEY, or GEMINI_API_KEY in Vercel → Settings → Environment Variables.' });
   }
