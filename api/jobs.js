@@ -1,22 +1,30 @@
-// api/jobs.js — Vercel Serverless Function (Node.js 18+)
-// Data chain: JSearch/RapidAPI (real jobs) → Groq (AI fallback) → Gemini (AI fallback)
-// Env vars needed in Vercel → Settings → Environment Variables:
-//   RAPIDAPI_KEY  — free at rapidapi.com  (subscribe to "JSearch" — free plan 500 req/month)
-//   GROQ_API_KEY  — free at console.groq.com
-//   GEMINI_API_KEY — free at aistudio.google.com
+// api/jobs.js — Vercel Serverless Function
+// Live Infor LN / Baan jobs from JSearch (RapidAPI, Google for Jobs data).
+//
+// Env vars (Vercel → Settings → Environment Variables):
+//   RAPIDAPI_KEY           — JSearch key (free plan: 200 requests/month)
+//   BLOB_READ_WRITE_TOKEN  — added automatically when a Vercel Blob store is
+//                            connected to this project (Storage → Blob). Optional
+//                            but strongly recommended: it stores ONE shared copy
+//                            of the jobs, so JSearch is called once a day in total.
+//
+// Quota maths: one refresh ≈ 6 JSearch requests (3 multi-page queries).
+// Daily refresh ≈ 180 requests/month, which fits the 200/month free plan.
 
 export const config = { maxDuration: 60 };
 
-// ── Server-side cache — 6 hours for real data, 1 hour for AI fallback ────────
-// The Vercel CDN also caches GET responses (see CDN_CACHE_* below), so every
-// page open gets the latest feed while JSearch is called only a few times/day.
-const CACHE_TTL_REAL = 6  * 60 * 60 * 1000;
-const CDN_CACHE_REAL = 'public, max-age=0, s-maxage=28800, stale-while-revalidate=172800'; // 8h fresh, then serve stale while refreshing
-const CDN_CACHE_FALLBACK = 'public, max-age=0, s-maxage=600';
-const CACHE_TTL_AI   = 1  * 60 * 60 * 1000;
-let _cachedJobs = null;
-let _cachedAt   = 0;
-let _cachedReal = false;   // true = real JSearch data, false = AI-generated
+const REFRESH_AFTER_MS = 20 * 60 * 60 * 1000;   // data older than 20h gets refreshed (daily cron always qualifies)
+const LOCK_MS          = 3 * 60 * 1000;         // another refresh in progress → serve stored copy
+const BLOB_PATH        = 'fob-jobs/latest.json';
+
+// CDN cache headers
+const CDN_WITH_BLOB    = 'public, max-age=0, s-maxage=1800, stale-while-revalidate=86400';  // cheap: reads the stored copy
+const CDN_NO_BLOB      = 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800'; // 1 refresh/day per CDN region
+const CDN_SHORT        = 'public, max-age=0, s-maxage=300';
+
+// Per-instance memory
+let _mem      = null;   // { jobs, fetchedAt, quota }
+let _inflight = null;   // shared promise so concurrent requests trigger only one refresh
 
 // ── JSearch → normalised job schema ──────────────────────────────────────────
 function inferType(title) {
@@ -160,7 +168,7 @@ async function fetchFromJSearch(apiKey) {
   const unique = allRaw.filter(j => {
     if (!j.job_title || !j.employer_name || !j.job_apply_link) return false;
     if (!RELEVANT.test(j.job_title + ' ' + (j.job_description || '').slice(0, 1500))) return false;
-    const key2 = (j.job_title + '|' + j.employer_name).toLowerCase().replace(/[^a-z0-9|]/g, '');
+    const key2 = (j.job_title.replace(/[\s\-–(]*\d+\)?\s*$/, '') + '|' + j.employer_name).toLowerCase().replace(/[^a-z0-9|]/g, '');
     if (seen.has(j.job_id) || seen.has(key2)) return false;
     seen.add(j.job_id); seen.add(key2);
     return true;
@@ -173,136 +181,60 @@ async function fetchFromJSearch(apiKey) {
   return jobs;
 }
 
-// ── AI fallback helpers ───────────────────────────────────────────────────────
-function buildPrompt() {
-  const monthYear = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
-  return `Generate JSON with 15 Infor LN/Baan ERP job openings as of ${monthYear}. Mix: 8 functional + 7 technical.
-Regions: USA 60%, India 20%, ME 10%, EU 7%, AU 3%.
-Companies: Deloitte, Accenture, NTT Data, HCL, Capgemini, Infosys, Wipro, TCS, DXC, Innova.
-Salary: USA $45-$130/hr; India 8-25 LPA; ME AED 15k-35k/mo.
-Each job has ONLY these keys: type,title,description,company,location,workMode,employment,salary,module,region,posted,displayDate
-Values: type=functional|technical; workMode=remote|hybrid|onsite; employment=contract|fulltime|w2|c2c; module=finance|manufacturing|supplychain|integration|projects|architecture|automotive; region=usa|india|middleeast|europe|australia|global; posted=DD MMM YYYY within last 14 days; displayDate=same as posted; description=10 words max; location=city and country.
-Return ONLY: {"jobs":[...]}`;
+// ── Shared storage (Vercel Blob) ─────────────────────────────────────────────
+function blobToken() { return process.env.BLOB_READ_WRITE_TOKEN || ''; }
+
+function blobPublicUrl() {
+  // Token format: vercel_blob_rw_<storeId>_<secret>
+  const parts = blobToken().split('_');
+  const storeId = parts[3];
+  return storeId ? `https://${storeId.toLowerCase()}.public.blob.vercel-storage.com/${BLOB_PATH}` : '';
 }
 
-function buildApplyUrls(job, index) {
-  const cleanTitle = (job.title || '').replace(/^(infor\s+ln|baan)\s*/i, '').trim();
-  const q          = encodeURIComponent(`"Infor LN" ${cleanTitle}`);
-  const loc        = encodeURIComponent(job.location || '');
-  const isRemote   = job.workMode === 'remote';
+let _blobUrl = '';   // exact URL returned by put(), preferred over the derived one
 
-  if (index % 2 === 0) {
-    const remoteParam = isRemote ? '&f_WT=2' : '';
-    const locParam    = (!isRemote && loc) ? `&location=${loc}` : '';
-    return { applyUrl: `https://www.linkedin.com/jobs/search/?keywords=${q}${locParam}${remoteParam}`, source: 'LinkedIn' };
-  } else {
-    const locParam = isRemote ? 'Remote' : (job.location || '');
-    return { applyUrl: `https://www.indeed.com/jobs?q=${q}&l=${encodeURIComponent(locParam)}`, source: 'Indeed' };
-  }
-}
-
-function enrichAIJobs(jobs) {
-  return jobs.map((job, i) => {
-    const { applyUrl, source } = buildApplyUrls(job, i);
-    return { ...job, applyUrl, source, recruiterEmail: '' };
-  });
-}
-
-function parseJobs(text) {
-  text = text.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/g, '').trim();
-  const start = text.indexOf('{');
-  if (start === -1) throw new Error('No JSON object found');
+async function readStored() {
+  if (!blobToken()) return null;
   try {
-    const end = text.lastIndexOf('}');
-    if (end > start) {
-      const parsed = JSON.parse(text.slice(start, end + 1));
-      const jobs = Array.isArray(parsed.jobs) ? parsed.jobs : [];
-      if (jobs.length > 0) return jobs;
-    }
-  } catch (_) {}
-  const arrStart = text.indexOf('[');
-  if (arrStart !== -1) {
-    const arrText  = text.slice(arrStart);
-    const lastClose = arrText.lastIndexOf('},');
-    if (lastClose !== -1) {
-      try {
-        const jobs = JSON.parse(arrText.slice(0, lastClose + 1) + ']');
-        if (Array.isArray(jobs) && jobs.length > 0) return jobs;
-      } catch (_) {}
-    }
-  }
-  throw new Error('No valid jobs array in response');
+    const res = await fetch((_blobUrl || blobPublicUrl()) + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) { console.log(`[FOB] Blob read HTTP ${res.status}`); return null; }
+    return await res.json();
+  } catch (e) { console.error('[FOB] Blob read failed:', e.message); return null; }
 }
 
-async function fetchFromGroq(apiKey, prompt) {
-  const models = [
-    { id: 'llama-3.3-70b-versatile', maxTok: 5000 },
-    { id: 'llama-3.1-8b-instant',    maxTok: 3000 },
-    { id: 'llama-3.1-70b-versatile', maxTok: 5000 }
-  ];
-  const errors = [];
-  for (const { id: model, maxTok } of models) {
-    try {
-      console.log(`[FOB] Groq trying: ${model}`);
-      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify({
-          model, max_tokens: maxTok, temperature: 0.7,
-          messages: [
-            { role: 'system', content: 'Return only valid JSON with no markdown.' },
-            { role: 'user',   content: prompt }
-          ]
-        })
-      });
-      if (!res.ok) {
-        const msg = `Groq ${model} HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`;
-        console.error(`[FOB] ${msg}`); errors.push(msg); continue;
-      }
-      const data = await res.json();
-      const jobs = enrichAIJobs(parseJobs((data.choices || []).map(c => c.message?.content || '').join('')));
-      console.log(`[FOB] Groq ${model} → ${jobs.length} AI jobs`);
-      return jobs;
-    } catch (e) {
-      const msg = `Groq ${model}: ${e.message}`;
-      console.error(`[FOB] ${msg}`); errors.push(msg);
-    }
-  }
-  throw new Error(errors.join(' | '));
+async function writeStored(payload) {
+  if (!blobToken()) return;
+  try {
+    const { put } = await import('@vercel/blob');
+    const r = await put(BLOB_PATH, JSON.stringify(payload), {
+      access: 'public', addRandomSuffix: false, allowOverwrite: true,
+      contentType: 'application/json', cacheControlMaxAge: 60
+    });
+    _blobUrl = r.url;
+    console.log('[FOB] Blob written:', r.url, r.url === blobPublicUrl() ? '(matches derived URL)' : '(DIFFERS from derived ' + blobPublicUrl() + ')');
+  } catch (e) { console.error('[FOB] Blob write failed:', e.message); }
 }
 
-async function fetchFromGemini(apiKey, prompt) {
-  const models = ['gemini-2.0-flash', 'gemini-2.0-flash-lite'];
-  const errors = [];
-  for (const model of models) {
-    try {
-      console.log(`[FOB] Gemini trying: ${model}`);
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
-          })
-        }
-      );
-      if (!res.ok) {
-        const msg = `Gemini ${model} HTTP ${res.status}: ${(await res.text()).slice(0, 200)}`;
-        console.error(`[FOB] ${msg}`); errors.push(msg); continue;
-      }
-      const data = await res.json();
-      const rawText = (data.candidates || []).flatMap(c => (c.content?.parts || []).map(p => p.text || '')).join('');
-      const jobs = enrichAIJobs(parseJobs(rawText));
-      console.log(`[FOB] Gemini ${model} → ${jobs.length} AI jobs`);
-      return jobs;
-    } catch (e) {
-      const msg = `Gemini ${model}: ${e.message}`;
-      console.error(`[FOB] ${msg}`); errors.push(msg);
-    }
-  }
-  throw new Error(errors.join(' | '));
+// ── Refresh (one at a time per instance) ─────────────────────────────────────
+async function refresh(apiKey, stored) {
+  if (_inflight) return _inflight;
+  _inflight = (async () => {
+    // Mark a refresh as in progress so other instances keep serving the stored copy
+    if (stored) await writeStored({ ...stored, refreshStartedAt: new Date().toISOString() });
+    const jobs = await fetchFromJSearch(apiKey);
+    const payload = { jobs, fetchedAt: new Date().toISOString(), quota: _quota };
+    _mem = payload;
+    await writeStored(payload);
+    return payload;
+  })();
+  try { return await _inflight; } finally { _inflight = null; }
+}
+
+const ageMs = p => p && p.fetchedAt ? Date.now() - Date.parse(p.fetchedAt) : Infinity;
+
+function send(res, status, cache, body) {
+  res.setHeader('Cache-Control', cache);
+  return res.status(status).json(body);
 }
 
 // ── Handler ───────────────────────────────────────────────────────────────────
@@ -310,75 +242,36 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin',  '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST' && req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
-  const fetchedAt = () => new Date(_cachedAt || Date.now()).toISOString();
 
-  const JSEARCH_KEY = process.env.RAPIDAPI_KEY;
-  const GROQ_KEY    = process.env.GROQ_API_KEY;
-  const GEMINI_KEY  = process.env.GEMINI_API_KEY;
+  const KEY     = process.env.RAPIDAPI_KEY;
+  const hasBlob = !!blobToken();
+  const okCache = hasBlob ? CDN_WITH_BLOB : CDN_NO_BLOB;
 
-  // Serve from cache if fresh (TTL depends on source quality)
-  const ttl = _cachedReal ? CACHE_TTL_REAL : CACHE_TTL_AI;
-  if (_cachedJobs && (Date.now() - _cachedAt) < ttl) {
-    const ageMin = Math.round((Date.now() - _cachedAt) / 60000);
-    console.log(`[FOB] Cache hit — ${_cachedJobs.length} jobs (${_cachedReal ? 'real' : 'AI'}, age: ${ageMin}m)`);
-    res.setHeader('Cache-Control', _cachedReal ? CDN_CACHE_REAL : CDN_CACHE_FALLBACK);
-    return res.status(200).json({ jobs: _cachedJobs, provider: 'cache', real: _cachedReal, fetchedAt: fetchedAt(), quota: _quota });
+  // 1. Best available stored copy: shared Blob, else this instance's memory
+  const blob   = await readStored();
+  const stored = [blob, _mem].filter(Boolean).sort((a, b) => ageMs(a) - ageMs(b))[0] || null;
+
+  const fresh      = stored && ageMs(stored) < REFRESH_AFTER_MS;
+  const refreshing = stored && stored.refreshStartedAt && (Date.now() - Date.parse(stored.refreshStartedAt)) < LOCK_MS;
+
+  if (stored && (fresh || refreshing || !KEY)) {
+    return send(res, 200, okCache, { jobs: stored.jobs, provider: hasBlob ? 'stored' : 'cache', real: true,
+      fetchedAt: stored.fetchedAt, quota: stored.quota || null });
   }
+  if (!KEY) return send(res, 500, 'no-store', { error: 'RAPIDAPI_KEY is not configured.' });
 
-  const errors = [];
-
-  // 1. Try JSearch (real live jobs)
-  if (JSEARCH_KEY) {
-    try {
-      const jobs = await fetchFromJSearch(JSEARCH_KEY);
-      _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = true;
-      res.setHeader('Cache-Control', CDN_CACHE_REAL);
-      return res.status(200).json({ jobs, provider: 'jsearch', real: true, fetchedAt: fetchedAt(), quota: _quota });
-    } catch (e) {
-      errors.push(`JSearch: ${e.message}`);
-      console.error('[FOB] JSearch failed:', e.message);
-      // Prefer stale real jobs over AI-generated ones
-      if (_cachedJobs && _cachedReal) {
-        res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
-        return res.status(200).json({ jobs: _cachedJobs, provider: 'stale-cache', real: true, fetchedAt: fetchedAt(), quota: _quota });
-      }
+  // 2. Stale or missing → refresh from JSearch (≈6 requests)
+  try {
+    const p = await refresh(KEY, stored);
+    return send(res, 200, okCache, { jobs: p.jobs, provider: 'jsearch', real: true, fetchedAt: p.fetchedAt, quota: p.quota });
+  } catch (e) {
+    console.error('[FOB] Refresh failed:', e.message);
+    if (stored) {
+      return send(res, 200, CDN_SHORT, { jobs: stored.jobs, provider: 'stale', real: true,
+        fetchedAt: stored.fetchedAt, quota: stored.quota || null });
     }
+    return send(res, 503, 'no-store', { error: 'Live job feed unavailable', details: e.message });
   }
-
-  // 2. AI fallback — Groq
-  const prompt = buildPrompt();
-  if (GROQ_KEY) {
-    try {
-      const jobs = await fetchFromGroq(GROQ_KEY, prompt);
-      _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = false;
-      res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
-      return res.status(200).json({ jobs, provider: 'groq', real: false, fetchedAt: fetchedAt() });
-    } catch (e) {
-      errors.push(`Groq: ${e.message}`);
-      console.error('[FOB] Groq failed:', e.message);
-    }
-  }
-
-  // 3. AI fallback — Gemini
-  if (GEMINI_KEY) {
-    try {
-      const jobs = await fetchFromGemini(GEMINI_KEY, prompt);
-      _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = false;
-      res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
-      return res.status(200).json({ jobs, provider: 'gemini', real: false, fetchedAt: fetchedAt() });
-    } catch (e) {
-      errors.push(`Gemini: ${e.message}`);
-      console.error('[FOB] Gemini failed:', e.message);
-    }
-  }
-
-  res.setHeader('Cache-Control', 'no-store');
-  if (errors.length === 0) {
-    return res.status(500).json({ error: 'No API keys configured. Add RAPIDAPI_KEY, GROQ_API_KEY, or GEMINI_API_KEY in Vercel → Settings → Environment Variables.' });
-  }
-
-  return res.status(500).json({ error: 'All providers failed', details: errors });
 }

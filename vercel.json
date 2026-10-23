@@ -1,3 +1,6 @@
 {
-  "version": 2
+  "version": 2,
+  "crons": [
+    { "path": "/api/jobs?source=cron", "schedule": "30 0 * * *" }
+  ]
 }
