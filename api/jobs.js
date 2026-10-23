@@ -262,6 +262,16 @@ export default async function handler(req, res) {
   }
   if (!KEY) return send(res, 500, 'no-store', { error: 'RAPIDAPI_KEY is not configured.' });
 
+  // Only the real site and the daily cron may spend JSearch quota. Vercel loads every
+  // new deployment's *.vercel.app URL right after deploy (preview screenshots), which
+  // would otherwise trigger a full refresh on each push.
+  const host   = String(req.headers?.host || '').toLowerCase();
+  const isCron = /vercel-cron/i.test(String(req.headers?.['user-agent'] || ''));
+  if (!isCron && host.endsWith('.vercel.app')) {
+    if (stored) return send(res, 200, CDN_SHORT, { jobs: stored.jobs, provider: 'stored', real: true, fetchedAt: stored.fetchedAt, quota: stored.quota || null });
+    return send(res, 503, 'no-store', { error: 'Preview URL: open jobs.fullonbaan.com for the live feed.' });
+  }
+
   // 2. Stale or missing → refresh from JSearch (≈6 requests)
   try {
     const p = await refresh(KEY, stored);
