@@ -13,8 +13,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FullonBaan · Latest Infor LN Jobs</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <!-- SheetJS — for parsing Latest_Jobs.xlsx in the browser -->
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <style>
     :root {
       --pearl-0: #fdfcfb;
@@ -294,14 +292,13 @@
     <div class="filter-actions">
       <div class="filter-results-badge">Showing <strong id="visibleCount">0</strong> of <strong id="totalCount">0</strong> rows</div>
       <button class="btn-clear-filters" id="clearFilters">✕ Clear Filters</button>
-      <button class="toggle-hidden" id="toggleHidden">👁 Show Rows Hidden by File Filter</button>
     </div>
   </div>
 
   <div id="loadingState" class="loading">
     <div class="spinner">⟳</div>
     <div class="loading-text">Fetching the latest Infor LN / Baan openings…</div>
-    <div class="loading-sub">Live job feed · curated list · newest first</div>
+    <div class="loading-sub">Live job feed · last 30 days · newest first</div>
   </div>
 
   <div id="errorState" class="error-state" style="display:none;">
@@ -342,13 +339,12 @@
 
   <div class="fob-footer-copy">
     © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
-    Live listings via JSearch (Google for Jobs) plus a curated list · Always verify on the source platform.
+    Live listings via JSearch (Google for Jobs) · Always verify on the source platform.
   </div>
 </div>
 
 <script>
 // Try multiple paths so this works on Vercel (with or without rewrites), local servers, etc.
-const XLSX_PATHS = ['Latest_Jobs.xlsx', './Latest_Jobs.xlsx', '/Latest_Jobs.xlsx', '../Latest_Jobs.xlsx', '/public/Latest_Jobs.xlsx'];
 
 let workbook = null, worksheet = null;
 let headers = [], allRows = [];
@@ -596,31 +592,11 @@ function wireUpControls() {
     });
     renderBody();
   });
-  const tBtn = document.getElementById('toggleHidden');
-  tBtn.addEventListener('click', () => {
-    showHiddenRows = !showHiddenRows;
-    tBtn.classList.toggle('active', showHiddenRows);
-    tBtn.textContent = showHiddenRows ? '👁 Hide Rows Hidden by File Filter' : '👁 Show Rows Hidden by File Filter';
-    renderBody();
-  });
 }
 
-async function fetchXlsxBuffer() {
-  const errs = [];
-  for (const path of XLSX_PATHS) {
-    try {
-      const res = await fetch(path + '?t=' + Date.now());
-      if (res.ok) {
-        const buf = await res.arrayBuffer();
-        if (buf && buf.byteLength > 0) return { buf, path };
-      } else { errs.push(`${path} → HTTP ${res.status}`); }
-    } catch (e) { errs.push(`${path} → ${e.message}`); }
-  }
-  throw new Error('Could not fetch Latest_Jobs.xlsx.\n\nAttempts:\n  • ' + errs.join('\n  • '));
-}
 
-// ─── Live feed (/api/jobs) + curated xlsx, merged newest-first ─────────────
-const UNIFIED_HEADERS = ['Sr. No', 'Posted On', 'Job Title', 'Company Name', 'Location', 'Work Mode', 'Employment', 'Source', 'Apply Link', 'Feed'];
+// ─── Live feed (/api/jobs), newest-first ─────────────────────────────────────
+const UNIFIED_HEADERS = ['Sr. No', 'Posted On', 'Job Title', 'Company Name', 'Location', 'Work Mode', 'Employment', 'Source', 'Apply Link'];
 const LIVE_API = '/api/jobs';
 
 function cap(s) { s = String(s || ''); return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
@@ -628,7 +604,7 @@ function dedupeKey(title, company) { return (String(title) + '|' + String(compan
 
 async function fetchLiveJobs() {
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 25000);
+  const timer = setTimeout(() => ctrl.abort(), 58000);
   try {
     const res = await fetch(LIVE_API, { method: 'GET', cache: 'no-store', signal: ctrl.signal });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -639,83 +615,31 @@ async function fetchLiveJobs() {
   } finally { clearTimeout(timer); }
 }
 
-function parseXlsxRows(buf) {
-  workbook  = XLSX.read(buf, { type: 'array', cellDates: true, cellStyles: true });
-  worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  const aoa = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '', raw: false });
-  if (!aoa.length) return [];
-  const range = XLSX.utils.decode_range(worksheet['!ref'] || 'A1:A1');
-  for (let r = range.s.r; r <= range.e.r; r++) {
-    for (let c = range.s.c; c <= range.e.c; c++) {
-      const cell = worksheet[XLSX.utils.encode_cell({ r, c })];
-      if (cell && cell.l && cell.l.Target) {
-        const row = aoa[r - range.s.r];
-        if (row && !/^https?:\/\//i.test(String(row[c - range.s.c] ?? '').trim())) row[c - range.s.c] = cell.l.Target;
-      }
-    }
+async function loadJobs() {
+  let live;
+  try { live = await fetchLiveJobs(); }
+  catch (e) {
+    console.error('[FOB] live feed unavailable:', e);
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('errorState').style.display = 'block';
+    document.getElementById('errorDetail').innerHTML = 'The live job feed is temporarily unavailable. Please refresh in a minute.';
+    return;
   }
-  const h = aoa[0].map(x => String(x ?? '').trim());
-  const col = re => h.findIndex(x => re.test(x));
-  const ci = { company: col(/company\s*name|^company$/i), title: col(/job\s*title|^title$/i), loc: col(/^location|^city/i),
-               url: col(/url|link/i), posted: col(/posted|date/i) };
-  const rowsMeta = worksheet['!rows'] || [];
-  const out = [];
-  for (let i = 1; i < aoa.length; i++) {
-    const v = aoa[i];
-    if (!v || v.every(x => x === '' || x == null)) continue;
-    const get = k => ci[k] >= 0 ? (v[ci[k]] ?? '') : '';
-    const meta = rowsMeta[range.s.r + i];
-    out.push({
-      title: get('title'), company: get('company'), location: get('loc'), url: get('url'), posted: get('posted'),
-      hidden: !!(meta && meta.hidden)
-    });
-  }
-  return out;
-}
-
-async function loadXlsx() {
-  const [liveRes, xlsxRes] = await Promise.allSettled([fetchLiveJobs(), fetchXlsxBuffer()]);
   headers = UNIFIED_HEADERS.slice();
   srNoColIdx = 0;
   allRows = [];
   const seen = new Set();
-
-  if (liveRes.status === 'fulfilled') {
-    liveRes.value.jobs.forEach(j => {
-      const k = dedupeKey(j.title, j.company);
-      if (seen.has(k)) return; seen.add(k);
-      allRows.push({ live: true, hiddenInFile: false, sortMs: Date.parse(j.postedIso) || parseDateMs(j.posted),
-        values: ['', j.posted || '', j.title || '', j.company || '', j.location || '', cap(j.workMode), cap(j.employment), j.source || '', j.applyUrl || '', 'Live'] });
-    });
-  } else console.warn('[FOB] live feed unavailable:', liveRes.reason);
-
-  if (xlsxRes.status === 'fulfilled') {
-    try {
-      parseXlsxRows(xlsxRes.value.buf).forEach(r => {
-        const k = dedupeKey(r.title, r.company);
-        if (seen.has(k)) return; seen.add(k);
-        allRows.push({ live: false, hiddenInFile: r.hidden, sortMs: parseDateMs(r.posted),
-          values: ['', r.posted, r.title, r.company, r.location, '', '', /linkedin/i.test(r.url) ? 'LinkedIn' : '', r.url, 'Curated'] });
-      });
-    } catch (e) { console.warn('[FOB] xlsx parse failed:', e); }
-  } else console.warn('[FOB] xlsx unavailable:', xlsxRes.reason);
-
-  if (!allRows.length) {
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('errorState').style.display = 'block';
-    document.getElementById('errorDetail').innerHTML = 'Neither the live job feed nor the curated list could be loaded. Please refresh in a minute.';
-    return;
-  }
-
+  live.jobs.forEach(j => {
+    const k = dedupeKey(j.title, j.company);
+    if (seen.has(k)) return; seen.add(k);
+    allRows.push({ live: true, hiddenInFile: false, sortMs: Date.parse(j.postedIso) || parseDateMs(j.posted),
+      values: ['', j.posted || '', j.title || '', j.company || '', j.location || '', cap(j.workMode), cap(j.employment), j.source || '', j.applyUrl || ''] });
+  });
   allRows.sort((a, b) => (b.sortMs ?? -Infinity) - (a.sortMs ?? -Infinity));
 
-  const stamp = document.getElementById('liveStamp');
-  if (liveRes.status === 'fulfilled') {
-    const t = new Date(liveRes.value.fetchedAt || Date.now());
-    stamp.textContent = '● Live feed refreshed ' + t.toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-  } else {
-    stamp.textContent = 'Live feed temporarily unavailable — showing curated list';
-  }
+  const t = new Date(live.fetchedAt || Date.now());
+  document.getElementById('liveStamp').textContent =
+    '● Live feed refreshed ' + t.toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 
   document.getElementById('loadingState').style.display = 'none';
   document.getElementById('filterPanel').style.display = 'block';
@@ -726,7 +650,7 @@ async function loadXlsx() {
   renderBody();
 }
 
-document.addEventListener('DOMContentLoaded', loadXlsx);
+document.addEventListener('DOMContentLoaded', loadJobs);
 </script>
 </body>
 </html>

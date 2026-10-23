@@ -5,13 +5,13 @@
 //   GROQ_API_KEY  — free at console.groq.com
 //   GEMINI_API_KEY — free at aistudio.google.com
 
-export const config = { maxDuration: 30 };
+export const config = { maxDuration: 60 };
 
 // ── Server-side cache — 6 hours for real data, 1 hour for AI fallback ────────
 // The Vercel CDN also caches GET responses (see CDN_CACHE_* below), so every
 // page open gets the latest feed while JSearch is called only a few times/day.
 const CACHE_TTL_REAL = 6  * 60 * 60 * 1000;
-const CDN_CACHE_REAL = 'public, max-age=0, s-maxage=21600, stale-while-revalidate=86400';
+const CDN_CACHE_REAL = 'public, max-age=0, s-maxage=28800, stale-while-revalidate=172800'; // 8h fresh, then serve stale while refreshing
 const CDN_CACHE_FALLBACK = 'public, max-age=0, s-maxage=600';
 const CACHE_TTL_AI   = 1  * 60 * 60 * 1000;
 let _cachedJobs = null;
@@ -102,59 +102,74 @@ function mapJSearchJob(j) {
   };
 }
 
-async function fetchFromJSearch(apiKey) {
-  // Two complementary queries for variety; each uses 1 API request
-  const queries = ['Infor LN consultant', 'Infor Baan ERP'];
+// Search plan: several pages per query so we get 50+ unique, recent listings.
+const JSEARCH_QUERIES = [
+  { query: 'Infor LN',             pages: 5 },
+  { query: 'Baan ERP',             pages: 3 },
+  { query: 'Infor ERP consultant', pages: 3 },
+];
+const MIN_JOBS = 50;
+const MAX_JOBS = 100;
+const RELEVANT = /infor|baan|\bln\b|cloudsuite/i;
 
-  // One query with a hard timeout + a single retry. JSearch occasionally hangs,
-  // so never let one slow call eat the whole 30s function budget.
-  async function runQuery(query, attempt = 1) {
+let _quota = null;   // last seen RapidAPI quota headers
+
+async function fetchFromJSearch(apiKey) {
+  const started = Date.now();
+
+  async function runQuery({ query, pages }, attempt = 1) {
     const url = new URL('https://jsearch.p.rapidapi.com/search');
     url.searchParams.set('query',       query);
-    url.searchParams.set('num_pages',   '1');       // 10 results per page (keeps free quota safe)
-    url.searchParams.set('date_posted', 'month');   // posted in last 30 days
+    url.searchParams.set('page',        '1');
+    url.searchParams.set('num_pages',   String(pages));
+    url.searchParams.set('date_posted', 'month');
     const ctrl  = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 11000);
+    const timer = setTimeout(() => ctrl.abort(), 24000);
     try {
-      console.log(`[FOB] JSearch querying: "${query}" (attempt ${attempt})`);
+      console.log(`[FOB] JSearch querying: "${query}" x${pages} pages (attempt ${attempt})`);
       const res = await fetch(url.toString(), {
         headers: { 'X-RapidAPI-Host': 'jsearch.p.rapidapi.com', 'X-RapidAPI-Key': apiKey },
         signal: ctrl.signal
       });
+      const lim = res.headers.get('x-ratelimit-requests-limit');
+      const rem = res.headers.get('x-ratelimit-requests-remaining');
+      if (lim || rem) _quota = { limit: lim, remaining: rem, at: new Date().toISOString() };
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
       const data = await res.json();
+      console.log(`[FOB] JSearch "${query}" → ${(data.data || []).length} raw (quota left: ${rem})`);
       return data.data || [];
     } catch (e) {
       console.error(`[FOB] JSearch "${query}" attempt ${attempt} failed: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
-      if (attempt < 2 && !/HTTP 4(01|03|29)/.test(e.message)) return runQuery(query, attempt + 1);
+      // Retry once, only if there is enough time left and it isn't an auth/quota error
+      if (attempt < 2 && Date.now() - started < 25000 && !/HTTP 4(01|03|29)/.test(e.message)) {
+        return runQuery({ query, pages: Math.min(pages, 2) }, attempt + 1);
+      }
       throw e;
     } finally { clearTimeout(timer); }
   }
 
-  // Run both queries in parallel; use whatever comes back
-  const results = await Promise.allSettled(queries.map(q => runQuery(q)));
+  const results = await Promise.allSettled(JSEARCH_QUERIES.map(q => runQuery(q)));
   let allRaw = [];
   results.forEach(r => { if (r.status === 'fulfilled') allRaw = allRaw.concat(r.value); });
   if (allRaw.length === 0) {
     throw new Error('All JSearch queries failed: ' + results.map(r => r.reason && r.reason.message).join(' | '));
   }
 
-  // Deduplicate by job_id and by title+company, require title + company + apply link
+  // Deduplicate by job_id and by title+company; keep only Infor/Baan-relevant posts
   const seen = new Set();
   const unique = allRaw.filter(j => {
     if (!j.job_title || !j.employer_name || !j.job_apply_link) return false;
+    if (!RELEVANT.test(j.job_title + ' ' + (j.job_description || '').slice(0, 1500))) return false;
     const key2 = (j.job_title + '|' + j.employer_name).toLowerCase().replace(/[^a-z0-9|]/g, '');
     if (seen.has(j.job_id) || seen.has(key2)) return false;
     seen.add(j.job_id); seen.add(key2);
     return true;
   });
-  // Newest first
   unique.sort((a, b) => (Date.parse(b.job_posted_at_datetime_utc) || 0) - (Date.parse(a.job_posted_at_datetime_utc) || 0));
 
   if (unique.length === 0) throw new Error('JSearch returned no usable jobs');
-
-  const jobs = unique.map(mapJSearchJob).slice(0, 40);
-  console.log(`[FOB] JSearch → ${jobs.length} real jobs (deduped from ${allRaw.length} raw)`);
+  const jobs = unique.map(mapJSearchJob).slice(0, MAX_JOBS);
+  console.log(`[FOB] JSearch → ${jobs.length} real jobs (deduped from ${allRaw.length} raw; target ${MIN_JOBS}+) in ${Date.now() - started}ms`);
   return jobs;
 }
 
@@ -310,7 +325,7 @@ export default async function handler(req, res) {
     const ageMin = Math.round((Date.now() - _cachedAt) / 60000);
     console.log(`[FOB] Cache hit — ${_cachedJobs.length} jobs (${_cachedReal ? 'real' : 'AI'}, age: ${ageMin}m)`);
     res.setHeader('Cache-Control', _cachedReal ? CDN_CACHE_REAL : CDN_CACHE_FALLBACK);
-    return res.status(200).json({ jobs: _cachedJobs, provider: 'cache', real: _cachedReal, fetchedAt: fetchedAt() });
+    return res.status(200).json({ jobs: _cachedJobs, provider: 'cache', real: _cachedReal, fetchedAt: fetchedAt(), quota: _quota });
   }
 
   const errors = [];
@@ -321,14 +336,14 @@ export default async function handler(req, res) {
       const jobs = await fetchFromJSearch(JSEARCH_KEY);
       _cachedJobs = jobs; _cachedAt = Date.now(); _cachedReal = true;
       res.setHeader('Cache-Control', CDN_CACHE_REAL);
-      return res.status(200).json({ jobs, provider: 'jsearch', real: true, fetchedAt: fetchedAt() });
+      return res.status(200).json({ jobs, provider: 'jsearch', real: true, fetchedAt: fetchedAt(), quota: _quota });
     } catch (e) {
       errors.push(`JSearch: ${e.message}`);
       console.error('[FOB] JSearch failed:', e.message);
       // Prefer stale real jobs over AI-generated ones
       if (_cachedJobs && _cachedReal) {
         res.setHeader('Cache-Control', CDN_CACHE_FALLBACK);
-        return res.status(200).json({ jobs: _cachedJobs, provider: 'stale-cache', real: true, fetchedAt: fetchedAt() });
+        return res.status(200).json({ jobs: _cachedJobs, provider: 'stale-cache', real: true, fetchedAt: fetchedAt(), quota: _quota });
       }
     }
   }
