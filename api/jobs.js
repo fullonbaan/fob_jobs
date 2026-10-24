@@ -13,7 +13,8 @@
 
 export const config = { maxDuration: 60 };
 
-const REFRESH_AFTER_MS = 20 * 60 * 60 * 1000;   // data older than 20h gets refreshed (daily cron always qualifies)
+const REFRESH_AFTER_MS = 26 * 60 * 60 * 1000;   // visitors trigger a refresh only if the daily cron was missed
+const CRON_MIN_AGE_MS  =  6 * 60 * 60 * 1000;   // the 06:00 IST cron refreshes anything older than 6h
 const LOCK_MS          = 3 * 60 * 1000;         // another refresh in progress → serve stored copy
 const BLOB_PATH        = 'fob-jobs/latest.json';
 
@@ -132,7 +133,7 @@ async function fetchFromJSearch(apiKey) {
     url.searchParams.set('num_pages',   String(pages));
     url.searchParams.set('date_posted', 'month');
     const ctrl  = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 24000);
+    const timer = setTimeout(() => ctrl.abort(), 45000);   // multi-page searches can take 30s+
     try {
       console.log(`[FOB] JSearch querying: "${query}" x${pages} pages (attempt ${attempt})`);
       const res = await fetch(url.toString(), {
@@ -149,7 +150,8 @@ async function fetchFromJSearch(apiKey) {
     } catch (e) {
       console.error(`[FOB] JSearch "${query}" attempt ${attempt} failed: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
       // Retry once, only if there is enough time left and it isn't an auth/quota error
-      if (attempt < 2 && Date.now() - started < 25000 && !/HTTP 4(01|03|29)/.test(e.message)) {
+      // Retry only quick network failures; a timed-out search was probably already charged
+      if (attempt < 2 && e.name !== 'AbortError' && Date.now() - started < 10000 && !/HTTP 4(01|03|29)/.test(e.message)) {
         return runQuery({ query, pages: Math.min(pages, 2) }, attempt + 1);
       }
       throw e;
@@ -256,7 +258,9 @@ export default async function handler(req, res) {
   const okCache = (hasBlob && blob) ? CDN_WITH_BLOB : CDN_NO_BLOB;
   const stored = [blob, _mem].filter(Boolean).sort((a, b) => ageMs(a) - ageMs(b))[0] || null;
 
-  const fresh      = stored && ageMs(stored) < REFRESH_AFTER_MS;
+  const host   = String(req.headers?.host || '').toLowerCase();
+  const isCron = /vercel-cron/i.test(String(req.headers?.['user-agent'] || ''));
+  const fresh  = stored && ageMs(stored) < (isCron ? CRON_MIN_AGE_MS : REFRESH_AFTER_MS);
   const refreshing = stored && stored.refreshStartedAt && (Date.now() - Date.parse(stored.refreshStartedAt)) < LOCK_MS;
 
   if (stored && (fresh || refreshing || !KEY)) {
@@ -268,8 +272,6 @@ export default async function handler(req, res) {
   // Only the real site and the daily cron may spend JSearch quota. Vercel loads every
   // new deployment's *.vercel.app URL right after deploy (preview screenshots), which
   // would otherwise trigger a full refresh on each push.
-  const host   = String(req.headers?.host || '').toLowerCase();
-  const isCron = /vercel-cron/i.test(String(req.headers?.['user-agent'] || ''));
   if (!isCron && host.endsWith('.vercel.app')) {
     if (stored) return send(res, 200, CDN_SHORT, { jobs: stored.jobs, provider: 'stored', real: true, fetchedAt: stored.fetchedAt, quota: stored.quota || null });
     return send(res, 503, 'no-store', { error: 'Preview URL: open jobs.fullonbaan.com for the live feed.' });
