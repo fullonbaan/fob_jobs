@@ -3,7 +3,7 @@
 //
 // Env vars (Vercel → Settings → Environment Variables):
 //   RAPIDAPI_KEY           — JSearch key (free plan: 200 requests/month)
-//   BLOB_READ_WRITE_TOKEN  — added automatically when a Vercel Blob store is
+//   BLOB_STORE_ID (or BLOB_READ_WRITE_TOKEN) — added automatically when a Vercel Blob store is
 //                            connected to this project (Storage → Blob). Optional
 //                            but strongly recommended: it stores ONE shared copy
 //                            of the jobs, so JSearch is called once a day in total.
@@ -182,12 +182,14 @@ async function fetchFromJSearch(apiKey) {
 }
 
 // ── Shared storage (Vercel Blob) ─────────────────────────────────────────────
-function blobToken() { return process.env.BLOB_READ_WRITE_TOKEN || ''; }
+// Newer Vercel Blob stores expose BLOB_STORE_ID (+ automatic OIDC auth);
+// older ones expose BLOB_READ_WRITE_TOKEN. @vercel/blob v2 handles both.
+function blobToken() { return process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN || ''; }
 
 function blobPublicUrl() {
-  // Token format: vercel_blob_rw_<storeId>_<secret>
-  const parts = blobToken().split('_');
-  const storeId = parts[3];
+  // BLOB_STORE_ID: store_<id> or <id>;  token format: vercel_blob_rw_<id>_<secret>
+  const sid = process.env.BLOB_STORE_ID;
+  const storeId = sid ? sid.replace(/^store_/, '') : (process.env.BLOB_READ_WRITE_TOKEN || '').split('_')[3];
   return storeId ? `https://${storeId.toLowerCase()}.public.blob.vercel-storage.com/${BLOB_PATH}` : '';
 }
 
@@ -247,10 +249,11 @@ export default async function handler(req, res) {
 
   const KEY     = process.env.RAPIDAPI_KEY;
   const hasBlob = !!blobToken();
-  const okCache = hasBlob ? CDN_WITH_BLOB : CDN_NO_BLOB;
 
   // 1. Best available stored copy: shared Blob, else this instance's memory
   const blob   = await readStored();
+  // Short CDN cache only when the shared copy is readable; otherwise cache for a day
+  const okCache = (hasBlob && blob) ? CDN_WITH_BLOB : CDN_NO_BLOB;
   const stored = [blob, _mem].filter(Boolean).sort((a, b) => ageMs(a) - ageMs(b))[0] || null;
 
   const fresh      = stored && ageMs(stored) < REFRESH_AFTER_MS;
@@ -275,7 +278,7 @@ export default async function handler(req, res) {
   // 2. Stale or missing → refresh from JSearch (≈6 requests)
   try {
     const p = await refresh(KEY, stored);
-    return send(res, 200, okCache, { jobs: p.jobs, provider: 'jsearch', real: true, fetchedAt: p.fetchedAt, quota: p.quota });
+    return send(res, 200, (hasBlob && _blobUrl) ? CDN_WITH_BLOB : okCache, { jobs: p.jobs, provider: 'jsearch', real: true, fetchedAt: p.fetchedAt, quota: p.quota });
   } catch (e) {
     console.error('[FOB] Refresh failed:', e.message);
     if (stored) {
