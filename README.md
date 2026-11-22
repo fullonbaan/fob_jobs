@@ -5,6 +5,7 @@ Live Infor LN / Baan job tracker. Real listings only, from JSearch (RapidAPI, Go
 ## Project structure
 ```
 api/jobs.js     Serverless function: JSearch → rolling 30-day job pool (Vercel Blob)
+api/visits.js   Visitor counter (base 10,000; Upstash Redis if connected, else Vercel Blob)
 public/index.html  The jobs site (fetches /api/jobs)
 vercel.json     Daily cron (06:00 IST) + security headers
 archive/        Old static exports (not deployed)
@@ -15,6 +16,7 @@ archive/        Old static exports (not deployed)
 |---|---|
 | `RAPIDAPI_KEY` | JSearch key (free plan: 200 requests/month) |
 | `CRON_SECRET` | Random string, 16+ chars. Vercel sends it as `Authorization: Bearer …` on cron calls. Without it the cron is treated as a normal visitor and the feed refreshes only every ~2 days. |
+| `KV_REST_API_URL` + `KV_REST_API_TOKEN` | Optional. Added when an Upstash Redis store is connected (Storage → Marketplace). Makes the visitor counter exact: one count per visitor per day. |
 | `BLOB_STORE_ID` / `BLOB_READ_WRITE_TOKEN` | Added automatically when a Vercel Blob store is connected. Holds the shared job pool. |
 
 ## How it works
