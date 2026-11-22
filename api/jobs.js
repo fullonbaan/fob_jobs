@@ -2,140 +2,267 @@
 // Live Infor LN / Baan jobs from JSearch (RapidAPI, Google for Jobs data).
 //
 // Env vars (Vercel → Settings → Environment Variables):
-//   RAPIDAPI_KEY           — JSearch key (free plan: 200 requests/month)
-//   BLOB_STORE_ID (or BLOB_READ_WRITE_TOKEN) — added automatically when a Vercel Blob store is
-//                            connected to this project (Storage → Blob). Optional
-//                            but strongly recommended: it stores ONE shared copy
-//                            of the jobs, so JSearch is called once a day in total.
+//   RAPIDAPI_KEY  — JSearch key (free plan: 200 requests/month)
+//   CRON_SECRET   — random string (16+ chars). Vercel sends it as
+//                   "Authorization: Bearer <CRON_SECRET>" on cron calls; only
+//                   requests carrying it are treated as the daily cron.
+//   BLOB_STORE_ID (or BLOB_READ_WRITE_TOKEN) — added automatically when a Vercel
+//                   Blob store is connected (Storage → Blob). Holds ONE shared,
+//                   rolling pool of jobs so JSearch is called about once a day.
 //
-// Quota maths: one refresh ≈ 6 JSearch requests (3 multi-page queries).
-// Daily refresh ≈ 180 requests/month, which fits the 200/month free plan.
+// Quota maths: each refresh runs 3 search tasks; a multi-page JSearch search is
+// charged as 2 requests → ~6 requests per refresh → ~180/month on a daily cron.
+// The tasks rotate across countries (US, India, UK, NL, DE, UAE) and the results
+// are merged into a rolling 30-day pool, so every market is covered without
+// spending more quota.
+
+import { timingSafeEqual } from 'node:crypto';
 
 export const config = { maxDuration: 60 };
 
 const REFRESH_AFTER_MS = 26 * 60 * 60 * 1000;   // visitors trigger a refresh only if the daily cron was missed
-const CRON_MIN_AGE_MS  =  6 * 60 * 60 * 1000;   // the 06:00 IST cron refreshes anything older than 6h
-const LOCK_MS          = 3 * 60 * 1000;         // another refresh in progress → serve stored copy
+const CRON_MIN_AGE_MS  =  6 * 60 * 60 * 1000;   // the authenticated cron refreshes anything older than 6h
+const LOCK_MS          =  3 * 60 * 1000;        // another refresh in progress → serve stored copy
+const POOL_DAYS        = 30;                    // keep jobs posted (or first seen) within this many days
+const MAX_JOBS         = 150;
 const BLOB_PATH        = 'fob-jobs/latest.json';
 
 // CDN cache headers
-const CDN_WITH_BLOB    = 'public, max-age=0, s-maxage=1800, stale-while-revalidate=86400';  // cheap: reads the stored copy
-const CDN_NO_BLOB      = 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800'; // 1 refresh/day per CDN region
-const CDN_SHORT        = 'public, max-age=0, s-maxage=300';
+const CDN_WITH_BLOB = 'public, max-age=0, s-maxage=1800, stale-while-revalidate=86400';
+const CDN_NO_BLOB   = 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800';
+const CDN_SHORT     = 'public, max-age=0, s-maxage=300';
+
+// Only FullOnBaan sites may call this API from a browser
+const ALLOWED_ORIGIN = /^https:\/\/([a-z0-9-]+\.)*fullonbaan\.com$/i;
 
 // Per-instance memory
-let _mem      = null;   // { jobs, fetchedAt, quota }
-let _inflight = null;   // shared promise so concurrent requests trigger only one refresh
+let _mem      = null;
+let _inflight = null;
+let _quota    = null;
 
-// ── JSearch → normalised job schema ──────────────────────────────────────────
+// ── Search plan (rotates; PER_REFRESH tasks per refresh) ─────────────────────
+const TASKS = [
+  { query: 'Infor LN',             country: 'us', pages: 5 },
+  { query: 'Infor LN',             country: 'in', pages: 5 },
+  { query: 'Infor LN',             country: 'gb', pages: 3 },
+  { query: 'Baan ERP',             country: 'us', pages: 3 },
+  { query: 'Infor LN',             country: 'nl', pages: 3 },
+  { query: 'Infor LN',             country: 'de', pages: 3 },
+  { query: 'Infor ERP consultant', country: 'us', pages: 3 },
+  { query: 'Baan',                 country: 'in', pages: 3 },
+  { query: 'Infor LN',             country: 'ae', pages: 2 },
+];
+const PER_REFRESH = 3;
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const COUNTRY_NAMES = {
+  US: 'USA', IN: 'India', GB: 'UK', NL: 'Netherlands', DE: 'Germany', AE: 'UAE',
+  BE: 'Belgium', FR: 'France', IE: 'Ireland', SE: 'Sweden', NO: 'Norway', DK: 'Denmark',
+  FI: 'Finland', CH: 'Switzerland', PL: 'Poland', ES: 'Spain', IT: 'Italy', AT: 'Austria',
+  CZ: 'Czechia', HU: 'Hungary', PT: 'Portugal', SA: 'Saudi Arabia', QA: 'Qatar',
+  KW: 'Kuwait', BH: 'Bahrain', OM: 'Oman', AU: 'Australia', NZ: 'New Zealand',
+  CA: 'Canada', MX: 'Mexico', BR: 'Brazil', SG: 'Singapore', MY: 'Malaysia',
+  PH: 'Philippines', CN: 'China', JP: 'Japan', ZA: 'South Africa',
+};
+
+function safeUrl(u) {
+  return typeof u === 'string' && /^https?:\/\/[^\s"'<>]+$/i.test(u.trim()) ? u.trim() : '';
+}
+
 function inferType(title) {
-  return /developer|technical|architect|integrat|engineer|program|iot|infor os/i.test(title)
+  if (/techno[\s-]?functional/i.test(title)) return 'techno-functional';
+  return /developer|technical|architect|integrat|engineer|program|iot|infor os|\bion\b/i.test(title)
     ? 'technical' : 'functional';
 }
 
 function inferModule(title) {
   const t = title.toLowerCase();
-  if (/financ|account|gl\b|ap\b|ar\b|ledger|cost/i.test(t))       return 'finance';
-  if (/manufactur|production|shop.?floor|mrp/i.test(t))            return 'manufacturing';
-  if (/supply.?chain|warehouse|inventory|procure|purchas|logistic/i.test(t)) return 'supplychain';
-  if (/project/i.test(t))                                           return 'projects';
-  if (/architect/i.test(t))                                         return 'architecture';
-  if (/automotive/i.test(t))                                        return 'automotive';
-  return 'integration';
+  if (/financ|account|\bgl\b|\bap\b|\bar\b|ledger|cost/.test(t))                     return 'finance';
+  if (/manufactur|production|shop.?floor|mrp|mps|planning|scheduling/.test(t))       return 'manufacturing';
+  if (/supply.?chain|\bscm\b|warehouse|inventory|procure|purchas|logistic/.test(t))  return 'supplychain';
+  if (/project/.test(t))                                                             return 'projects';
+  if (/integrat|\bion\b|\bedi\b|infor os/.test(t))                                   return 'integration';
+  if (/architect/.test(t))                                                           return 'architecture';
+  if (/data|migration/.test(t))                                                      return 'data';
+  if (/automotive/.test(t))                                                          return 'automotive';
+  return 'general';
 }
 
-function inferRegion(country) {
-  const c = (country || '').toUpperCase();
-  if (['US','USA','UNITED STATES'].includes(c))                     return 'usa';
-  if (['IN','IND','INDIA'].includes(c))                             return 'india';
-  if (['AE','SA','QA','KW','BH','OM','UAE'].includes(c))           return 'middleeast';
-  if (['AU','NZ','AUSTRALIA'].includes(c))                          return 'australia';
-  if (['GB','DE','FR','NL','BE','IE','SE','NO','DK','FI','CH','PL','ES','IT'].includes(c)) return 'europe';
-  return 'global';
+// Which Infor product the job is about (title first, then description)
+function productOf(s) {
+  if (/\bbaan\b|infor\s*(erp\s*)?ln\b|\bln\b|cloudsuite\s*industrial\s*enterprise|\bcsie\b/i.test(s)) return 'Infor LN / Baan';
+  if (/\bm3\b|movex/i.test(s))                                                    return 'Infor M3';
+  if (/syteline|\bcsi\b|cloudsuite\s*industrial(?!\s*enterprise)/i.test(s))       return 'Infor CSI / SyteLine';
+  if (/infor\s*visual|\bvisual\s*erp/i.test(s))                                   return 'Infor Visual';
+  if (/infor\s*os\b|\bion\b|birst|mongoose|infor\s*d\/?pm/i.test(s))              return 'Infor OS / ION';
+  if (/infor\s*(xa|xm|lawson|eam|sx\.?e|hms|system\s*21)|\blawson\b/i.test(s))    return 'Other Infor';
+  return '';
+}
+function inferProduct(title, desc) {
+  return productOf(title) || productOf((desc || '').slice(0, 2000)) || 'Other Infor';
 }
 
-function formatDate(iso) {
-  try {
-    return new Date(iso).toLocaleDateString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-  } catch (_) {
-    return new Date().toLocaleDateString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-  }
+// Is this really an Infor/Baan job?
+function isRelevant(title, desc) {
+  const d = (desc || '').slice(0, 3000);
+  if (/\binfor\b|\bbaan\b|syteline|cloudsuite/i.test(title)) return true;
+  if (/\bln\b|\bm3\b|\bcsi\b/i.test(title) && /\binfor\b|\berp\b/i.test(title + ' ' + d)) return true;
+  // Generic titles only if the description is clearly about Infor LN / Baan
+  return /infor\s*(erp\s*)?ln\b|\bbaan\b|cloudsuite\s*industrial\s*enterprise/i.test(d);
 }
 
-function formatSalary(j) {
-  if (j.job_min_salary && j.job_max_salary) {
-    const sym    = j.job_salary_currency === 'USD' ? '$'
-                 : j.job_salary_currency === 'INR' ? '₹'
-                 : j.job_salary_currency === 'AED' ? 'AED '
-                 : (j.job_salary_currency || '$');
-    const period = j.job_salary_period === 'HOUR' ? '/hr'
-                 : j.job_salary_period === 'YEAR' ? '/yr' : '';
-    return `${sym}${Math.round(j.job_min_salary)}–${sym}${Math.round(j.job_max_salary)}${period}`;
-  }
+function inferWorkMode(j, title, desc) {
+  const head = (desc || '').slice(0, 500);
+  if (j.job_is_remote || /\bremote\b/i.test(title)) return 'remote';
+  if (/\bhybrid\b/i.test(title + ' ' + head)) return 'hybrid';
+  if (/\bremote\b/i.test(head) && !/\b(not|no|non)[\s-]remote\b/i.test(head)) return 'remote';
+  return 'onsite';
+}
+
+function inferEmployment(j, title) {
+  const types = [].concat(j.job_employment_types || [], j.job_employment_type || []).map(String);
+  if (types.some(t => /CONTRACT/i.test(t)) || /\b(contract|c2c|corp[\s-]to[\s-]corp|1099|w2)\b/i.test(title)) return 'contract';
+  if (types.some(t => /FULL/i.test(t)))   return 'fulltime';
+  if (types.some(t => /PART/i.test(t)))   return 'parttime';
+  if (types.some(t => /INTERN/i.test(t))) return 'internship';
   return '';
 }
 
-function mapJSearchJob(j) {
-  const title    = j.job_title || '';
-  const locParts = [j.job_city, j.job_state, j.job_country].filter(Boolean);
-  const location = locParts.slice(0, 2).join(', ') || j.job_country || 'Remote';
-  const empMap   = { FULLTIME: 'fulltime', CONTRACTOR: 'contract', PARTTIME: 'fulltime', INTERN: 'contract' };
-  // Clean description to 120 chars, no newlines
-  const desc = (j.job_description || '')
+function formatDate(iso) {
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
+
+function formatSalary(j) {
+  if (!(j.job_min_salary && j.job_max_salary)) return '';
+  const c = j.job_salary_currency;
+  const sym = c === 'USD' ? '$' : c === 'INR' ? '₹' : c === 'GBP' ? '£' : c === 'EUR' ? '€' : (c ? c + ' ' : '');
+  const period = j.job_salary_period === 'HOUR' ? '/hr' : j.job_salary_period === 'YEAR' ? '/yr' : j.job_salary_period === 'MONTH' ? '/mo' : '';
+  return `${sym}${Math.round(j.job_min_salary)}–${sym}${Math.round(j.job_max_salary)}${period}`;
+}
+
+function cleanDescription(raw) {
+  return String(raw || '')
     .replace(/[\r\n\t]+/g, ' ')
     .replace(/\s{2,}/g, ' ')
     .trim()
-    .slice(0, 120);
+    .replace(/^(job\s*description|about\s*the\s*(job|role)|overview|description|summary)\s*[:\-–]?\s*/i, '');
+}
+
+// Aggregators that often repost, gate behind sign-up or go stale
+const LOW_QUALITY = /jobleads|bebee|trabajo|jobrapido|onlinekunstskolen|learn4good|cazvid|talent\.com|jooble|jobilize|whatjobs|adzuna|simplyhired|energy jobline/i;
+const GOOD_BOARDS = /linkedin|indeed|dice|glassdoor|naukri|monster|ziprecruiter|careers|workday|greenhouse|lever|ashby|smartrecruiters|icims/i;
+
+function pickApply(j) {
+  const opts = [];
+  if (safeUrl(j.job_apply_link)) opts.push({ url: j.job_apply_link, publisher: j.job_publisher || '', direct: !!j.job_apply_is_direct });
+  (Array.isArray(j.apply_options) ? j.apply_options : []).forEach(o => {
+    if (safeUrl(o.apply_link)) opts.push({ url: o.apply_link, publisher: o.publisher || '', direct: !!o.is_direct });
+  });
+  const score = o => (o.direct ? 3 : LOW_QUALITY.test(o.publisher) ? 0 : GOOD_BOARDS.test(o.publisher) ? 2 : 1);
+  opts.sort((a, b) => score(b) - score(a));
+  if (opts[0]) return { url: opts[0].url.trim(), source: opts[0].publisher || 'Job board', direct: opts[0].direct };
+  const g = safeUrl(j.job_google_link);
+  return g ? { url: g, source: 'Google Jobs', direct: false } : null;
+}
+
+function mapJSearchJob(j) {
+  const title   = (j.job_title || '').trim();
+  const descRaw = cleanDescription(j.job_description);
+  const country = String(j.job_country || '').toUpperCase();
+  const cName   = COUNTRY_NAMES[country] || country;
+  const work    = inferWorkMode(j, title, descRaw);
+  const place   = [j.job_city, j.job_state].filter(Boolean);
+  if (cName) place.push(cName);
+  const location = place.length ? place.join(', ') : (work === 'remote' ? 'Remote' : 'Not specified');
+  const apply   = pickApply(j);
+  const months  = j.job_required_experience && j.job_required_experience.required_experience_in_months;
+  const desc    = descRaw.slice(0, 220);
 
   return {
+    id:             j.job_id || '',
     type:           inferType(title),
     title,
-    description:    desc + (desc.length >= 120 ? '…' : ''),
-    company:        j.employer_name || '',
+    description:    desc + (descRaw.length > 220 ? '…' : ''),
+    company:        (j.employer_name || '').trim(),
     location,
-    workMode:       (j.job_is_remote || /\bremote\b/i.test(title + ' ' + (j.job_description || '').slice(0, 400))) ? 'remote' : 'onsite',
-    employment:     empMap[j.job_employment_type] || 'contract',
+    country:        cName,
+    workMode:       work,
+    employment:     inferEmployment(j, title),
     salary:         formatSalary(j),
+    experience:     months ? `${Math.round(months / 12)}+ yrs` : '',
+    product:        inferProduct(title, descRaw),
     module:         inferModule(title),
-    region:         inferRegion(j.job_country),
     posted:         formatDate(j.job_posted_at_datetime_utc),
     postedIso:      j.job_posted_at_datetime_utc || '',
     displayDate:    formatDate(j.job_posted_at_datetime_utc),
-    source:         j.job_publisher || 'LinkedIn',
-    applyUrl:       j.job_apply_link || j.job_google_link || '#',
-    recruiterEmail: ''
+    source:         apply ? apply.source : (j.job_publisher || ''),
+    direct:         apply ? apply.direct : false,
+    applyUrl:       apply ? apply.url : '',
+    recruiterEmail: '',
+    firstSeen:      new Date().toISOString(),
   };
 }
 
-// Search plan: several pages per query so we get 50+ unique, recent listings.
-const JSEARCH_QUERIES = [
-  { query: 'Infor LN',             pages: 5 },
-  { query: 'Baan ERP',             pages: 3 },
-  { query: 'Infor ERP consultant', pages: 3 },
-];
-const MIN_JOBS = 50;
-const MAX_JOBS = 100;
-const RELEVANT = /infor|baan|\bln\b|cloudsuite/i;
+// Jobs stored by an older version of this function: fill in new fields
+function upgradeStored(j) {
+  const out = { ...j };
+  if (!out.product) out.product = inferProduct(out.title || '', out.description || '');
+  if (out.module === 'integration' && !/integrat|\bion\b|\bedi\b|infor os/i.test(out.title || '')) out.module = inferModule(out.title || '');
+  if (!out.country && out.region === 'usa' && !/\b(usa|us|united states)\b/i.test(out.location || '') && out.location !== 'Remote') {
+    out.location = `${out.location}, USA`; out.country = 'USA';
+  }
+  if (!out.firstSeen) out.firstSeen = out.postedIso || new Date().toISOString();
+  if (!safeUrl(out.applyUrl)) out.applyUrl = '';
+  return out;
+}
 
-let _quota = null;   // last seen RapidAPI quota headers
+// ── Deduplication ────────────────────────────────────────────────────────────
+const COMPANY_SUFFIX = /\b(inc|llc|l\.l\.c|ltd|limited|corp|corporation|co|company|pvt|private|plc|gmbh|bv|b\.v|ag|sa|lp|llp|group|technologies|technology|tech|solutions|consulting|services|global|international|america|north america|usa)\b/g;
+const normCompany = c => String(c || '').toLowerCase().replace(/\(.*?\)/g, ' ').replace(/[^a-z0-9 ]+/g, ' ')
+  .replace(COMPANY_SUFFIX, ' ').replace(/\s+/g, '');
+const normTitle = t => String(t || '').toLowerCase()
+  .replace(/\(.*?\)/g, ' ')
+  .replace(/\b(remote|hybrid|on[\s-]?site|w2( only)?|c2c|contract|full[\s-]?time|part[\s-]?time|urgent|hiring|immediate)\b/g, ' ')
+  .replace(/\s+in\s+[a-z .,]+$/g, ' ')
+  .replace(/[^a-z0-9]+/g, '');
+const normDesc = d => String(d || '').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 100);
 
-async function fetchFromJSearch(apiKey) {
+function dedupe(jobs) {
+  // Prefer direct employer links, then newer posts
+  const ranked = jobs.slice().sort((a, b) =>
+    (Number(b.direct) - Number(a.direct)) || ((Date.parse(b.postedIso) || 0) - (Date.parse(a.postedIso) || 0)));
+  const seen = new Set();
+  const out = [];
+  for (const j of ranked) {
+    const keys = [normTitle(j.title) + '|' + normCompany(j.company)];
+    if (j.id) keys.push('id:' + j.id);
+    const dk = normDesc(j.description);
+    if (dk.length >= 60) keys.push(normTitle(j.title) + '|d:' + dk);
+    if (keys.some(k => seen.has(k))) continue;
+    keys.forEach(k => seen.add(k));
+    out.push(j);
+  }
+  return out;
+}
+
+const jobAgeMs = j => Date.now() - (Date.parse(j.postedIso) || Date.parse(j.firstSeen) || Date.now());
+
+// ── JSearch ──────────────────────────────────────────────────────────────────
+async function fetchFromJSearch(apiKey, tasks) {
   const started = Date.now();
 
-  async function runQuery({ query, pages }, attempt = 1) {
+  async function runQuery({ query, country, pages }, attempt = 1) {
     const url = new URL('https://jsearch.p.rapidapi.com/search');
     url.searchParams.set('query',       query);
+    url.searchParams.set('country',     country);
     url.searchParams.set('page',        '1');
     url.searchParams.set('num_pages',   String(pages));
     url.searchParams.set('date_posted', 'month');
     const ctrl  = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 45000);   // multi-page searches can take 30s+
+    const timer = setTimeout(() => ctrl.abort(), 45000);
     try {
-      console.log(`[FOB] JSearch querying: "${query}" x${pages} pages (attempt ${attempt})`);
+      console.log(`[FOB] JSearch "${query}" [${country}] x${pages} pages (attempt ${attempt})`);
       const res = await fetch(url.toString(), {
         headers: { 'X-RapidAPI-Host': 'jsearch.p.rapidapi.com', 'X-RapidAPI-Key': apiKey },
         signal: ctrl.signal
@@ -145,57 +272,43 @@ async function fetchFromJSearch(apiKey) {
       if (lim || rem) _quota = { limit: lim, remaining: rem, at: new Date().toISOString() };
       if (!res.ok) throw new Error(`HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
       const data = await res.json();
-      console.log(`[FOB] JSearch "${query}" → ${(data.data || []).length} raw (quota left: ${rem})`);
+      console.log(`[FOB] JSearch "${query}" [${country}] → ${(data.data || []).length} raw (quota left: ${rem})`);
       return data.data || [];
     } catch (e) {
-      console.error(`[FOB] JSearch "${query}" attempt ${attempt} failed: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
-      // Retry once, only if there is enough time left and it isn't an auth/quota error
+      console.error(`[FOB] JSearch "${query}" [${country}] attempt ${attempt} failed: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
       // Retry only quick network failures; a timed-out search was probably already charged
       if (attempt < 2 && e.name !== 'AbortError' && Date.now() - started < 10000 && !/HTTP 4(01|03|29)/.test(e.message)) {
-        return runQuery({ query, pages: Math.min(pages, 2) }, attempt + 1);
+        return runQuery({ query, country, pages: Math.min(pages, 2) }, attempt + 1);
       }
       throw e;
     } finally { clearTimeout(timer); }
   }
 
-  const results = await Promise.allSettled(JSEARCH_QUERIES.map(q => runQuery(q)));
-  let allRaw = [];
-  results.forEach(r => { if (r.status === 'fulfilled') allRaw = allRaw.concat(r.value); });
-  if (allRaw.length === 0) {
+  const results = await Promise.allSettled(tasks.map(t => runQuery(t)));
+  let raw = [];
+  results.forEach(r => { if (r.status === 'fulfilled') raw = raw.concat(r.value); });
+  if (raw.length === 0) {
     throw new Error('All JSearch queries failed: ' + results.map(r => r.reason && r.reason.message).join(' | '));
   }
 
-  // Deduplicate by job_id and by title+company; keep only Infor/Baan-relevant posts
-  const seen = new Set();
-  const unique = allRaw.filter(j => {
-    if (!j.job_title || !j.employer_name || !j.job_apply_link) return false;
-    if (!RELEVANT.test(j.job_title + ' ' + (j.job_description || '').slice(0, 1500))) return false;
-    const key2 = (j.job_title.replace(/[\s\-–(]*\d+\)?\s*$/, '') + '|' + j.employer_name).toLowerCase().replace(/[^a-z0-9|]/g, '');
-    if (seen.has(j.job_id) || seen.has(key2)) return false;
-    seen.add(j.job_id); seen.add(key2);
-    return true;
-  });
-  unique.sort((a, b) => (Date.parse(b.job_posted_at_datetime_utc) || 0) - (Date.parse(a.job_posted_at_datetime_utc) || 0));
-
-  if (unique.length === 0) throw new Error('JSearch returned no usable jobs');
-  const jobs = unique.map(mapJSearchJob).slice(0, MAX_JOBS);
-  console.log(`[FOB] JSearch → ${jobs.length} real jobs (deduped from ${allRaw.length} raw; target ${MIN_JOBS}+) in ${Date.now() - started}ms`);
+  const jobs = raw
+    .filter(j => j.job_title && j.employer_name && isRelevant(j.job_title, j.job_description))
+    .map(mapJSearchJob)
+    .filter(j => j.applyUrl);
+  console.log(`[FOB] JSearch → ${jobs.length} relevant of ${raw.length} raw in ${Date.now() - started}ms`);
   return jobs;
 }
 
 // ── Shared storage (Vercel Blob) ─────────────────────────────────────────────
-// Newer Vercel Blob stores expose BLOB_STORE_ID (+ automatic OIDC auth);
-// older ones expose BLOB_READ_WRITE_TOKEN. @vercel/blob v2 handles both.
 function blobToken() { return process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN || ''; }
 
 function blobPublicUrl() {
-  // BLOB_STORE_ID: store_<id> or <id>;  token format: vercel_blob_rw_<id>_<secret>
   const sid = process.env.BLOB_STORE_ID;
   const storeId = sid ? sid.replace(/^store_/, '') : (process.env.BLOB_READ_WRITE_TOKEN || '').split('_')[3];
   return storeId ? `https://${storeId.toLowerCase()}.public.blob.vercel-storage.com/${BLOB_PATH}` : '';
 }
 
-let _blobUrl = '';   // exact URL returned by put(), preferred over the derived one
+let _blobUrl = '';
 
 async function readStored() {
   if (!blobToken()) return null;
@@ -215,20 +328,35 @@ async function writeStored(payload) {
       contentType: 'application/json', cacheControlMaxAge: 60
     });
     _blobUrl = r.url;
-    console.log('[FOB] Blob written:', r.url, r.url === blobPublicUrl() ? '(matches derived URL)' : '(DIFFERS from derived ' + blobPublicUrl() + ')');
   } catch (e) { console.error('[FOB] Blob write failed:', e.message); }
 }
 
-// ── Refresh (one at a time per instance) ─────────────────────────────────────
+// ── Refresh: fetch this rotation's tasks and merge into the rolling pool ─────
 async function refresh(apiKey, stored) {
   if (_inflight) return _inflight;
   _inflight = (async () => {
-    // Mark a refresh as in progress so other instances keep serving the stored copy
     if (stored) await writeStored({ ...stored, refreshStartedAt: new Date().toISOString() });
-    const jobs = await fetchFromJSearch(apiKey);
-    const payload = { jobs, fetchedAt: new Date().toISOString(), quota: _quota };
+    const rot   = Number.isInteger(stored && stored.rotation) ? stored.rotation % TASKS.length : 0;
+    const tasks = Array.from({ length: PER_REFRESH }, (_, i) => TASKS[(rot + i) % TASKS.length]);
+    const fresh = await fetchFromJSearch(apiKey, tasks);
+
+    // Keep firstSeen for jobs we already had
+    const prevById = new Map(((stored && stored.jobs) || []).filter(j => j.id).map(j => [j.id, j]));
+    fresh.forEach(j => { const p = prevById.get(j.id); if (p && p.firstSeen) j.firstSeen = p.firstSeen; });
+
+    const old = ((stored && stored.jobs) || []).map(upgradeStored)
+      .filter(j => j.applyUrl && isRelevant(j.title || '', j.description || ''));
+    const pool = dedupe(fresh.concat(old))
+      .filter(j => jobAgeMs(j) <= POOL_DAYS * 86400000)
+      .sort((a, b) => (Date.parse(b.postedIso) || 0) - (Date.parse(a.postedIso) || 0))
+      .slice(0, MAX_JOBS);
+    if (pool.length === 0) throw new Error('No usable jobs after merge');
+
+    const payload = { jobs: pool, fetchedAt: new Date().toISOString(), quota: _quota,
+      rotation: (rot + PER_REFRESH) % TASKS.length, lastTasks: tasks.map(t => `${t.query} [${t.country}]`) };
     _mem = payload;
     await writeStored(payload);
+    console.log(`[FOB] Pool: ${pool.length} jobs (${fresh.length} fetched now: ${payload.lastTasks.join(', ')})`);
     return payload;
   })();
   try { return await _inflight; } finally { _inflight = null; }
@@ -236,57 +364,72 @@ async function refresh(apiKey, stored) {
 
 const ageMs = p => p && p.fetchedAt ? Date.now() - Date.parse(p.fetchedAt) : Infinity;
 
+function isAuthorizedCron(req) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+  const got = Buffer.from(String(req.headers?.authorization || ''));
+  const want = Buffer.from(`Bearer ${secret}`);
+  return got.length === want.length && timingSafeEqual(got, want);
+}
+
+function publicBody(p, provider) {
+  return { jobs: p.jobs, provider, real: true, fetchedAt: p.fetchedAt, count: p.jobs.length };
+}
+
 function send(res, status, cache, body) {
   res.setHeader('Cache-Control', cache);
   return res.status(status).json(body);
 }
 
-// ── Handler ───────────────────────────────────────────────────────────────────
+// ── Handler ──────────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin',  '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST' && req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
+  const origin = String(req.headers?.origin || '');
+  if (ALLOWED_ORIGIN.test(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Robots-Tag', 'noindex');
+  if (req.method === 'OPTIONS') return res.status(204).end();
+  if (req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader('Allow', 'GET, OPTIONS');
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   const KEY     = process.env.RAPIDAPI_KEY;
   const hasBlob = !!blobToken();
+  const isCron  = isAuthorizedCron(req);
 
-  // 1. Best available stored copy: shared Blob, else this instance's memory
-  const blob   = await readStored();
-  // Short CDN cache only when the shared copy is readable; otherwise cache for a day
+  const blob    = await readStored();
   const okCache = (hasBlob && blob) ? CDN_WITH_BLOB : CDN_NO_BLOB;
-  const stored = [blob, _mem].filter(Boolean).sort((a, b) => ageMs(a) - ageMs(b))[0] || null;
+  const stored  = [blob, _mem].filter(Boolean).sort((a, b) => ageMs(a) - ageMs(b))[0] || null;
 
   const host   = String(req.headers?.host || '').toLowerCase();
-  const isCron = /vercel-cron/i.test(String(req.headers?.['user-agent'] || ''));
   const fresh  = stored && ageMs(stored) < (isCron ? CRON_MIN_AGE_MS : REFRESH_AFTER_MS);
   const refreshing = stored && stored.refreshStartedAt && (Date.now() - Date.parse(stored.refreshStartedAt)) < LOCK_MS;
 
   if (stored && (fresh || refreshing || !KEY)) {
-    return send(res, 200, okCache, { jobs: stored.jobs, provider: hasBlob ? 'stored' : 'cache', real: true,
-      fetchedAt: stored.fetchedAt, quota: stored.quota || null });
+    return send(res, 200, isCron ? 'no-store' : okCache, publicBody(stored, hasBlob ? 'stored' : 'cache'));
   }
-  if (!KEY) return send(res, 500, 'no-store', { error: 'RAPIDAPI_KEY is not configured.' });
+  if (!KEY) {
+    console.error('[FOB] RAPIDAPI_KEY is not configured');
+    return send(res, 503, 'no-store', { error: 'Live job feed unavailable' });
+  }
 
-  // Only the real site and the daily cron may spend JSearch quota. Vercel loads every
-  // new deployment's *.vercel.app URL right after deploy (preview screenshots), which
-  // would otherwise trigger a full refresh on each push.
+  // Only the real site and the authenticated cron may spend JSearch quota.
   if (!isCron && host.endsWith('.vercel.app')) {
-    if (stored) return send(res, 200, CDN_SHORT, { jobs: stored.jobs, provider: 'stored', real: true, fetchedAt: stored.fetchedAt, quota: stored.quota || null });
+    if (stored) return send(res, 200, CDN_SHORT, publicBody(stored, 'stored'));
     return send(res, 503, 'no-store', { error: 'Preview URL: open jobs.fullonbaan.com for the live feed.' });
   }
 
-  // 2. Stale or missing → refresh from JSearch (≈6 requests)
   try {
     const p = await refresh(KEY, stored);
-    return send(res, 200, (hasBlob && _blobUrl) ? CDN_WITH_BLOB : okCache, { jobs: p.jobs, provider: 'jsearch', real: true, fetchedAt: p.fetchedAt, quota: p.quota });
+    return send(res, 200, isCron ? 'no-store' : (hasBlob && _blobUrl) ? CDN_WITH_BLOB : okCache, publicBody(p, 'jsearch'));
   } catch (e) {
     console.error('[FOB] Refresh failed:', e.message);
-    if (stored) {
-      return send(res, 200, CDN_SHORT, { jobs: stored.jobs, provider: 'stale', real: true,
-        fetchedAt: stored.fetchedAt, quota: stored.quota || null });
-    }
-    return send(res, 503, 'no-store', { error: 'Live job feed unavailable', details: e.message });
+    if (stored) return send(res, 200, CDN_SHORT, publicBody(stored, 'stale'));
+    return send(res, 503, 'no-store', { error: 'Live job feed unavailable' });
   }
 }

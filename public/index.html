@@ -12,6 +12,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FullonBaan · Latest Infor LN Jobs</title>
+  <meta name="description" content="Live Infor LN and Baan ERP jobs from the last 30 days: functional, technical, remote and contract roles across India, Europe, the Middle East and the USA. Updated daily by FullonBaan."/>
+  <link rel="canonical" href="https://jobs.fullonbaan.com/"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Latest Infor LN & Baan Jobs · FullonBaan"/>
+  <meta property="og:description" content="Live Infor LN / Baan openings, updated daily. Filter by product, region, work mode and contract type."/>
+  <meta property="og:url" content="https://jobs.fullonbaan.com/"/>
+  <meta name="twitter:card" content="summary"/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -339,7 +346,7 @@
 
   <div class="fob-footer-copy">
     © 2026 FullonBaan · <a href="mailto:fullonbaan@gmail.com">fullonbaan@gmail.com</a> · +91 63605 93122 · Bangalore, India<br>
-    Live listings via JSearch (Google for Jobs) · Always verify on the source platform.
+    Live listings via JSearch (Google for Jobs), refreshed daily · ✓ = direct employer link · Always verify on the source platform.
   </div>
 </div>
 
@@ -354,7 +361,7 @@ let locationColIdx = -1;
 let srNoColIdx = -1;
 let showHiddenRows = false;
 
-function isUrl(s) { return typeof s === 'string' && (/^https?:\/\//i.test(s.trim()) || /^mailto:/i.test(s.trim())); }
+function isUrl(s) { return typeof s === 'string' && /^https?:\/\//i.test(s.trim()); }
 function isEmail(s) { return typeof s === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim()); }
 function isLinkedIn(s) { return typeof s === 'string' && /linkedin\.com/i.test(s); }
 function isPhone(s) { return typeof s === 'string' && /^[+\d][\d\s\-().]{6,}$/.test(s.trim()); }
@@ -447,7 +454,7 @@ function inferContinent(loc) {
 
 // Headers that always deserve a chip filter even with many values
 // Note: 'location' excluded — replaced by Continent grouping
-const PRIORITY_FILTER_HEADERS = /^(type|job\s*type|role\s*type|category|functional|technical|region|country|city|work\s*mode|mode|employment|module|salary|posted|source|company|feed)$/i;
+const PRIORITY_FILTER_HEADERS = /^(product|type|job\s*type|role\s*type|category|functional|technical|region|country|city|work\s*mode|mode|employment|module|salary|posted|source|company|feed)$/i;
 function isPriorityHeader(h) { return PRIORITY_FILTER_HEADERS.test(String(h || '').trim()); }
 
 function isCategoricalColumn(values, headerName) {
@@ -472,11 +479,12 @@ function renderCell(value, headerName) {
     const cls   = linkedInLike ? 'url-linkedin' : 'url-generic';
     const label = linkedInLike ? 'Open LinkedIn Post' : 'Open Link';
     const icon  = linkedInLike ? '🔗' : '↗';
-    const safe  = str.replace(/"/g, '&quot;');
-    return `<span class="url-cell"><a href="${safe}" target="_blank" rel="noopener" class="${cls}">${icon} ${label}</a></span>`;
+    if (!/^https?:\/\/[^\s"'<>]+$/i.test(str.trim())) return escapeHtml(str);
+    const safe  = escapeHtml(str.trim()).replace(/"/g, '&quot;');
+    return `<span class="url-cell"><a href="${safe}" target="_blank" rel="noopener noreferrer nofollow" class="${cls}">${icon} ${label}</a></span>`;
   }
   if (isEmail(str)) {
-    const safe = str.replace(/"/g, '&quot;');
+    const safe = escapeHtml(str.trim()).replace(/"/g, '&quot;');
     return `<span class="url-cell"><a href="mailto:${safe}" class="url-mailto">✉ ${safe}</a></span>`;
   }
   if (isPhone(str) && str.length <= 24) {
@@ -596,7 +604,7 @@ function wireUpControls() {
 
 
 // ─── Live feed (/api/jobs), newest-first ─────────────────────────────────────
-const UNIFIED_HEADERS = ['Sr. No', 'Posted On', 'Job Title', 'Company Name', 'Location', 'Work Mode', 'Employment', 'Source', 'Apply Link'];
+const UNIFIED_HEADERS = ['Sr. No', 'Posted On', 'Job Title', 'Company Name', 'Location', 'Product', 'Type', 'Work Mode', 'Employment', 'Source', 'Apply Link'];
 const LIVE_API = '/api/jobs';
 
 function cap(s) { s = String(s || ''); return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
@@ -633,7 +641,7 @@ async function loadJobs() {
     const k = dedupeKey(j.title, j.company);
     if (seen.has(k)) return; seen.add(k);
     allRows.push({ live: true, hiddenInFile: false, sortMs: Date.parse(j.postedIso) || parseDateMs(j.posted),
-      values: ['', j.posted || '', j.title || '', j.company || '', j.location || '', cap(j.workMode), cap(j.employment), j.source || '', j.applyUrl || ''] });
+      values: ['', j.posted || '', j.title || '', j.company || '', j.location || '', j.product || 'Other Infor', cap(j.type), cap(j.workMode), cap(j.employment), (j.source || '') + (j.direct ? ' ✓' : ''), j.applyUrl || ''] });
   });
   allRows.sort((a, b) => (b.sortMs ?? -Infinity) - (a.sortMs ?? -Infinity));
 
@@ -647,7 +655,10 @@ async function loadJobs() {
   renderHeader();
   buildDynamicFilters();
   wireUpControls();
-  renderBody();
+  // Open on Infor LN / Baan by default; "All" or "Clear Filters" shows every Infor product
+  const pIdx = headers.indexOf('Product');
+  const lnChip = document.querySelector(`.filter-chips[data-col="${pIdx}"] .chip[data-val="Infor LN / Baan"]`);
+  if (lnChip) lnChip.click(); else renderBody();
 }
 
 document.addEventListener('DOMContentLoaded', loadJobs);

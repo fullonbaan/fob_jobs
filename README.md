@@ -1,52 +1,26 @@
-# FOB Jobs — Vercel Deployment Guide
+# FOB Jobs — jobs.fullonbaan.com
 
-## Project Structure
+Live Infor LN / Baan job tracker. Real listings only, from JSearch (RapidAPI, Google for Jobs data).
+
+## Project structure
 ```
-fobjobs/
-├── api/
-│   └── jobs.js          ← Serverless function (Anthropic proxy)
-├── public/
-│   └── index.html       ← The jobs site
-├── vercel.json          ← Routing config
-└── README.md
-```
-
-## One-Time Setup
-
-### 1. Deploy to Vercel
-
-```bash
-# Install Vercel CLI (if not already)
-npm i -g vercel
-
-# From the fobjobs/ folder:
-vercel deploy --prod
+api/jobs.js     Serverless function: JSearch → rolling 30-day job pool (Vercel Blob)
+public/index.html  The jobs site (fetches /api/jobs)
+vercel.json     Daily cron (06:00 IST) + security headers
+archive/        Old static exports (not deployed)
 ```
 
-Or connect your GitHub repo to Vercel via https://vercel.com/new
-
-### 2. Add Your Anthropic API Key
-
-In the Vercel dashboard:
-1. Go to your project → **Settings** → **Environment Variables**
-2. Add: `ANTHROPIC_API_KEY` = `sk-ant-...your key...`
-3. Set environment: **Production** (and Preview if needed)
-4. Click **Save** then **Redeploy**
-
-Get your API key at: https://console.anthropic.com/
-
-### 3. That's it!
-
-The site will now fetch fresh AI-generated Infor LN jobs on every page load.
-Jobs are cached in sessionStorage for 30 minutes to avoid redundant API calls.
+## Environment variables (Vercel → Settings → Environment Variables)
+| Name | Purpose |
+|---|---|
+| `RAPIDAPI_KEY` | JSearch key (free plan: 200 requests/month) |
+| `CRON_SECRET` | Random string, 16+ chars. Vercel sends it as `Authorization: Bearer …` on cron calls. Without it the cron is treated as a normal visitor and the feed refreshes only every ~2 days. |
+| `BLOB_STORE_ID` / `BLOB_READ_WRITE_TOKEN` | Added automatically when a Vercel Blob store is connected. Holds the shared job pool. |
 
 ## How it works
-
-- Browser calls `/api/jobs` (same domain, no CORS issues)
-- Vercel serverless function calls Anthropic API with your secret key
-- Jobs returned as JSON, rendered with staggered animation
-- Fallback to 30 curated static jobs if API is unavailable
-
-## Cost estimate
-- Claude Haiku: ~$0.001 per page load (3500 output tokens)
-- 1000 visits/day ≈ $1/day
+- Each refresh runs 3 search tasks (≈6 JSearch requests), rotating through US, India, UK, Netherlands, Germany and UAE.
+- Results are merged into a rolling pool (posted within 30 days, max 150 jobs), deduplicated by title + normalised company, job id and description.
+- Each job is tagged with product (LN/Baan, M3, CSI/SyteLine, Visual, OS/ION, Other), type, module, work mode and employment type.
+- Direct employer apply links are preferred over aggregator reposts (marked ✓ on the site).
+- The site opens filtered to Infor LN / Baan; "All" shows every Infor product.
+- The API only accepts GET and only allows browser calls from *.fullonbaan.com.
