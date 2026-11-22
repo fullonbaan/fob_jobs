@@ -373,7 +373,9 @@ function isAuthorizedCron(req) {
 }
 
 function publicBody(p, provider) {
-  return { jobs: p.jobs, provider, real: true, fetchedAt: p.fetchedAt, count: p.jobs.length };
+  // Upgrade jobs stored by an older version (adds product, country, etc.) before serving
+  const jobs = (p.jobs || []).map(upgradeStored).filter(j => j.applyUrl && isRelevant(j.title || '', j.description || ''));
+  return { jobs, provider, real: true, fetchedAt: p.fetchedAt, count: jobs.length };
 }
 
 function send(res, status, cache, body) {
